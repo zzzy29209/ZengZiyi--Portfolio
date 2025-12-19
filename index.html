@@ -3,142 +3,147 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>曾子懿 | Ziyi Zeng</title>
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <title>曾子懿 | Ziyi Zeng - Swiss Editorial</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;900&family=Space+Grotesk:wght@300;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;900&display=swap');
         
         :root {
-            --bg: #000000;
-            --accent: #1A1E26; /* 深度蓝灰，模拟系统质感 */
-            --glass: rgba(15, 15, 15, 0.6);
+            --cartier-red: #9B1B30;
+            --tiffany-blue: #81D8D0;
+            --swiss-black: #000000;
+            --swiss-white: #F4F4F4;
         }
 
         body {
-            background-color: var(--bg);
-            color: #ffffff;
+            background-color: var(--swiss-white);
+            color: var(--swiss-black);
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
         }
 
-        /* 弥散背景质感 */
-        .diffusion-layer {
-            position: fixed;
-            inset: 0;
-            z-index: -1;
-            background: radial-gradient(circle at 70% 30%, var(--accent) 0%, transparent 50%),
-                        radial-gradient(circle at 20% 80%, #0d1117 0%, transparent 40%);
-        }
-
-        /* 结构化毛玻璃：模拟苹果最新系统层级 */
-        .system-blur {
-            background: var(--glass);
-            backdrop-filter: blur(50px) saturate(180%);
-            -webkit-backdrop-filter: blur(50px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        /* Swiss Style 超大标题 */
-        .hero-text {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: clamp(5rem, 20vw, 16rem);
+        /* 杂志排版：超大字号 */
+        .mega-title {
+            font-size: clamp(6rem, 25vw, 18rem);
             font-weight: 900;
             line-height: 0.8;
-            letter-spacing: -0.07em;
-            text-transform: uppercase;
+            letter-spacing: -0.05em;
+            color: var(--swiss-black);
         }
 
-        /* 建筑感布局：左边细线+极小字 */
-        .aside-label {
+        /* 红色块区域 */
+        .red-block {
+            background-color: var(--cartier-red);
+            color: white;
+        }
+
+        /* 侧边导航标签 */
+        .side-label {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
             font-size: 10px;
             font-weight: 900;
-            letter-spacing: 0.5em;
+            letter-spacing: 0.3em;
             text-transform: uppercase;
-            writing-mode: vertical-lr;
-            opacity: 0.2;
         }
 
-        .project-card {
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            border: 1px solid rgba(255, 255, 255, 0.03);
-        }
-        .project-card:hover {
-            background: rgba(255, 255, 255, 0.05);
-            transform: scale(1.02);
-            border-color: rgba(255, 255, 255, 0.1);
+        /* 苹果毛玻璃效果（局部应用） */
+        .glass-overlay {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        /* 隐藏滚动条 */
-        ::-webkit-scrollbar { display: none; }
+        /* 模拟图片框质感 */
+        .image-frame {
+            border: 1px solid var(--swiss-black);
+            padding: 10px;
+            background: white;
+            box-shadow: 15px 15px 0px var(--swiss-black);
+        }
+
+        .rebus-text {
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 1.6;
+            max-width: 400px;
+        }
     </style>
 </head>
 <body class="antialiased">
 
-    <div class="diffusion-layer"></div>
-
-    <nav class="fixed top-0 w-full z-[100] system-blur py-8 px-10 border-b">
-        <div class="max-w-[1600px] mx-auto flex justify-between items-baseline">
-            <h1 class="font-black text-2xl tracking-tighter">ZIYI ZENG</h1>
-            <div class="hidden md:flex space-x-12">
-                <a href="#about" class="text-[10px] font-black tracking-widest opacity-40 hover:opacity-100">01 PROFILE</a>
-                <a href="#internship" class="text-[10px] font-black tracking-widest opacity-40 hover:opacity-100">02 EXP</a>
-                <a href="#contact" class="text-[10px] font-black tracking-widest opacity-100 px-4 py-1 border border-white/20">03 CONNECT</a>
-            </div>
+    <nav class="fixed top-0 w-full z-50 mix-blend-difference px-10 py-8 flex justify-between items-start text-white">
+        <div class="font-black text-2xl tracking-tighter">ZIYI.Z</div>
+        <div class="space-y-2 text-right text-[10px] font-bold uppercase tracking-widest">
+            <a href="#about" class="block hover:line-through">About</a>
+            <a href="#internship" class="block hover:line-through">Experience</a>
+            <a href="#projects" class="block hover:line-through">Projects</a>
+            <a href="#contact" class="block hover:line-through text-[var(--cartier-red)]">Contact</a>
         </div>
     </nav>
 
-    <section class="relative min-h-screen flex flex-col justify-end px-10 pb-20">
-        <div class="absolute inset-0 z-[-1]">
-            <img src="YOUR_IMAGE.jpg" class="w-full h-full object-cover grayscale brightness-50 contrast-125" alt="Background">
-            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent"></div>
+    <section class="min-h-screen relative flex items-center justify-start px-10 pt-20">
+        <div class="absolute inset-0 z-0">
+            <img src="YOUR_IMAGE.jpg" class="w-full h-full object-cover grayscale opacity-20" alt="">
         </div>
-
-        <div data-aos="fade-up" data-aos-duration="1500">
-            <span class="text-[10px] font-black tracking-[1em] opacity-30 mb-8 block">EST. 2025</span>
-            <h1 class="hero-text">PORT<br>FOLIO</h1>
-        </div>
-    </section>
-
-    <section id="about" class="py-60 px-10 system-blur">
-        <div class="max-w-[1600px] mx-auto grid md:grid-cols-12 gap-10">
-            <div class="md:col-span-1 aside-label">PROFILE / 01</div>
-            <div class="md:col-span-11" data-aos="fade-up">
-                <h2 class="text-7xl md:text-[10rem] font-black tracking-tighter mb-16 italic leading-none">
-                    个人介绍网站><br><span class="opacity-10 font-normal not-italic text-5xl">ge r</span>
-                </h2>
-                <p class="text-3xl md:text-5xl font-light leading-tight text-gray-400 max-w-4xl">
-                    精通AI工具流，专注于高质量视频策划与内容运营
-                </p>
+        
+        <div class="relative z-10" data-aos="fade-right" data-aos-duration="1200">
+            <h1 class="mega-title">PORT<br><span class="text-[var(--cartier-red)]">FOLIO</span></h1>
+            <div class="mt-10 flex items-center gap-6">
+                <div class="w-20 h-4 bg-[var(--tiffany-blue)]"></div>
+                <p class="text-xs font-black uppercase tracking-[0.5em]">Visual & AI Creator / 2025 Edition</p>
             </div>
         </div>
+
+        <div class="absolute right-20 bottom-20 hidden lg:block" data-aos="zoom-in">
+            <div class="image-frame w-80 h-96 flex items-center justify-center italic text-gray-300">
+                [ PLACEHOLDER_IMG_01 ]
+            </div>
+            <p class="mt-4 text-[10px] font-bold uppercase">Image 01. Visual Perspective</p>
+        </div>
     </section>
 
-    <section id="internship" class="py-40 px-10">
-        <div class="max-w-[1600px] mx-auto">
-            <div class="grid md:grid-cols-12 gap-10 mb-40">
-                <div class="md:col-span-1 aside-label">EXP / 02</div>
-                <div class="md:col-span-11 space-y-60">
-                    <div data-aos="fade-left">
-                        <div class="h-px w-full bg-white/10 mb-10"></div>
-                        <div class="flex flex-col md:flex-row justify-between items-baseline mb-16">
-                            <h3 class="text-5xl md:text-8xl font-black tracking-tighter uppercase">小米科技</h3>
-                            <span class="text-sm font-black opacity-20 tracking-widest italic">2025.08 — 2025.11</span>
-                        </div>
-                        <div class="grid md:grid-cols-2 gap-20 text-gray-500 text-lg font-light leading-relaxed">
-                            <p>内容策划与执行：主导抖音、小红书、微信公众号等平台的视频/图文内容策划，负责视频制作与文案编写。制作“顶尖学子座谈会”视频，开发“奇幻漂流”系列创意短视频，全程担任导演，独立制作剧本、分镜，独立拍摄并独立剪辑。</p>
-                            <p>市场调研与选题：使用PEST分析法对市场情况进行调研，拆解竞品账号的爆款内容，结合当下热点对自家账号进行内容方向的调整与规划。帮助各平台账号实现数千至数万的粉丝净增量。</p>
+    <section id="about" class="min-h-screen grid lg:grid-cols-2">
+        <div class="red-block p-16 md:p-32 flex flex-col justify-end">
+            <div class="side-label absolute left-4 top-1/2 opacity-20 text-white">PROFILE 01</div>
+            <h2 class="text-6xl md:text-8xl font-black tracking-tighter leading-none mb-10" data-aos="fade-up">
+                个人介绍><br>ge r
+            </h2>
+        </div>
+        <div class="bg-white p-16 md:p-32 flex flex-col justify-center">
+            <p class="text-3xl md:text-5xl font-light text-black leading-tight tracking-tighter" data-aos="fade-up">
+                精通AI工具流，<br>专注于高质量视频策划与内容运营
+            </p>
+        </div>
+    </section>
+
+    <section id="internship" class="py-40 px-10 bg-black text-white">
+        <div class="max-w-[1400px] mx-auto">
+            <div class="flex justify-between items-end mb-32 border-b border-white/20 pb-10">
+                <h3 class="text-8xl font-black italic">EXP.</h3>
+                <span class="text-[10px] font-bold tracking-[1em] opacity-30 uppercase">Professional Path</span>
+            </div>
+
+            <div class="space-y-40">
+                <div class="grid lg:grid-cols-12 gap-10" data-aos="fade-up">
+                    <div class="lg:col-span-4 text-sm font-black text-[var(--tiffany-blue)]">2025.08 - 2025.11</div>
+                    <div class="lg:col-span-8">
+                        <h4 class="text-4xl md:text-6xl font-black mb-10 underline decoration-[var(--cartier-red)] decoration-8 underline-offset-8">小米科技 - 雇主品牌</h4>
+                        <div class="grid md:grid-cols-2 gap-10 opacity-60 font-light text-lg">
+                            <p>主导多平台视频策划与内容运营，利用PEST分析法驱动数据增长，实现各平台数千至数万粉丝净增。负责视觉编辑与品牌致谢活动海报设计。</p>
+                            <p>独立制作“顶尖学子座谈会”及“奇幻漂流”系列短视频，涵盖剧本、拍摄、剪辑全流程，保证内容产出频率与质量。</p>
                         </div>
                     </div>
+                </div>
 
-                    <div data-aos="fade-left">
-                        <div class="h-px w-full bg-white/10 mb-10"></div>
-                        <div class="flex flex-col md:flex-row justify-between items-baseline mb-16">
-                            <h3 class="text-5xl md:text-8xl font-black tracking-tighter uppercase">湖南芒果数智</h3>
-                            <span class="text-sm font-black opacity-20 tracking-widest italic">2024.12 — 2025.03</span>
-                        </div>
-                        <div class="text-gray-500 text-lg font-light leading-relaxed max-w-4xl">
-                            <p>AR创新项目策划：与湖南省博物馆合作，邀请北京大学历史系教授指导，梳理文物背景并编写“AR大空间行走项目”系列短剧剧本。项目成品已在博物馆科普互动区投入使用并保持盈利。同时主导 AI 短剧 SOP 归整及大型卫视晚会视频设计。</p>
+                <div class="grid lg:grid-cols-12 gap-10" data-aos="fade-up">
+                    <div class="lg:col-span-4 text-sm font-black text-[var(--tiffany-blue)]">2024.12 - 2025.03</div>
+                    <div class="lg:col-span-8">
+                        <h4 class="text-4xl md:text-6xl font-black mb-10 underline decoration-white decoration-8 underline-offset-8">湖南芒果数智 - AI产品</h4>
+                        <div class="grid md:grid-cols-2 gap-10 opacity-60 font-light text-lg">
+                            <p>策划湖南省博AR项目及AI短剧系列，归整AI视频制作SOP。深度参与湖南卫视元宵晚会及芒果集团年会AI视频项目，触达千万级观众。</p>
                         </div>
                     </div>
                 </div>
@@ -146,44 +151,42 @@
         </div>
     </section>
 
-    <section id="projects" class="py-40 px-10 system-blur border-y">
-        <div class="max-w-[1600px] mx-auto grid md:grid-cols-12 gap-10">
-            <div class="md:col-span-1 aside-label">WORKS / 03</div>
-            <div class="md:col-span-11 grid md:grid-cols-2 gap-4">
-                <div class="project-card p-16 md:p-24 bg-white/5" data-aos="zoom-in">
-                    <h4 class="text-4xl font-black mb-10 italic">电影短片《倒刺》</h4>
-                    <p class="text-sm text-gray-500 leading-loose opacity-60">担任总制片人 / 独立策划案 / 获得南光影视赞助 / 入围 First-Time Filmmaker Sessions</p>
-                </div>
-                <div class="project-card p-16 md:p-24 bg-white/5" data-aos="zoom-in" data-aos-delay="200">
-                    <h4 class="text-4xl font-black mb-10 italic">学生艺术美育中心</h4>
-                    <p class="text-sm text-gray-500 leading-loose opacity-60">负责并参与十余个校级/省级活动的现场安排以及前期宣传</p>
-                </div>
+    <section id="projects" class="py-40 bg-[var(--swiss-white)] px-10">
+        <div class="max-w-[1400px] mx-auto grid md:grid-cols-2 gap-px bg-black border border-black">
+            <div class="bg-white p-20 group hover:bg-[var(--cartier-red)] hover:text-white transition-all duration-500">
+                <span class="text-[10px] font-black opacity-30 mb-10 block">PROJECT 01</span>
+                <h4 class="text-4xl font-black mb-6">电影短片《倒刺》</h4>
+                <p class="text-sm opacity-60 leading-relaxed">担任总制片人。独立制作策划案，成功争取到南光影视赞助，入围 First-Time Filmmaker Sessions 并获奖。</p>
+            </div>
+            <div class="bg-white p-20 group hover:bg-[var(--swiss-black)] hover:text-white transition-all duration-500">
+                <span class="text-[10px] font-black opacity-30 mb-10 block">PROJECT 02</span>
+                <h4 class="text-4xl font-black mb-6">学生艺术美育中心</h4>
+                <p class="text-sm opacity-60 leading-relaxed">负责并参与十余个校级/省级活动的现场安排以及前期宣传，构建校园艺术生态。</p>
             </div>
         </div>
     </section>
 
-    <section id="contact" class="min-h-screen flex items-center px-10">
-        <div class="max-w-[1600px] mx-auto w-full grid md:grid-cols-12">
-            <div class="md:col-span-1 aside-label">END / 04</div>
-            <div class="md:col-span-11" data-aos="fade-up">
-                <h3 class="text-8xl md:text-[12rem] font-black tracking-tighter mb-20 italic">
-                    给个机会？><br><span class="opacity-10 text-6xl font-normal not-italic">gei</span>
-                </h3>
-                <div class="flex flex-col md:flex-row gap-20 items-center">
-                    <a href="mailto:zzzy29209@163.com" class="text-2xl font-light border-b border-white/20 pb-2 hover:opacity-50">zzzy29209@163.com</a>
-                    <p class="text-xs font-black tracking-[1em] opacity-30 uppercase">WeChat: Zzzy_nine</p>
-                </div>
+    <section id="contact" class="min-h-screen red-block flex flex-col items-center justify-center text-center px-10">
+        <div data-aos="zoom-in">
+            <h3 class="text-7xl md:text-[12rem] font-black tracking-tighter leading-none italic mb-10">
+                给个机会？><br><span class="opacity-20 not-italic">GEI</span>
+            </h3>
+            <p class="text-xs tracking-[1em] uppercase mb-20">Seeking opportunities in Film & AI Content Operations</p>
+            
+            <div class="flex flex-col md:flex-row items-center gap-10 md:gap-20 text-xl font-black">
+                <a href="mailto:zzzy29209@163.com" class="border-b-4 border-white pb-2 hover:opacity-50">zzzy29209@163.com</a>
+                <span class="opacity-40 tracking-widest uppercase">微信: Zzzy_nine</span>
             </div>
         </div>
+        
+        <footer class="absolute bottom-10 text-[8px] font-black opacity-20 tracking-[2em] uppercase">
+            © 2025 ZIYI ZENG
+        </footer>
     </section>
-
-    <footer class="py-20 text-center opacity-10 text-[8px] font-black tracking-[2em] uppercase">
-        © 2025 ZIYI ZENG / ALL RIGHTS RESERVED
-    </footer>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init({ duration: 1000, once: true, easing: 'ease-out-expo' });
+        AOS.init();
     </script>
 </body>
 </html>
