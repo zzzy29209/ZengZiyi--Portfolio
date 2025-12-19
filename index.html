@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,159 +8,167 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Inter:wght@300;400;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;900&display=swap');
+        :root { --neon-green: #CCFF00; }
+        body { font-family: 'Inter', sans-serif; background-color: #fff; color: #000; }
         
-        :root {
-            --neon-green: #CCFF00;
-            --cyber-pink: #FF007A;
-            --gallery-bg: #F2F2F2; /* 浅灰白底，不再是纯黑 */
-        }
-
-        body { 
-            font-family: 'Inter', sans-serif; 
-            background-color: var(--gallery-bg); 
-            color: #1a1a1a; 
-            overflow-x: hidden;
-        }
-
-        /* 第一屏艺术特写效果 */
-        .hero-overlay {
-            background: linear-gradient(to right, rgba(0,0,0,0.8) 30%, transparent);
-        }
-
-        /* 参考图中的大色块设计 */
-        .color-block-green { background-color: var(--neon-green); color: black; }
-        .color-block-black { background-color: #1a1a1a; color: white; }
+        /* 艺术感粗线条分割 */
+        .page-divider { border-top: 2px solid #000; }
         
-        .serif-font { font-family: 'Playfair Display', serif; }
-        
-        /* 导航栏透明渐变 */
-        .nav-blur { backdrop-filter: blur(10px); background: rgba(255,255,255,0.7); border-bottom: 1px solid rgba(0,0,0,0.05); }
-
-        .section-tag {
-            writing-mode: vertical-lr;
-            text-orientation: mixed;
-            font-size: 0.75rem;
-            letter-spacing: 0.2em;
+        /* 照片板块：艺术画廊风格 */
+        .photo-box {
+            border: 2px solid #000;
+            padding: 12px;
+            background: #fff;
+            box-shadow: 10px 10px 0px #000;
+            transition: all 0.3s ease;
         }
+        .photo-box:hover { transform: translate(-4px, -4px); box-shadow: 14px 14px 0px var(--neon-green); }
+
+        .text-neon { color: var(--neon-green); }
+        .bg-neon { background-color: var(--neon-green); }
+        
+        /* 极简导航样式 */
+        .nav-link { font-weight: 900; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; }
+        .nav-link:hover { background: var(--neon-green); color: #000; }
     </style>
 </head>
-<body>
+<body class="antialiased">
 
-    <nav class="fixed w-full z-50 nav-blur">
-        <div class="max-w-7xl mx-auto px-8 py-4 flex justify-between items-center">
-            <span class="text-xl font-black tracking-tighter uppercase italic">ZIYI <span class="text-pink-600">ZENG</span></span>
-            <div class="hidden md:flex space-x-10 text-xs font-bold uppercase tracking-widest">
-                <a href="#about" class="hover:text-pink-600">Intro</a>
-                <a href="#internship" class="hover:text-pink-600">History</a>
-                <a href="#projects" class="hover:text-pink-600">Projects</a>
-                <a href="#contact" class="hover:text-pink-600">Contact</a>
+    <nav class="fixed w-full z-50 bg-white/90 backdrop-blur-sm border-b-2 border-black">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <span class="text-xl font-black tracking-tighter uppercase">Ziyi Zeng</span>
+            <div class="hidden md:flex space-x-8">
+                <a href="#about" class="nav-link px-2">个人信息</a>
+                <a href="#internship" class="nav-link px-2">实习经历</a>
+                <a href="#projects" class="nav-link px-2">项目经历</a>
+                <a href="#portfolio" class="nav-link px-2">个人作品</a>
+                <a href="#contact" class="nav-link bg-black text-white px-3 py-1">联系方式</a>
             </div>
         </div>
     </nav>
 
-    <section class="h-screen w-full relative flex items-center overflow-hidden bg-black">
-        <img src="YOUR_BIG_PHOTO.jpg" class="absolute inset-0 w-full h-full object-cover opacity-70" alt="Hero Image">
-        <div class="absolute inset-0 hero-overlay"></div>
-        
-        <div class="relative z-10 px-12 md:px-24 max-w-4xl" data-aos="fade-right">
-            <h2 class="text-neon-green text-sm font-bold tracking-[0.5em] mb-4 uppercase italic">Portfolio 2025</h2>
-            <h1 class="text-white text-6xl md:text-[8rem] font-black leading-none tracking-tighter serif-font">
-                PORT<span class="text-transparent" style="-webkit-text-stroke: 1px white;">FOLIO</span>
-            </h1>
-            <p class="text-white/60 mt-8 text-xl max-w-lg leading-relaxed italic">
-                “Is any of this real? Who are you?” — 结合视觉表达与 AI 的无限可能。
-            </p>
-        </div>
-
-        <div class="absolute bottom-10 right-12 text-white/20 text-xs tracking-widest hidden md:block">
-            SCROLL TO EXPLORE / 2025 EDITION
-        </div>
-    </section>
-
-    <section id="about" class="min-h-[80vh] flex flex-col md:flex-row">
-        <div class="flex-1 color-block-green p-16 flex flex-col justify-center" data-aos="fade-up">
-            <h2 class="text-5xl font-black mb-8 leading-tight">个人介绍网站>ge r</h2>
-            <div class="h-1 w-24 bg-black mb-8"></div>
-            <p class="text-2xl font-medium leading-relaxed">你好，我是曾子懿！<br>精通AI工具流，专注于高质量视频策划与内容运营</p>
-        </div>
-        <div class="flex-1 bg-white p-16 flex flex-col justify-center border-l border-black/5" data-aos="fade-up" data-aos-delay="200">
-            <div class="text-xs uppercase tracking-widest text-gray-400 mb-4">Skills & Focus</div>
-            <div class="grid grid-cols-2 gap-8">
-                <div>
-                    <h4 class="font-black text-xl mb-2">AI CREATIVE</h4>
-                    <p class="text-sm text-gray-500">熟练运用 MJ / Runway / Luma 等工具进行先锋创作。</p>
-                </div>
-                <div>
-                    <h4 class="font-black text-xl mb-2">DIRECTION</h4>
-                    <p class="text-sm text-gray-500">主导多平台视频策划，具备完整导演与剪辑思维。</p>
-                </div>
+    <section class="h-screen flex items-center justify-center px-6 pt-20">
+        <div class="max-w-7xl w-full grid md:grid-cols-2 gap-16 items-center">
+            <div data-aos="fade-right" data-aos-duration="1200">
+                <h1 class="text-7xl md:text-[9rem] font-black leading-[0.85] tracking-tighter mb-8 uppercase">
+                    PORT<br><span class="bg-black text-white px-2">FOLIO</span>
+                </h1>
+                <div class="h-2 w-24 bg-neon mb-6"></div>
+                <p class="text-sm font-bold tracking-[0.4em] text-gray-400 uppercase">Visual & AI Creator / 2025</p>
             </div>
-            <div class="mt-12">
-                 <a href="#contact" class="inline-block bg-black text-white px-10 py-4 font-bold text-sm uppercase tracking-widest hover:bg-pink-600 transition-colors">给个机会？>gei</a>
-            </div>
-        </div>
-    </section>
-
-    <section id="internship" class="py-32 px-8 bg-zinc-100 relative">
-        <span class="absolute left-4 top-32 section-tag font-bold text-gray-300">HISTORY</span>
-        <div class="max-w-6xl mx-auto">
-            <h3 class="text-7xl font-black mb-24 tracking-tighter opacity-10 uppercase">Internship</h3>
-            
-            <div class="grid md:grid-cols-12 gap-12 items-start mb-32" data-aos="fade-up">
-                <div class="md:col-span-4 italic text-4xl serif-font text-pink-600">2025.08 - 2025.11</div>
-                <div class="md:col-span-8 border-t-2 border-black pt-8">
-                    <h4 class="text-3xl font-black mb-6 uppercase tracking-tight">小米科技 - 雇主品牌 | 视频策划</h4>
-                    <div class="space-y-6 text-gray-600 leading-relaxed">
-                        <p>内容策划与执行：主导抖音、小红书、微信公众号等平台的视频/图文内容策划，负责视频制作与文案编写。制作“顶尖学子座谈会”视频，开发“奇幻漂流”系列创意短视频，全程担任导演，独立制作剧本、分镜，独立拍摄并独立剪辑。保持每周1~2条视频/图文内容的产出频率，保证账号内容更新的连续性。</p>
-                        <p>市场调研与选题：使用PEST分析法对市场情况进行调研，拆解竞品账号的爆款内容，结合当下热点对自家账号进行内容方向的调整与规划。帮助抖音账号增粉2700人、小红书增粉2600人、微信公众号增粉78000人、微博账号增粉4900人（皆为粉丝净增量）。</p>
+            <div class="flex justify-center md:justify-end" data-aos="fade-left">
+                <div class="photo-box w-full max-w-sm">
+                    <div class="aspect-[3/4] bg-gray-100 overflow-hidden relative grayscale hover:grayscale-0 transition-all duration-700">
+                        <img src="YOUR_IMAGE_HERE.jpg" alt="Ziyi Zeng" class="w-full h-full object-cover">
+                        <div class="absolute bottom-4 left-4 bg-black text-white px-2 py-1 text-[10px] font-bold uppercase">Image 01.</div>
                     </div>
                 </div>
             </div>
+        </div>
+    </section>
 
-            <div class="grid md:grid-cols-12 gap-12 items-start" data-aos="fade-up">
-                <div class="md:col-span-4 italic text-4xl serif-font text-neon-green bg-black p-4 inline-block">2024.12 - 2025.03</div>
-                <div class="md:col-span-8 border-t-2 border-black pt-8">
-                    <h4 class="text-3xl font-black mb-6 uppercase tracking-tight">湖南芒果数智 - AI产品部 ｜ 编导</h4>
-                    <p class="text-gray-600 leading-relaxed">AR创新项目策划：与湖南省博物馆合作，邀请北京大学历史系教授指导...项目成品在湖南省博物馆科普互动区投入使用，售价79元一位，项目上线至今保持盈利。</p>
+    <section id="about" class="page-divider py-32 px-6 bg-white">
+        <div class="max-w-5xl mx-auto text-center" data-aos="fade-up">
+            <h2 class="text-gray-400 text-sm font-black uppercase tracking-widest mb-6 italic">你好，我是曾子懿！</h2>
+            <h1 class="text-5xl md:text-7xl font-black mb-10 tracking-tighter">个人介绍网站><span class="bg-neon px-4">ge r</span></h1>
+            <p class="text-2xl md:text-3xl font-medium text-black max-w-3xl mx-auto leading-tight">
+                精通AI工具流，专注于高质量视频策划与内容运营
+            </p>
+            <div class="mt-16 flex justify-center space-x-6">
+                <a href="#contact" class="bg-black text-white px-10 py-4 font-black text-sm uppercase hover:bg-neon hover:text-black transition-all">联系我</a>
+                <a href="#" class="border-2 border-black text-black px-10 py-4 font-black text-sm uppercase hover:bg-gray-100 transition-all">下载简历</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="internship" class="page-divider py-32 bg-black text-white">
+        <div class="max-w-5xl mx-auto px-6">
+            <h3 class="text-4xl font-black mb-20 text-neon uppercase italic tracking-tighter">实习经历</h3>
+            <div class="space-y-32">
+                <div class="grid md:grid-cols-4 gap-8" data-aos="fade-up">
+                    <div class="text-2xl font-black text-neon italic">2025.08 - 2025.11</div>
+                    <div class="md:col-span-3 border-l-2 border-white/20 pl-10">
+                        <h4 class="text-3xl font-black mb-8 uppercase">小米科技 - 雇主品牌 | 视频策划</h4>
+                        <div class="space-y-6 text-gray-400 text-lg leading-relaxed">
+                            <p>内容策划与执行：主导抖音、小红书、微信公众号等平台的视频/图文内容策划，负责视频制作与文案编写。制作“顶尖学子座谈会”视频，开发“奇幻漂流”系列创意短视频，全程担任导演，独立制作剧本、分镜，独立拍摄并独立剪辑。保持每周1~2条视频/图文内容的产出频率，保证账号内容更新的连续性。</p>
+                            <p>市场调研与选题：使用PEST分析法对市场情况进行调研，拆解竞品账号的爆款内容，结合当下热点对自家账号进行内容方向的调整与规划。帮助抖音账号增粉2700人、小红书增粉2600人、微信公众号增粉78000人、微博账号增粉4900人（皆为粉丝净增量）。</p>
+                            <p>内容运营与数据驱动迭代：实时关注抖音、小红书、微信公众号等主要平台的内容数据。建立数据表格，重点关注曝光、互动与粉丝增减等环比数据，与主要竞品账号做对比分析，输出数据周报与月报。</p>
+                            <p>平面视觉编辑：对小红书、微博、公众号等图文内容的海报进行设计与编辑，与56所高校合作致谢活动并制作宣传图，为多条公众号内容制作主视觉。</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid md:grid-cols-4 gap-8" data-aos="fade-up">
+                    <div class="text-2xl font-black text-neon italic">2024.12 - 2025.03</div>
+                    <div class="md:col-span-3 border-l-2 border-white/20 pl-10">
+                        <h4 class="text-3xl font-black mb-8 uppercase">湖南芒果数智 - AI产品部 ｜ 编导</h4>
+                        <div class="space-y-6 text-gray-400 text-lg leading-relaxed">
+                            <p>AR创新项目策划：与湖南省博物馆合作，邀请北京大学历史系教授指导，对湖南省博的文物背景进行梳理统计，挑选项目主题文物。在项目执行阶段，作为策划团队主创，负责编写“AR大空间行走项目”所需的系列短剧剧本，并规划预期效果图，与其他资源部门联动推进项目执行，与开发部对接落地方案并提供画面建议。项目成品在湖南省博物馆科普互动区投入使用，售价79元一位，项目上线至今保持盈利。</p>
+                            <p>AI视频制作与SOP归整：使用PEST分析法，深入分析政治、文化与科技方向的最新热点与技术，结合热门历史向影视剧《清明上河图密码》，趁热推出清明上河图系列AI短剧。作为短剧项目负责人，对多种AI模型进行测试，整理出详细的AI短剧SOP，大幅提升工作效率。</p>
+                            <p>大型活动协同：湖南卫视2025年元宵晚会，作为核心成员，与TV部合作设计歌舞节目《人间最值得》舞台背景，全程深度参与视频制作，登上全球实时直播并获得30s特写展示，触达观众千万级。湖南芒果集团2025年会，担任部门负责人，与算法部及集团TV部合作，带领小组共同完成颁奖环节的AI开幕视频项目。</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="projects" class="py-32 bg-white px-8">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row gap-8">
-            <div class="w-full md:w-1/3 color-block-black p-12 flex flex-col justify-between" data-aos="zoom-in">
-                <h3 class="text-5xl font-black italic serif-font">Projects</h3>
-                <p class="text-gray-400">Selected work from 2023-2025</p>
-            </div>
-            <div class="flex-1 grid md:grid-cols-2 gap-8">
-                <a href="#" class="group block p-10 border-2 border-black hover:bg-black hover:text-white transition-all">
-                    <h4 class="text-2xl font-black mb-4 uppercase">电影短片《倒刺》</h4>
-                    <p class="opacity-60 text-sm">担任总制片人，入围 First-Time Filmmaker Sessions 并获奖。</p>
+    <section id="projects" class="page-divider py-32 bg-white">
+        <div class="max-w-5xl mx-auto px-6">
+            <h3 class="text-3xl font-black mb-16 text-center uppercase tracking-tighter text-black">项目经历</h3>
+            <div class="grid md:grid-cols-2 border-2 border-black">
+                <a href="这里输入你的项目详情网址" class="block p-12 border-b-2 md:border-b-0 md:border-r-2 border-black hover:bg-neon transition-colors group">
+                    <div class="flex justify-between items-start mb-6">
+                        <i class="fas fa-clapperboard text-3xl"></i>
+                        <i class="fas fa-external-link-alt text-sm opacity-30 group-hover:opacity-100"></i>
+                    </div>
+                    <h4 class="text-2xl font-black mb-4 italic underline underline-offset-4">电影短片《倒刺》</h4>
+                    <p class="text-gray-600 font-medium leading-relaxed">担任总制片人<br>独立制作策划案，成功争取到南光影视赞助<br>入围 First-Time Filmmaker Sessions 并获奖</p>
                 </a>
-                <a href="#" class="group block p-10 border-2 border-black hover:bg-black hover:text-white transition-all">
-                    <h4 class="text-2xl font-black mb-4 uppercase">艺术美育中心</h4>
-                    <p class="opacity-60 text-sm">负责校级/省级活动的现场安排以及前期宣传。</p>
+                <a href="这里输入你的项目详情网址" class="block p-12 hover:bg-neon transition-colors group">
+                    <div class="flex justify-between items-start mb-6">
+                        <i class="fas fa-brain text-3xl"></i>
+                        <i class="fas fa-external-link-alt text-sm opacity-30 group-hover:opacity-100"></i>
+                    </div>
+                    <h4 class="text-2xl font-black mb-4 italic underline underline-offset-4">中南财大学生艺术美育中心</h4>
+                    <p class="text-gray-600 font-medium leading-relaxed">负责并参与十余个校级/省级活动的现场安排以及前期宣传</p>
                 </a>
             </div>
         </div>
     </section>
 
-    <footer id="contact" class="bg-black text-white py-24 px-8 text-center">
-        <div data-aos="zoom-in">
-            <h3 class="text-5xl md:text-8xl font-black tracking-tighter mb-12 uppercase italic">Let's Create</h3>
-            <div class="flex flex-col md:flex-row justify-center items-center gap-12 text-lg font-bold tracking-widest">
-                <a href="mailto:zzzy29209@163.com" class="text-neon-green hover:text-white transition-colors border-b-2 border-neon-green pb-2">ZZZY29209@163.COM</a>
-                <span class="italic">WECHAT: ZZZY_NINE</span>
+    <section id="portfolio" class="page-divider py-32 bg-gray-50">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="flex justify-between items-end mb-16">
+                <h3 class="text-3xl font-black uppercase tracking-tighter border-b-4 border-neon">个人作品</h3>
+                <span class="text-gray-400 text-xs font-bold tracking-widest">（作品正在更新中...）</span>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="aspect-video bg-white border-2 border-black flex items-center justify-center text-gray-400 font-bold italic" data-aos="fade-up" data-aos-delay="100">待上传视频素材</div>
+                <div class="aspect-video bg-white border-2 border-black flex items-center justify-center text-gray-400 font-bold italic" data-aos="fade-up" data-aos-delay="200">待上传设计作品</div>
+                <div class="aspect-video bg-white border-2 border-black flex items-center justify-center text-gray-400 font-bold italic" data-aos="fade-up" data-aos-delay="300">待上传 AI 作品</div>
             </div>
         </div>
-        <p class="mt-24 text-[10px] opacity-30 tracking-[1em] uppercase">© 2025 ZIYI ZENG / Visual Portfolio</p>
+    </section>
+
+    <section id="contact" class="page-divider py-32 bg-neon text-black">
+        <div class="max-w-5xl mx-auto px-6 text-center" data-aos="zoom-in">
+            <h3 class="text-6xl md:text-9xl font-black mb-12 tracking-tighter uppercase italic">给个机会？><br>gei</h3>
+            <p class="text-sm font-black mb-12 opacity-60 tracking-[0.3em]">Seeking opportunities in Film & AI Content Operations</p>
+            <div class="flex flex-col md:flex-row justify-center items-center gap-12 text-xl font-black">
+                <a href="mailto:zzzy29209@163.com" class="hover:underline decoration-4">zzzy29209@163.com</a>
+                <span>微信: Zzzy_nine</span>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-12 text-center text-black font-black text-[10px] tracking-[1em] uppercase bg-white">
+        © 2025 Designed by Ziyi Zeng.
     </footer>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init({ duration: 1000, once: true });
+        AOS.init({ duration: 800, once: true });
     </script>
 </body>
 </html>
