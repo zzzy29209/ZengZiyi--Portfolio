@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap');
         
         :root {
             --cartier-red: #9B1B30;
@@ -21,20 +21,43 @@
             color: var(--swiss-black);
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* 1. 强化毛刺玻璃顶栏 */
+        /* 1. 顶栏导航字体加大 */
         .glass-nav {
             background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(25px) saturate(180%);
             -webkit-backdrop-filter: blur(25px) saturate(180%);
             border-bottom: 1px solid rgba(0,0,0,0.08);
         }
+        .nav-link {
+            font-size: 14px; /* 加大一号 */
+            font-weight: 700;
+            letter-spacing: 0.1em;
+        }
+
+        /* 2. 背景图自然过渡过渡 (Masking) */
+        .hero-image-overlay {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            z-index: 1;
+            /* 关键：渐变遮罩，使图片左边缘和底部自然消失 */
+            -webkit-mask-image: linear-gradient(to left, black 40%, transparent 100%),
+                                linear-gradient(to bottom, black 70%, transparent 100%);
+            mask-image: linear-gradient(to left, black 40%, transparent 100%),
+                        linear-gradient(to bottom, black 70%, transparent 100%);
+            -webkit-mask-composite: destination-in;
+            mask-composite: intersect;
+        }
 
         .mega-title {
-            font-size: clamp(5rem, 20vw, 15rem);
+            font-size: clamp(5rem, 18vw, 14rem);
             font-weight: 900;
-            line-height: 0.8;
+            line-height: 0.85;
             letter-spacing: -0.05em;
         }
 
@@ -43,74 +66,66 @@
             color: white;
         }
 
-        /* 5. 实习公司/岗位字号缩小 */
         .internship-title {
-            font-size: 1.5rem; /* 显著缩小 */
+            font-size: 1.25rem;
             font-weight: 900;
-            text-transform: uppercase;
+            letter-spacing: -0.02em;
         }
 
-        /* 6. 实习经历行间距拉宽 */
         .internship-item {
-            padding-top: 6rem;
-            padding-bottom: 6rem;
+            padding-top: 7rem; /* 增加呼吸感 */
+            padding-bottom: 7rem;
         }
 
-        /* 3. 项目卡片跳转与样式 */
         .project-card {
-            transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
-            border: 1px solid rgba(0,0,0,0.1);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .project-card:hover {
             background-color: var(--cartier-red) !important;
             color: white !important;
-            transform: scale(1.02);
-            z-index: 10;
         }
 
-        .side-label {
-            writing-mode: vertical-rl;
-            text-orientation: mixed;
-            font-size: 10px;
-            font-weight: 900;
-            letter-spacing: 0.3em;
-            text-transform: uppercase;
-        }
+        /* 隐藏滚动条 */
+        ::-webkit-scrollbar { display: none; }
     </style>
 </head>
 <body class="antialiased">
 
-    <nav class="fixed top-0 w-full z-[100] glass-nav px-10 py-5 flex justify-between items-center">
+    <nav class="fixed top-0 w-full z-[100] glass-nav px-10 py-6 flex justify-between items-center">
         <div class="font-black text-xl tracking-tighter">ZENG ZIYI</div>
-        <div class="flex space-x-10 text-[11px] font-bold uppercase tracking-widest">
-            <a href="#about" class="hover:text-[var(--cartier-red)] transition-colors">基本信息</a>
-            <a href="#internship" class="hover:text-[var(--cartier-red)] transition-colors">实习经历</a>
-            <a href="#projects" class="hover:text-[var(--cartier-red)] transition-colors">项目经历</a>
-            <a href="#contact" class="hover:text-[var(--cartier-red)] font-black text-[var(--cartier-red)]">Connect</a>
+        <div class="flex space-x-12">
+            <a href="#about" class="nav-link hover:text-[var(--cartier-red)] transition-colors">基本信息</a>
+            <a href="#internship" class="nav-link hover:text-[var(--cartier-red)] transition-colors">实习经历</a>
+            <a href="#projects" class="nav-link hover:text-[var(--cartier-red)] transition-colors">项目经历</a>
+            <a href="#contact" class="nav-link text-[var(--cartier-red)]">CONNECT</a>
         </div>
     </nav>
 
-    <section class="min-h-screen relative flex items-center px-10 pt-20">
-        <div class="absolute inset-0 z-0">
-            <img src="YOUR_IMAGE.jpg" class="w-full h-full object-cover grayscale opacity-20" alt="">
+    <section class="min-h-screen relative flex items-center px-10 pt-20 bg-white">
+        <div class="hero-image-overlay">
+            <img src="YOUR_RIGHT_IMAGE.jpg" class="w-full h-full object-cover grayscale" alt="">
         </div>
-        <div class="relative z-10" data-aos="fade-right">
-            <h1 class="mega-title">PORT<br><span class="text-[var(--cartier-red)]">FOLIO</span></h1>
-            <p class="mt-8 text-xs font-black tracking-[0.5em] opacity-40">VISUAL CREATOR / 2025</p>
+        
+        <div class="relative z-10" data-aos="fade-right" data-aos-duration="1200">
+            <h1 class="mega-title uppercase">PORT<br><span class="text-[var(--cartier-red)]">FOLIO</span></h1>
+            <div class="mt-12 flex items-center gap-6">
+                <div class="w-16 h-4 bg-[var(--tiffany-blue)]"></div>
+                <p class="text-xs font-black uppercase tracking-[0.6em] opacity-40">曾子懿个人简介 / 2025</p>
+            </div>
         </div>
     </section>
 
-    <section id="about" class="min-h-[70vh] grid lg:grid-cols-2 border-y border-black">
-        <div class="red-block p-16 flex flex-col justify-end relative">
-            <div class="side-label absolute left-4 top-1/2 -translate-y-1/2 opacity-20 text-white">PROFILE 01</div>
-            <h2 class="text-6xl font-black tracking-tighter">个人介绍</h2>
+    <section id="about" class="min-h-[80vh] grid lg:grid-cols-2">
+        <div class="red-block p-16 flex items-center justify-center relative border-r border-black/10">
+            <h2 class="text-7xl font-black tracking-tighter uppercase" data-aos="fade-up">个人介绍</h2>
         </div>
-        <div class="bg-white p-16 flex flex-col justify-center">
-            <div class="space-y-8" data-aos="fade-up">
-                <p class="text-sm font-black uppercase tracking-widest text-[var(--cartier-red)]">Education & Mission</p>
-                <div class="text-lg md:text-xl font-light text-gray-600 leading-relaxed space-y-4">
-                    <p class="text-black font-bold">精通AI工具流，专注于高质量视频策划与内容运营</p>
-                    <p>[ 这里请替换为你的个人教育背景、主修专业、获奖情况等信息 ]</p>
+        <div class="bg-white p-16 flex flex-col justify-center border-b border-black">
+            <div class="max-w-xl space-y-10" data-aos="fade-up">
+                <p class="text-xs font-black uppercase tracking-[0.4em] text-[var(--cartier-red)]">Education & Profile</p>
+                <div class="space-y-6 text-gray-600 leading-relaxed">
+                    <p class="text-2xl font-bold text-black tracking-tight">精通AI工具流，专注于高质量视频策划与内容运营</p>
+                    <p class="text-lg">[ 这里替换为你的教育背景，如：中南财经政法大学 · 广播电视编导 ]</p>
+                    <p class="text-lg">[ 这里替换为你的核心优势或获奖信息，保持简洁明了 ]</p>
                 </div>
             </div>
         </div>
@@ -118,48 +133,48 @@
 
     <section id="internship" class="py-32 px-10 bg-black text-white">
         <div class="max-w-[1400px] mx-auto">
-            <div class="flex justify-between items-end mb-20 border-b border-white/10 pb-8">
-                <h3 class="text-5xl font-black italic">实习经历</h3>
-                <span class="text-[10px] font-bold tracking-[1em] opacity-30 uppercase">Experience</span>
+            <div class="flex justify-between items-baseline mb-24 border-b border-white/10 pb-10">
+                <h3 class="text-6xl font-black uppercase">实习经历</h3>
+                <span class="text-[10px] font-bold tracking-[1em] opacity-20 uppercase">Experiences</span>
             </div>
 
             <div class="divide-y divide-white/10">
                 <div class="internship-item grid lg:grid-cols-12 gap-10" data-aos="fade-up">
-                    <div class="lg:col-span-3 text-sm font-black text-[var(--tiffany-blue)] tracking-widest uppercase">2025.08 - 2025.11</div>
+                    <div class="lg:col-span-3 text-xs font-black text-[var(--tiffany-blue)] tracking-[0.2em]">2025.08 - 2025.11</div>
                     <div class="lg:col-span-9">
-                        <h4 class="internship-title mb-8 underline decoration-[var(--cartier-red)] decoration-4 underline-offset-8">小米科技 - 雇主品牌部 ｜ 视频策划</h4>
-                        <div class="grid md:grid-cols-2 gap-x-16 gap-y-10 opacity-60 font-light text-sm leading-loose">
-                            <p><strong>内容策划与执行：</strong>主导抖音、小红书、微信公众号等平台的视频/图文内容策划，负责视频制作与文案编写。制作“顶尖学子座谈会”视频，开发“奇幻漂流”系列创意短视频，全程担任导演，独立制作剧本、分镜，指导拍摄并独立剪辑。保持每周1~2条视频/图文内容的产出频率，保证账号内容更新的连续性。</p>
-                            <p><strong>市场调研与选题：</strong>使用PEST分析法对市场情况进行调研，拆解竞品账号的爆款内容，结合当下热点对自家账号进行内容方向的调整与规划。帮助抖音账号增粉2700人、小红书增粉2600人、微信公众号增粉78000人、微博账号增粉4900人（皆为粉丝净增量）。</p>
-                            <p><strong>内容运营与数据驱动迭代：</strong>实时关注抖音、小红书、微信公众号等主要平台的内容数据。建立数据表格，重点关注曝光、互动与粉丝增减等环比数据，与主要竞品账号做对比分析，输出数据周报与月报。</p>
-                            <p><strong>平面视觉编辑：</strong>对小红书、微博、公众号等图文内容的海报进行设计与编辑，与56所高校合作致谢活动并制作宣传图，为多条公众号内容制作主视觉。</p>
+                        <h4 class="internship-title mb-10 text-[var(--swiss-white)]">小米科技 - 雇主品牌部 | 视频策划</h4>
+                        <div class="grid md:grid-cols-2 gap-x-16 gap-y-12 opacity-60 text-sm leading-loose font-normal">
+                            <p><strong>内容策划与执行：</strong>主导抖音、小红书、微信公众号等平台的视频内容策划。制作“顶尖学子座谈会”视频，开发“奇幻漂流”系列创意短视频，全程担任导演，独立制作剧本、拍摄并剪辑。</p>
+                            <p><strong>市场调研与选题：</strong>使用PEST分析法调研市场，拆解竞品账号爆款内容，结合热点调整内容方向。帮助全平台账号实现数千至数万不等的粉丝净增长。</p>
+                            <p><strong>内容运营与数据驱动：</strong>实时关注多平台内容数据，建立数据表格，关注互动与粉丝增减，输出数据周报与月报。与竞品账号做对比分析，驱动内容迭代。</p>
+                            <p><strong>平面视觉编辑：</strong>对多平台图文内容海报进行设计与编辑，与56所高校合作致谢活动并制作宣传图，为多条公众号内容制作主视觉。</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="internship-item grid lg:grid-cols-12 gap-10" data-aos="fade-up">
-                    <div class="lg:col-span-3 text-sm font-black text-[var(--tiffany-blue)] tracking-widest uppercase">2024.12 - 2025.03</div>
+                    <div class="lg:col-span-3 text-xs font-black text-[var(--tiffany-blue)] tracking-[0.2em]">2024.12 - 2025.03</div>
                     <div class="lg:col-span-9">
-                        <h4 class="internship-title mb-8 underline decoration-white decoration-4 underline-offset-8">湖南芒果数智 - AI产品</h4>
-                        <div class="grid md:grid-cols-2 gap-x-16 gap-y-10 opacity-60 font-light text-sm leading-loose">
-                            <p><strong>AR创新项目策划：</strong>与湖南省博物馆合作，挑选项目主题文物。编写“AR大空间行走项目”所需的系列短剧剧本，并规划预期效果图，与其他资源部门联动推进项目执行。项目成品在湖南省博物馆科普互动区投入使用并保持盈利。</p>
-                            <p><strong>AI视频制作与SOP归整：</strong>基于PEST分析法深入分析最新热点。作为短剧项目负责人，对多种AI模型进行测试，整理出详细的AI短剧SOP，大幅提升工作效率。</p>
-                            <p><strong>大型活动协同：</strong>湖南卫视2025年元宵晚会歌舞节目《人间最值得》舞台背景视觉制作，触达观众千万级。湖南芒果集团2025年会担任部门负责人，共同完成颁奖环节的AI开幕视频项目。</p>
+                        <h4 class="internship-title mb-10 text-[var(--swiss-white)]">湖南芒果数智 - AI产品部 | 策划编导</h4>
+                        <div class="grid md:grid-cols-2 gap-x-16 gap-y-12 opacity-60 text-sm leading-loose font-normal">
+                            <p><strong>AR项目策划：</strong>与湖南省博物馆合作，编写“AR大空间行走项目”系列短剧剧本，并规划预期效果图。项目成品在省博投入使用并保持持续盈利。</p>
+                            <p><strong>AI视频与SOP：</strong>对多种AI模型进行测试，整理出详细的AI短剧SOP。结合热门历史影视剧推出AI短剧系列，大幅提升工作效率。</p>
+                            <p><strong>大型活动协同：</strong>深度参与湖南卫视元宵晚会及芒果集团年会AI视频项目。负责歌舞节目舞台背景视觉制作，触达千万级观众。</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="internship-item grid lg:grid-cols-12 gap-10 opacity-30" data-aos="fade-up">
-                    <div class="lg:col-span-3 text-sm font-black uppercase">Date Here</div>
-                    <div class="lg:col-span-9"><h4 class="internship-title mb-6 italic">待补充实习经历 03</h4><p class="text-sm">在此处填写你的具体职责和成果...</p></div>
+                <div class="internship-item grid lg:grid-cols-12 gap-10 opacity-20" data-aos="fade-up">
+                    <div class="lg:col-span-3 text-xs font-black">202X - 202X</div>
+                    <div class="lg:col-span-9"><h4 class="internship-title mb-4">待补充实习经历 03</h4><p class="text-sm uppercase tracking-widest">Company / Position</p></div>
                 </div>
-                <div class="internship-item grid lg:grid-cols-12 gap-10 opacity-30" data-aos="fade-up">
-                    <div class="lg:col-span-3 text-sm font-black uppercase">Date Here</div>
-                    <div class="lg:col-span-9"><h4 class="internship-title mb-6 italic">待补充实习经历 04</h4><p class="text-sm">在此处填写你的具体职责和成果...</p></div>
+                <div class="internship-item grid lg:grid-cols-12 gap-10 opacity-20" data-aos="fade-up">
+                    <div class="lg:col-span-3 text-xs font-black">202X - 202X</div>
+                    <div class="lg:col-span-9"><h4 class="internship-title mb-4">待补充实习经历 04</h4><p class="text-sm uppercase tracking-widest">Company / Position</p></div>
                 </div>
-                <div class="internship-item grid lg:grid-cols-12 gap-10 opacity-30" data-aos="fade-up">
-                    <div class="lg:col-span-3 text-sm font-black uppercase">Date Here</div>
-                    <div class="lg:col-span-9"><h4 class="internship-title mb-6 italic">待补充实习经历 05</h4><p class="text-sm">在此处填写你的具体职责和成果...</p></div>
+                <div class="internship-item grid lg:grid-cols-12 gap-10 opacity-20" data-aos="fade-up">
+                    <div class="lg:col-span-3 text-xs font-black">202X - 202X</div>
+                    <div class="lg:col-span-9"><h4 class="internship-title mb-4">待补充实习经历 05</h4><p class="text-sm uppercase tracking-widest">Company / Position</p></div>
                 </div>
             </div>
         </div>
@@ -167,48 +182,58 @@
 
     <section id="projects" class="py-32 bg-white px-10">
         <div class="max-w-[1400px] mx-auto">
-            <h3 class="text-sm font-black uppercase tracking-[1em] mb-16 opacity-30">Selected Works</h3>
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-black border border-black">
+            <h3 class="text-xs font-black uppercase tracking-[1em] mb-16 opacity-30 border-l-4 border-[var(--cartier-red)] pl-4">Projects</h3>
+            <div class="grid md:grid-cols-3 gap-px bg-black border border-black overflow-hidden">
                 <a href="project1.html" class="project-card bg-white p-12 h-80 flex flex-col justify-between">
-                    <div><span class="text-[10px] font-black opacity-30 block mb-4">01 / FILM</span><h4 class="text-3xl font-black italic">电影短片《倒刺》</h4></div>
-                    <p class="text-[10px] font-bold uppercase tracking-widest">View Project →</p>
+                    <div><span class="text-[10px] font-black opacity-30 block mb-4">01 / FILM</span><h4 class="text-2xl font-black uppercase">电影短片《倒刺》</h4></div>
+                    <p class="text-[10px] font-bold tracking-widest border-b border-black w-max pb-1">VIEW PROJECT</p>
                 </a>
                 <a href="project2.html" class="project-card bg-white p-12 h-80 flex flex-col justify-between">
-                    <div><span class="text-[10px] font-black opacity-30 block mb-4">02 / ART</span><h4 class="text-3xl font-black italic">学生艺术美育中心</h4></div>
-                    <p class="text-[10px] font-bold uppercase tracking-widest">View Project →</p>
+                    <div><span class="text-[10px] font-black opacity-30 block mb-4">02 / ART</span><h4 class="text-2xl font-black uppercase">学生艺术美育中心</h4></div>
+                    <p class="text-[10px] font-bold tracking-widest border-b border-black w-max pb-1">VIEW PROJECT</p>
                 </a>
                 <a href="project3.html" class="project-card bg-white p-12 h-80 flex flex-col justify-between">
-                    <div><span class="text-[10px] font-black opacity-30 block mb-4">03 / AI</span><h4 class="text-3xl font-black italic">待补充项目</h4></div>
-                    <p class="text-[10px] font-bold uppercase tracking-widest">View Project →</p>
+                    <div><span class="text-[10px] font-black opacity-30 block mb-4">03 / AI</span><h4 class="text-2xl font-black uppercase">待补充项目</h4></div>
+                    <p class="text-[10px] font-bold tracking-widest border-b border-black w-max pb-1">VIEW PROJECT</p>
                 </a>
                 <a href="project4.html" class="project-card bg-white p-12 h-80 flex flex-col justify-between">
-                    <div><span class="text-[10px] font-black opacity-30 block mb-4">04 / VIDEO</span><h4 class="text-3xl font-black italic">待补充项目</h4></div>
-                    <p class="text-[10px] font-bold uppercase tracking-widest">View Project →</p>
+                    <div><span class="text-[10px] font-black opacity-30 block mb-4">04 / VIDEO</span><h4 class="text-2xl font-black uppercase">待补充项目</h4></div>
+                    <p class="text-[10px] font-bold tracking-widest border-b border-black w-max pb-1">VIEW PROJECT</p>
                 </a>
                 <a href="project5.html" class="project-card bg-white p-12 h-80 flex flex-col justify-between">
-                    <div><span class="text-[10px] font-black opacity-30 block mb-4">05 / DESIGN</span><h4 class="text-3xl font-black italic">待补充项目</h4></div>
-                    <p class="text-[10px] font-bold uppercase tracking-widest">View Project →</p>
+                    <div><span class="text-[10px] font-black opacity-30 block mb-4">05 / DESIGN</span><h4 class="text-2xl font-black uppercase">待补充项目</h4></div>
+                    <p class="text-[10px] font-bold tracking-widest border-b border-black w-max pb-1">VIEW PROJECT</p>
                 </a>
                 <a href="project6.html" class="project-card bg-white p-12 h-80 flex flex-col justify-between">
-                    <div><span class="text-[10px] font-black opacity-30 block mb-4">06 / SOCIAL</span><h4 class="text-3xl font-black italic">待补充项目</h4></div>
-                    <p class="text-[10px] font-bold uppercase tracking-widest">View Project →</p>
+                    <div><span class="text-[10px] font-black opacity-30 block mb-4">06 / SOCIAL</span><h4 class="text-2xl font-black uppercase">待补充项目</h4></div>
+                    <p class="text-[10px] font-bold tracking-widest border-b border-black w-max pb-1">VIEW PROJECT</p>
                 </a>
             </div>
         </div>
     </section>
 
-    <section id="contact" class="py-24 red-block flex flex-col items-center justify-center text-center px-10">
+    <section id="contact" class="py-32 red-block flex flex-col items-center justify-center text-center px-10">
         <div data-aos="zoom-in">
-            <h3 class="text-5xl md:text-7xl font-black italic mb-8">Work with me!</h3>
-            <div class="flex flex-col md:flex-row items-center gap-10 text-lg font-bold">
-                <a href="mailto:zzzy29209@163.com" class="border-b-2 border-white pb-1">zzzy29209@163.com</a>
-                <span class="opacity-60 text-sm tracking-widest">WECHAT: Zzzy_nine</span>
+            <h3 class="text-6xl md:text-8xl font-black uppercase mb-16 tracking-tighter">Work with me!</h3>
+            
+            <div class="flex flex-col md:flex-row items-center gap-12 md:gap-24">
+                <div class="space-y-2">
+                    <p class="text-[10px] font-black opacity-50 uppercase tracking-[0.3em]">Email Address</p>
+                    <a href="mailto:zzzy29209@163.com" class="text-xl font-bold border-b-2 border-white/40 pb-1 hover:border-white transition-all">zzzy29209@163.com</a>
+                </div>
+                <div class="space-y-2">
+                    <p class="text-[10px] font-black opacity-50 uppercase tracking-[0.3em]">WeChat Contact</p>
+                    <p class="text-xl font-bold border-b-2 border-white/40 pb-1">Zzzy_nine</p>
+                </div>
             </div>
         </div>
-        <footer class="mt-20 text-[8px] font-black opacity-20 tracking-[1.5em] uppercase">© 2025 ZIYI ZENG</footer>
+        
+        <footer class="mt-24 text-[8px] font-black opacity-30 tracking-[1.5em] uppercase">© 2025 ZIYI ZENG</footer>
     </section>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>AOS.init({ duration: 1000, once: true });</script>
+    <script>
+        AOS.init({ duration: 1000, once: true });
+    </script>
 </body>
 </html>
