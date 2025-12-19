@@ -7,151 +7,138 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;900&family=Space+Grotesk:wght@300;700&display=swap');
         
         :root {
-            --bg-deep: #000000;
-            --accent-blue: #1A1E26; /* 深度蓝灰 */
+            --bg: #000000;
+            --accent: #1A1E26; /* 深度蓝灰，模拟系统质感 */
+            --glass: rgba(15, 15, 15, 0.6);
         }
 
         body {
-            background-color: var(--bg-deep);
+            background-color: var(--bg);
             color: #ffffff;
             font-family: 'Inter', sans-serif;
-            line-height: 1.2;
             overflow-x: hidden;
         }
 
-        /* 极致弥散背景 */
-        .diffusion-container {
+        /* 弥散背景质感 */
+        .diffusion-layer {
             position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
+            inset: 0;
             z-index: -1;
-            background: var(--bg-deep);
-            overflow: hidden;
-        }
-        .blob {
-            position: absolute;
-            width: 60vw; height: 60vw;
-            background: var(--accent-blue);
-            filter: blur(120px);
-            border-radius: 50%;
-            opacity: 0.5;
+            background: radial-gradient(circle at 70% 30%, var(--accent) 0%, transparent 50%),
+                        radial-gradient(circle at 20% 80%, #0d1117 0%, transparent 40%);
         }
 
-        /* 结构化毛玻璃：顶部一体化 */
-        .glass-header {
-            background: rgba(10, 10, 10, 0.4);
-            backdrop-filter: blur(60px) saturate(200%);
-            -webkit-backdrop-filter: blur(60px) saturate(200%);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        /* 结构化毛玻璃：模拟苹果最新系统层级 */
+        .system-blur {
+            background: var(--glass);
+            backdrop-filter: blur(50px) saturate(180%);
+            -webkit-backdrop-filter: blur(50px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        /* Swiss Style 超大排版 */
-        .swiss-hero {
-            font-size: clamp(5rem, 18vw, 15rem);
+        /* Swiss Style 超大标题 */
+        .hero-text {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(5rem, 20vw, 16rem);
             font-weight: 900;
-            letter-spacing: -0.06em;
             line-height: 0.8;
+            letter-spacing: -0.07em;
             text-transform: uppercase;
         }
 
-        /* 模仿 Rebus 的符号感排版 */
-        .rebus-dot {
-            width: 1.2rem;
-            height: 1.2rem;
-            background: #fff;
-            display: inline-block;
-            margin-right: 1rem;
+        /* 建筑感布局：左边细线+极小字 */
+        .aside-label {
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: 0.5em;
+            text-transform: uppercase;
+            writing-mode: vertical-lr;
+            opacity: 0.2;
         }
 
-        /* 项目板块的质感模拟：深色玻璃层 */
         .project-card {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(20px);
-            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid rgba(255, 255, 255, 0.03);
         }
         .project-card:hover {
             background: rgba(255, 255, 255, 0.05);
-            border-color: rgba(255, 255, 255, 0.2);
-            transform: translateY(-5px);
+            transform: scale(1.02);
+            border-color: rgba(255, 255, 255, 0.1);
         }
 
-        .section-label {
-            font-size: 10px;
-            font-weight: 900;
-            letter-spacing: 0.4em;
-            text-transform: uppercase;
-            color: rgba(255, 255, 255, 0.3);
-            border-left: 2px solid rgba(255, 255, 255, 0.3);
-            padding-left: 1rem;
-        }
-
-        /* 隐藏滚动条但保留功能 */
+        /* 隐藏滚动条 */
         ::-webkit-scrollbar { display: none; }
     </style>
 </head>
 <body class="antialiased">
 
-    <div class="diffusion-container">
-        <div class="blob" style="top: -10%; right: -10%;"></div>
-        <div class="blob" style="bottom: -10%; left: -10%; opacity: 0.3;"></div>
-    </div>
+    <div class="diffusion-layer"></div>
 
-    <nav class="fixed top-0 w-full z-[100] glass-header">
-        <div class="max-w-[1600px] mx-auto px-10 py-8 flex justify-between items-center">
-            <span class="font-black tracking-tighter text-xl">Z.Z.</span>
-            <div class="flex space-x-12 items-center">
-                <a href="#about" class="text-[10px] font-black uppercase tracking-widest opacity-40 hover:opacity-100 transition-opacity">Intro</a>
-                <a href="#internship" class="text-[10px] font-black uppercase tracking-widest opacity-40 hover:opacity-100 transition-opacity">Exp</a>
-                <a href="#contact" class="text-[10px] font-black uppercase tracking-widest px-4 py-2 border border-white/20 hover:bg-white hover:text-black transition-all">Connect</a>
+    <nav class="fixed top-0 w-full z-[100] system-blur py-8 px-10 border-b">
+        <div class="max-w-[1600px] mx-auto flex justify-between items-baseline">
+            <h1 class="font-black text-2xl tracking-tighter">ZIYI ZENG</h1>
+            <div class="hidden md:flex space-x-12">
+                <a href="#about" class="text-[10px] font-black tracking-widest opacity-40 hover:opacity-100">01 PROFILE</a>
+                <a href="#internship" class="text-[10px] font-black tracking-widest opacity-40 hover:opacity-100">02 EXP</a>
+                <a href="#contact" class="text-[10px] font-black tracking-widest opacity-100 px-4 py-1 border border-white/20">03 CONNECT</a>
             </div>
         </div>
     </nav>
 
     <section class="relative min-h-screen flex flex-col justify-end px-10 pb-20">
         <div class="absolute inset-0 z-[-1]">
-            <img src="YOUR_IMAGE.jpg" class="w-full h-full object-cover opacity-30 grayscale contrast-125" alt="">
-            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+            <img src="YOUR_IMAGE.jpg" class="w-full h-full object-cover grayscale brightness-50 contrast-125" alt="Background">
+            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent"></div>
         </div>
 
-        <div data-aos="fade-right" data-aos-duration="1500">
-            <h1 class="swiss-hero">PORT<br>FOLIO</h1>
-            <div class="mt-8 flex items-baseline gap-4">
-                <span class="rebus-dot"></span>
-                <p class="text-xs font-black tracking-[0.5em] opacity-40 uppercase italic">Visual & AI Creator / 2025</p>
+        <div data-aos="fade-up" data-aos-duration="1500">
+            <span class="text-[10px] font-black tracking-[1em] opacity-30 mb-8 block">EST. 2025</span>
+            <h1 class="hero-text">PORT<br>FOLIO</h1>
+        </div>
+    </section>
+
+    <section id="about" class="py-60 px-10 system-blur">
+        <div class="max-w-[1600px] mx-auto grid md:grid-cols-12 gap-10">
+            <div class="md:col-span-1 aside-label">PROFILE / 01</div>
+            <div class="md:col-span-11" data-aos="fade-up">
+                <h2 class="text-7xl md:text-[10rem] font-black tracking-tighter mb-16 italic leading-none">
+                    个人介绍网站><br><span class="opacity-10 font-normal not-italic text-5xl">ge r</span>
+                </h2>
+                <p class="text-3xl md:text-5xl font-light leading-tight text-gray-400 max-w-4xl">
+                    精通AI工具流，专注于高质量视频策划与内容运营
+                </p>
             </div>
         </div>
     </section>
 
-    <section id="about" class="py-60 px-10">
+    <section id="internship" class="py-40 px-10">
         <div class="max-w-[1600px] mx-auto">
-            <div class="grid md:grid-cols-12 gap-10">
-                <div class="md:col-span-4 section-label">01 / Profile</div>
-                <div class="md:col-span-8" data-aos="fade-up">
-                    <h2 class="text-6xl md:text-9xl font-black tracking-tighter mb-16">
-                        个人介绍网站><br><span class="opacity-20 italic">ge r</span>
-                    </h2>
-                    <p class="text-2xl md:text-4xl font-light text-gray-400 max-w-3xl leading-tight">
-                        精通AI工具流，专注于高质量视频策划与内容运营
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="internship" class="py-40 px-10 glass-header">
-        <div class="max-w-[1600px] mx-auto">
-            <div class="grid md:grid-cols-12 gap-10 mb-32">
-                <div class="md:col-span-4 section-label">02 / Experience</div>
-                <div class="md:col-span-8">
-                    <div class="mb-40" data-aos="fade-up">
-                        <span class="text-xs font-black opacity-20 block mb-6 tracking-widest uppercase">2025.08 — 2025.11</span>
-                        <h3 class="text-4xl md:text-7xl font-black tracking-tighter mb-12">小米科技 - 雇主品牌</h3>
-                        <div class="grid md:grid-cols-2 gap-12 text-gray-500 text-sm font-light leading-relaxed">
+            <div class="grid md:grid-cols-12 gap-10 mb-40">
+                <div class="md:col-span-1 aside-label">EXP / 02</div>
+                <div class="md:col-span-11 space-y-60">
+                    <div data-aos="fade-left">
+                        <div class="h-px w-full bg-white/10 mb-10"></div>
+                        <div class="flex flex-col md:flex-row justify-between items-baseline mb-16">
+                            <h3 class="text-5xl md:text-8xl font-black tracking-tighter uppercase">小米科技</h3>
+                            <span class="text-sm font-black opacity-20 tracking-widest italic">2025.08 — 2025.11</span>
+                        </div>
+                        <div class="grid md:grid-cols-2 gap-20 text-gray-500 text-lg font-light leading-relaxed">
                             <p>内容策划与执行：主导抖音、小红书、微信公众号等平台的视频/图文内容策划，负责视频制作与文案编写。制作“顶尖学子座谈会”视频，开发“奇幻漂流”系列创意短视频，全程担任导演，独立制作剧本、分镜，独立拍摄并独立剪辑。</p>
                             <p>市场调研与选题：使用PEST分析法对市场情况进行调研，拆解竞品账号的爆款内容，结合当下热点对自家账号进行内容方向的调整与规划。帮助各平台账号实现数千至数万的粉丝净增量。</p>
+                        </div>
+                    </div>
+
+                    <div data-aos="fade-left">
+                        <div class="h-px w-full bg-white/10 mb-10"></div>
+                        <div class="flex flex-col md:flex-row justify-between items-baseline mb-16">
+                            <h3 class="text-5xl md:text-8xl font-black tracking-tighter uppercase">湖南芒果数智</h3>
+                            <span class="text-sm font-black opacity-20 tracking-widest italic">2024.12 — 2025.03</span>
+                        </div>
+                        <div class="text-gray-500 text-lg font-light leading-relaxed max-w-4xl">
+                            <p>AR创新项目策划：与湖南省博物馆合作，邀请北京大学历史系教授指导，梳理文物背景并编写“AR大空间行走项目”系列短剧剧本。项目成品已在博物馆科普互动区投入使用并保持盈利。同时主导 AI 短剧 SOP 归整及大型卫视晚会视频设计。</p>
                         </div>
                     </div>
                 </div>
@@ -159,46 +146,44 @@
         </div>
     </section>
 
-    <section id="projects" class="py-40 px-10">
-        <div class="max-w-[1600px] mx-auto">
-            <div class="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
-                <h3 class="text-7xl md:text-9xl font-black tracking-tighter uppercase italic opacity-10">Works</h3>
-                <div class="section-label">03 / Selected</div>
-            </div>
-            
-            <div class="grid md:grid-cols-2 gap-4">
-                <div class="project-card p-12 md:p-20" data-aos="fade-up">
-                    <h4 class="text-3xl font-black mb-6 italic underline">电影短片《倒刺》</h4>
-                    <p class="text-xs text-gray-500 leading-loose">担任总制片人 / 独立制作策划案 / 成功争取赞助 / 入围 First-Time Filmmaker Sessions 并获奖</p>
+    <section id="projects" class="py-40 px-10 system-blur border-y">
+        <div class="max-w-[1600px] mx-auto grid md:grid-cols-12 gap-10">
+            <div class="md:col-span-1 aside-label">WORKS / 03</div>
+            <div class="md:col-span-11 grid md:grid-cols-2 gap-4">
+                <div class="project-card p-16 md:p-24 bg-white/5" data-aos="zoom-in">
+                    <h4 class="text-4xl font-black mb-10 italic">电影短片《倒刺》</h4>
+                    <p class="text-sm text-gray-500 leading-loose opacity-60">担任总制片人 / 独立策划案 / 获得南光影视赞助 / 入围 First-Time Filmmaker Sessions</p>
                 </div>
-                <div class="project-card p-12 md:p-20" data-aos="fade-up" data-aos-delay="200">
-                    <h4 class="text-3xl font-black mb-6 italic underline text-zinc-500">学生艺术美育中心</h4>
-                    <p class="text-xs text-gray-500 leading-loose">负责并参与十余个校级/省级活动的现场安排以及前期宣传工作</p>
+                <div class="project-card p-16 md:p-24 bg-white/5" data-aos="zoom-in" data-aos-delay="200">
+                    <h4 class="text-4xl font-black mb-10 italic">学生艺术美育中心</h4>
+                    <p class="text-sm text-gray-500 leading-loose opacity-60">负责并参与十余个校级/省级活动的现场安排以及前期宣传</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="contact" class="min-h-screen flex flex-col items-center justify-center px-10 text-center">
-        <div data-aos="zoom-in" data-aos-duration="1000">
-            <h3 class="text-6xl md:text-[10rem] font-black tracking-tighter italic mb-12">
-                给个机会？><br><span class="opacity-10 text-4xl">gei</span>
-            </h3>
-            <div class="h-px w-24 bg-white/20 mx-auto mb-16"></div>
-            <div class="space-y-6">
-                <a href="mailto:zzzy29209@163.com" class="block text-xl font-light hover:opacity-50 transition-all tracking-widest underline underline-offset-8">zzzy29209@163.com</a>
-                <p class="text-[10px] font-black uppercase tracking-[0.8em] opacity-30 pt-10">WeChat: Zzzy_nine</p>
+    <section id="contact" class="min-h-screen flex items-center px-10">
+        <div class="max-w-[1600px] mx-auto w-full grid md:grid-cols-12">
+            <div class="md:col-span-1 aside-label">END / 04</div>
+            <div class="md:col-span-11" data-aos="fade-up">
+                <h3 class="text-8xl md:text-[12rem] font-black tracking-tighter mb-20 italic">
+                    给个机会？><br><span class="opacity-10 text-6xl font-normal not-italic">gei</span>
+                </h3>
+                <div class="flex flex-col md:flex-row gap-20 items-center">
+                    <a href="mailto:zzzy29209@163.com" class="text-2xl font-light border-b border-white/20 pb-2 hover:opacity-50">zzzy29209@163.com</a>
+                    <p class="text-xs font-black tracking-[1em] opacity-30 uppercase">WeChat: Zzzy_nine</p>
+                </div>
             </div>
         </div>
-        
-        <footer class="absolute bottom-10 text-[8px] font-black tracking-[1em] opacity-10 uppercase">
-            © 2025 / ZIYI ZENG
-        </footer>
     </section>
+
+    <footer class="py-20 text-center opacity-10 text-[8px] font-black tracking-[2em] uppercase">
+        © 2025 ZIYI ZENG / ALL RIGHTS RESERVED
+    </footer>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init({ duration: 800, once: true, easing: 'ease-out-quad' });
+        AOS.init({ duration: 1000, once: true, easing: 'ease-out-expo' });
     </script>
 </body>
 </html>
