@@ -66,7 +66,32 @@
             color: white !important;
         }
         ::-webkit-scrollbar { display: none; }
-    </style>
+    @media (max-width: 768px) {
+  /* Hero 标题在手机端收敛 */
+  .mega-title {
+    font-size: clamp(3rem, 18vw, 6rem);
+    line-height: 0.9;
+  }
+
+  /* 顶部导航：手机端隐藏菜单，仅保留姓名 */
+  nav .flex.space-x-12 {
+    display: none;
+  }
+
+  /* 实习经历：减少上下留白，提升阅读节奏 */
+  .internship-item {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+
+  /* 项目 / 作品卡片：手机端高度自适应 */
+  .project-card {
+    height: auto !important;
+    min-height: 180px;
+  }
+}
+
+</style>
 </head>
 <body>
 
@@ -77,7 +102,7 @@
         <a href="#about" class="nav-link">基本信息</a>
         <a href="#internship" class="nav-link">实习经历</a>
         <a href="#projects" class="nav-link">项目经历</a>
-        <a href="works.html" class="nav-link">个人作品</a>
+        <a href="#works" class="nav-link">个人作品</a>
         <a href="#contact" class="nav-link text-[var(--cartier-red)]">联系我</a>
     </div>
 </nav>
@@ -106,13 +131,13 @@
     </div>
     <div class="bg-white p-16 flex items-center">
         <div class="max-w-xl space-y-10" data-aos="fade-up">
-            <p class="text-xs font-black uppercase tracking-[0.4em] text-[var(--cartier-red)]">Profile</p>
-            <p class="text-2xl font-bold tracking-tight">
-                将 AI 作为导演与制片的效率工具，而不是替代创作本身
-            </p>
-            <div class="space-y-4 text-gray-600 leading-relaxed">
-                <p>中南财经政法大学 · 电影与影像相关专业背景</p>
-                <p>关注 AI 技术如何重塑视频生产流程，曾将 AI 短剧 SOP 落地至真实商业与文旅项目。</p>
+            <p class="text-xs font-black uppercase tracking-[0.4em] text-[var(--cartier-red)]">Education Background</p>
+            <div class="space-y-4 text-gray-700 leading-relaxed">
+                <p><strong>2022.09-2026.06</strong> 中南财经政法大学｜本科 电影学专业</p>
+                <p>GPA：3.78 / 4</p>
+                <p><strong>2024.02-2024.12</strong> 韩国 DongSeo University｜本科双学位 Film & VFX 专业</p>
+                <p>GPA：3.89 / 4</p>
+                <p>主修课程：电影制片管理、分镜头制作、导演基础、视听语言设计、电影剪辑、影视灯光摄影、进阶三维特效制作等</p>
             </div>
         </div>
     </div>
@@ -173,10 +198,39 @@
     </div>
 </section>
 
+<!-- WORKS -->
+<section id="works" class="py-32 bg-white px-10">
+    <div class="max-w-[1400px] mx-auto">
+        <h3 class="text-xs font-black uppercase tracking-[1em] mb-16 opacity-30">Works</h3>
+        <p class="text-sm text-gray-500 mb-20 max-w-xl">个人创作与作者性作品，侧重风格探索与表达，而非商业导向。</p>
+        <div class="grid md:grid-cols-4 gap-px bg-black border border-black">
+            <a href="works-film.html" class="project-card bg-white p-12 h-72 flex flex-col justify-between">
+                <h4 class="text-xl font-black uppercase">Narrative Film</h4>
+                <p class="text-xs opacity-50">剧情短片 / 影像叙事</p>
+            </a>
+            <a href="works-ai.html" class="project-card bg-white p-12 h-72 flex flex-col justify-between">
+                <h4 class="text-xl font-black uppercase">AI Experiments</h4>
+                <p class="text-xs opacity-50">AI影像 / 技术实验</p>
+            </a>
+            <a href="works-commercial.html" class="project-card bg-white p-12 h-72 flex flex-col justify-between">
+                <h4 class="text-xl font-black uppercase">Visual & Video</h4>
+                <p class="text-xs opacity-50">影像 / 视觉作品</p>
+            </a>
+            <a href="works-writing.html" class="project-card bg-white p-12 h-72 flex flex-col justify-between">
+                <h4 class="text-xl font-black uppercase">Writing & Concept</h4>
+                <p class="text-xs opacity-50">剧本 / 策划文本</p>
+            </a>
+        </div>
+    </div>
+</section>
+
 <!-- CONTACT -->
 <section id="contact" class="py-32 red-block text-center">
     <h3 class="text-7xl font-black uppercase mb-16">Work with me</h3>
-    <p class="text-lg font-bold">Email · zzzy29209@163.com</p>
+    <div class="space-y-6">
+        <p class="text-lg font-bold">Email · zzzy29209@163.com</p>
+        <p class="text-lg font-bold">WeChat · Zzzy_nine</p>
+    </div>
 </section>
 
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
