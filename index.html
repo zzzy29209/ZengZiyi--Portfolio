@@ -61,10 +61,10 @@
             color: white !important;
         }
         ::-webkit-scrollbar { display: none; }
-        /* --- 增加部分开始 --- */
-        .modal-active { overflow: hidden !important; } /* 弹窗打开时禁止页面滚动 */
+        
+        /* 弹窗激活时的样式 */
+        .modal-active { overflow: hidden !important; } 
         #video-modal.invisible { pointer-events: none; } 
-        /* --- 增加部分结束 --- */
         
         @media (max-width: 768px) {
             .mega-title {
@@ -221,27 +221,27 @@
                     </div>
                 </div>
             </div>
-        </div> </div> </section>
+        </div> 
+    </div> 
 </section>
 
 <section id="projects" class="py-32 bg-white px-10">
     <div class="max-w-[1400px] mx-auto">
         <h3 class="text-xs font-black uppercase tracking-[1em] mb-16 opacity-30">Projects</h3>
         <div class="grid md:grid-cols-3 gap-px bg-black border border-black">
-         <div onclick="openProject(1)" class="project-card bg-white p-12 h-80 flex flex-col justify-between cursor-pointer group">
-    <h4 class="text-xl font-black uppercase text-black group-hover:text-white transition-colors">Project 01</h4>
-    <p class="text-[8px] font-bold tracking-widest opacity-0 group-hover:opacity-60 transition-opacity">VIEW CASE 01</p>
-</div>
-
-<div onclick="openProject(2)" class="project-card bg-white p-12 h-80 flex flex-col justify-between cursor-pointer group border-l border-black">
-    <h4 class="text-xl font-black uppercase text-black group-hover:text-white transition-colors">Project 02</h4>
-    <p class="text-[8px] font-bold tracking-widest opacity-0 group-hover:opacity-60 transition-opacity">VIEW CASE 02</p>
-</div>
-
-<div onclick="openProject(3)" class="project-card bg-white p-12 h-80 flex flex-col justify-between cursor-pointer group border-l border-black">
-    <h4 class="text-xl font-black uppercase text-black group-hover:text-white transition-colors">Project 03</h4>
-    <p class="text-[8px] font-bold tracking-widest opacity-0 group-hover:opacity-60 transition-opacity">VIEW CASE 03</p>
-</div>
+            <div onclick="openProject(1)" class="project-card bg-white p-12 h-80 flex flex-col justify-between cursor-pointer group">
+                <h4 class="text-xl font-black uppercase text-black group-hover:text-white transition-colors">Project 01</h4>
+                <p class="text-[8px] font-bold tracking-widest opacity-0 group-hover:opacity-60 transition-opacity">VIEW CASE 01</p>
+            </div>
+            <div onclick="openProject(2)" class="project-card bg-white p-12 h-80 flex flex-col justify-between cursor-pointer group border-l border-black">
+                <h4 class="text-xl font-black uppercase text-black group-hover:text-white transition-colors">Project 02</h4>
+                <p class="text-[8px] font-bold tracking-widest opacity-0 group-hover:opacity-60 transition-opacity">VIEW CASE 02</p>
+            </div>
+            <div onclick="openProject(3)" class="project-card bg-white p-12 h-80 flex flex-col justify-between cursor-pointer group border-l border-black">
+                <h4 class="text-xl font-black uppercase text-black group-hover:text-white transition-colors">Project 03</h4>
+                <p class="text-[8px] font-bold tracking-widest opacity-0 group-hover:opacity-60 transition-opacity">VIEW CASE 03</p>
+            </div>
+        </div>
     </div>
 </section>
 
@@ -285,6 +285,7 @@
     </div>
     <footer class="mt-24 text-[8px] font-black opacity-30 tracking-[1.5em] uppercase text-center">© 2025 ZIYI ZENG</footer>
 </section>
+
 <div id="video-modal" class="fixed inset-0 z-[200] invisible opacity-0 flex items-center justify-center p-6 transition-all duration-500">
     <div onclick="closeModal()" class="absolute inset-0 bg-black/95 backdrop-blur-xl"></div>
     
@@ -293,54 +294,94 @@
 
         <div class="w-full lg:w-2/3 bg-black flex items-center justify-center h-1/2 lg:h-full">
             <video id="modal-video" controls class="w-full h-full object-contain">
-                <source src="你的视频文件.mp4" type="video/mp4">
+                <source src="" type="video/mp4">
             </video>
         </div>
 
         <div class="w-full lg:w-1/3 p-10 lg:p-14 overflow-y-auto bg-white text-black h-1/2 lg:h-full">
             <p class="text-[var(--cartier-red)] font-black text-[10px] tracking-[0.4em] mb-4 uppercase">Project Story</p>
-            <h2 class="text-4xl font-black mb-8 leading-tight">PROJECT<br>01</h2>
+            <h2 id="modal-title" class="text-4xl font-black mb-8 leading-tight">PROJECT<br>01</h2>
             
             <div class="space-y-8 text-sm leading-relaxed text-gray-800">
                 <section>
                     <h5 class="font-black text-xs uppercase mb-3 border-b border-black pb-2">项目背景 / Background</h5>
-                    <p>在这里输入你对 Project 01 的文字阐述。例如：该项目是我在XX实习期间主导的AI影像实验，旨在探讨...</p>
+                    <p id="modal-bg">加载中...</p>
                 </section>
                 <section>
                     <h5 class="font-black text-xs uppercase mb-3 border-b border-black pb-2">核心职责 / Role</h5>
-                    <p>负责从剧本构思、AI模型训练到后期剪辑的全流程。使用了 Midjourney 生成分镜，Runway 完成动态转化。</p>
+                    <p id="modal-role">加载中...</p>
                 </section>
             </div>
         </div>
     </div>
 </div>
+
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
     AOS.init({ 
-        once: false,      // 设置为 false 动画会随滚动重复触发
-        duration: 1200,    // 动画持续时间（慢一些）
-        offset: 100        // 触发偏移量
-    });// --- 增加弹窗脚本开始 ---
+        once: false,      
+        duration: 1200,    
+        offset: 100        
+    });
+
+    // --- 动态弹窗内容逻辑 ---
+    
+    // 1. 在这里统一管理三个项目的内容，你可以根据需要随时修改这里的文字
+    const projectData = {
+        1: {
+            title: "PROJECT 01",
+            video: "video01.mp4", // 请替换为你真实的视频路径
+            bg: "这是关于项目 01 的背景。你可以在这里填入你在联投集团实习时负责的短剧项目细节。",
+            role: "核心职责：负责剧本创意编写、分镜制作及现场拍摄执行。"
+        },
+        2: {
+            title: "PROJECT 02",
+            video: "video02.mp4", // 请替换为你真实的视频路径
+            bg: "这是关于项目 02 的背景。你可以填入小米科技实习期间主导的内容策划经历。",
+            role: "核心职责：独立负责账号运营、视频剪辑以及多平台数据分析。"
+        },
+        3: {
+            title: "PROJECT 03",
+            video: "video03.mp4", // 请替换为你真实的视频路径
+            bg: "这是关于项目 03 的背景。可以填入在芒果数智参与的 AI 视频 SOP 研发经历。",
+            role: "核心职责：使用 Midjourney、Runway 等 AI 工具进行影像生成及流程优化。"
+        }
+    };
+
     const modal = document.getElementById('video-modal');
     const video = document.getElementById('modal-video');
+    const title = document.getElementById('modal-title');
+    const bgText = document.getElementById('modal-bg');
+    const roleText = document.getElementById('modal-role');
 
-    function openModal() {
+    // 2. 打开函数
+    function openProject(num) {
+        const data = projectData[num];
+        
+        // 替换弹窗内容
+        title.innerHTML = data.title.replace(" ", "<br>"); // 格式化标题
+        bgText.innerText = data.bg;
+        roleText.innerText = data.role;
+        video.src = data.video;
+        
+        // 显示弹窗
         modal.classList.remove('invisible', 'opacity-0');
-        document.body.classList.add('modal-active'); // 锁定页面不让滚动
+        document.body.classList.add('modal-active');
+        video.load(); // 重新加载视频源
     }
 
+    // 3. 关闭函数
     function closeModal() {
         modal.classList.add('invisible', 'opacity-0');
-        document.body.classList.remove('modal-active'); // 恢复滚动
-        video.pause(); // 关闭时停止视频
-        video.currentTime = 0; // 重置进度
+        document.body.classList.remove('modal-active');
+        video.pause(); // 停止播放
     }
 
-    // 按 ESC 键关闭
+    // 按下 ESC 键也可以关闭
     window.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') closeModal();
     });
-    // --- 增加弹窗脚本结束 ---
+
 </script>
 
 </body>
