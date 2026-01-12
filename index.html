@@ -61,6 +61,10 @@
             color: white !important;
         }
         ::-webkit-scrollbar { display: none; }
+        /* --- 增加部分开始 --- */
+        .modal-active { overflow: hidden !important; } /* 弹窗打开时禁止页面滚动 */
+        #video-modal.invisible { pointer-events: none; } 
+        /* --- 增加部分结束 --- */
         
         @media (max-width: 768px) {
             .mega-title {
@@ -224,7 +228,10 @@
     <div class="max-w-[1400px] mx-auto">
         <h3 class="text-xs font-black uppercase tracking-[1em] mb-16 opacity-30">Projects</h3>
         <div class="grid md:grid-cols-3 gap-px bg-black border border-black">
-            <a href="#" class="project-card bg-white p-12 h-80 flex flex-col justify-between"><h4 class="text-xl font-black uppercase">Project 01</h4></a>
+          <div onclick="openModal()" class="project-card bg-white p-12 h-80 flex flex-col justify-between cursor-pointer group">
+                <h4 class="text-xl font-black uppercase text-black group-hover:text-white transition-colors">Project 01</h4>
+                <p class="text-[8px] font-bold tracking-widest opacity-0 group-hover:opacity-60 transition-opacity">VIEW CASE STUDY</p>
+            </div>
             <a href="#" class="project-card bg-white p-12 h-80 flex flex-col justify-between"><h4 class="text-xl font-black uppercase">Project 02</h4></a>
             <a href="#" class="project-card bg-white p-12 h-80 flex flex-col justify-between"><h4 class="text-xl font-black uppercase">Project 03</h4></a>
         </div>
@@ -271,14 +278,62 @@
     </div>
     <footer class="mt-24 text-[8px] font-black opacity-30 tracking-[1.5em] uppercase text-center">© 2025 ZIYI ZENG</footer>
 </section>
+<div id="video-modal" class="fixed inset-0 z-[200] invisible opacity-0 flex items-center justify-center p-6 transition-all duration-500">
+    <div onclick="closeModal()" class="absolute inset-0 bg-black/95 backdrop-blur-xl"></div>
+    
+    <div class="relative w-full max-w-6xl bg-white flex flex-col lg:flex-row h-[85vh] z-10 overflow-hidden shadow-2xl">
+        <button onclick="closeModal()" class="absolute top-6 right-6 z-50 bg-black text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-[var(--cartier-red)] transition-colors">✕</button>
 
+        <div class="w-full lg:w-2/3 bg-black flex items-center justify-center h-1/2 lg:h-full">
+            <video id="modal-video" controls class="w-full h-full object-contain">
+                <source src="你的视频文件.mp4" type="video/mp4">
+            </video>
+        </div>
+
+        <div class="w-full lg:w-1/3 p-10 lg:p-14 overflow-y-auto bg-white text-black h-1/2 lg:h-full">
+            <p class="text-[var(--cartier-red)] font-black text-[10px] tracking-[0.4em] mb-4 uppercase">Project Story</p>
+            <h2 class="text-4xl font-black mb-8 leading-tight">PROJECT<br>01</h2>
+            
+            <div class="space-y-8 text-sm leading-relaxed text-gray-800">
+                <section>
+                    <h5 class="font-black text-xs uppercase mb-3 border-b border-black pb-2">项目背景 / Background</h5>
+                    <p>在这里输入你对 Project 01 的文字阐述。例如：该项目是我在XX实习期间主导的AI影像实验，旨在探讨...</p>
+                </section>
+                <section>
+                    <h5 class="font-black text-xs uppercase mb-3 border-b border-black pb-2">核心职责 / Role</h5>
+                    <p>负责从剧本构思、AI模型训练到后期剪辑的全流程。使用了 Midjourney 生成分镜，Runway 完成动态转化。</p>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
     AOS.init({ 
         once: false,      // 设置为 false 动画会随滚动重复触发
         duration: 1200,    // 动画持续时间（慢一些）
         offset: 100        // 触发偏移量
+    });// --- 增加弹窗脚本开始 ---
+    const modal = document.getElementById('video-modal');
+    const video = document.getElementById('modal-video');
+
+    function openModal() {
+        modal.classList.remove('invisible', 'opacity-0');
+        document.body.classList.add('modal-active'); // 锁定页面不让滚动
+    }
+
+    function closeModal() {
+        modal.classList.add('invisible', 'opacity-0');
+        document.body.classList.remove('modal-active'); // 恢复滚动
+        video.pause(); // 关闭时停止视频
+        video.currentTime = 0; // 重置进度
+    }
+
+    // 按 ESC 键关闭
+    window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeModal();
     });
+    // --- 增加弹窗脚本结束 ---
 </script>
 
 </body>
