@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>影像作品 | Narrative Film - Ziyi Zeng</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        :root { --cartier-red: #9B1B30; --swiss-white: #F4F4F4; }
+        body { background-color: var(--swiss-white); font-family: 'Inter', sans-serif; }
+        
+        /* 视频容器比例锁定 16:9 */
+        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; background: #000; }
+        .video-container iframe, .video-container video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+        
+        /* 自定义滚动条 */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-thumb { background: var(--cartier-red); }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+
+    <nav class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md px-10 py-6 flex justify-between items-center border-b border-black/5">
+        <a href="index.html" class="font-black text-sm tracking-widest hover:text-[var(--cartier-red)] transition-colors">← BACK TO HOME</a>
+        <div class="font-black text-xl tracking-tighter">NARRATIVE FILM</div>
+    </nav>
+
+    <header class="pt-40 pb-20 px-10">
+        <h1 class="text-7xl md:text-9xl font-black uppercase tracking-tighter" data-aos="fade-up">影像<br><span class="text-[var(--cartier-red)]">作品</span></h1>
+        <p class="mt-6 text-gray-400 max-w-xl text-sm leading-relaxed" data-aos="fade-up" data-aos-delay="100">
+            专注影像叙事与视听语言设计。这里记录了我在剧情短片、纪录片及商业影像创作中的尝试，探索镜头下的情绪表达与叙事张力。
+        </p>
+    </header>
+
+    <main class="px-10 space-y-32 pb-40">
+
+        <section class="grid lg:grid-cols-12 gap-10 items-start" data-aos="fade-up">
+            <div class="lg:col-span-8">
+                <div class="video-container shadow-2xl">
+                    <video controls poster="film-cover-1.jpg">
+                        <source src="film-01.mp4" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+            <div class="lg:col-span-4 space-y-6">
+                <div>
+                    <span class="text-[var(--cartier-red)] font-bold text-xs tracking-widest uppercase">Short Film / 2024</span>
+                    <h2 class="text-3xl font-black mt-2">作品标题：这里写片名</h2>
+                </div>
+                <div class="h-px bg-black/10 w-full"></div>
+                <p class="text-gray-600 text-sm leading-relaxed">
+                    这里是作品的详细介绍文字。你可以描述这个短片的创作背景、你想要传达的核心思想，或者是拍摄过程中克服的技术难点。建议字数在 100-200 字左右，保持排版的呼吸感。
+                </p>
+                <div class="text-xs font-bold space-y-1">
+                    <p>Director: 曾子懿</p>
+                    <p>Screenwriter: 曾子懿</p>
+                    <p>Role: 导演 / 剪辑</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="grid lg:grid-cols-12 gap-10 items-start" data-aos="fade-up">
+            <div class="lg:col-span-8 lg:order-2"> <div class="video-container shadow-2xl">
+                    <video controls poster="film-cover-2.jpg">
+                        <source src="film-02.mp4" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+            <div class="lg:col-span-4 lg:order-1 space-y-6 lg:text-right"> <div>
+                    <span class="text-[var(--cartier-red)] font-bold text-xs tracking-widest uppercase">Documentary / 2023</span>
+                    <h2 class="text-3xl font-black mt-2">作品标题：另一个片名</h2>
+                </div>
+                <div class="h-px bg-black/10 w-full ml-auto"></div>
+                <p class="text-gray-600 text-sm leading-relaxed">
+                    这是第二个作品的介绍。我们使用了左右交替的排版方式，这样页面滚动起来不会显得单调，更像是一本精致的纸质作品集。
+                </p>
+                <div class="text-xs font-bold space-y-1">
+                    <p>Producer: 曾子懿</p>
+                    <p>Role: 制片管理</p>
+                </div>
+            </div>
+        </section>
+
+        </main>
+
+    <footer class="py-20 border-t border-black/5 text-center">
+        <a href="index.html" class="text-sm font-black hover:text-[var(--cartier-red)] transition-colors tracking-widest uppercase">Return to Main Portfolio</a>
+        <p class="mt-4 text-[8px] opacity-30 tracking-[1em]">© 2026 ZIYI ZENG</p>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 1000, once: true });
+    </script>
+</body>
+</html>
