@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>曾子懿 | Ziyi Zeng - Portfolio</title>
-    <meta name="description" content="Ziyi Zeng｜AI Video Producer / Content Strategist / Film Student. 专注AI影像制作、内容策划与视频生产流程优化。">
+    <meta name="description" content="Ziyi Zeng｜AI Video Producer / Content Strategist / Film Student.">
     <link rel="icon" href="favicon.ico">
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -18,58 +18,48 @@
             --swiss-black: #000000;
             --swiss-white: #F4F4F4;
         }
-        body {
-            background-color: var(--swiss-white);
-            color: var(--swiss-black);
-            font-family: 'Inter', sans-serif;
-            overflow-x: hidden;
-        }
-        .glass-nav {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(25px) saturate(180%);
-            border-bottom: 1px solid rgba(0,0,0,0.08);
-        }
-        .nav-link {
-            font-size: 14px;
-            font-weight: 700;
-            letter-spacing: 0.1em;
-        }
-        .hero-image-overlay {
-            position: absolute;
-            right: 0;
-            top: 0;
-            width: 50%;
-            height: 100%;
-            z-index: 1;
-            -webkit-mask-image: linear-gradient(to left, black 40%, transparent 100%),
-                                linear-gradient(to bottom, black 70%, transparent 100%);
-            mask-image: linear-gradient(to left, black 40%, transparent 100%),
-                        linear-gradient(to bottom, black 70%, transparent 100%);
-            -webkit-mask-composite: destination-in;
-            mask-composite: intersect;
-        }
-        .mega-title {
-            font-size: clamp(4rem, 16vw, 14rem);
-            font-weight: 900;
-            line-height: 0.85;
-            letter-spacing: -0.05em;
-        }
+        body { background-color: var(--swiss-white); color: var(--swiss-black); font-family: 'Inter', sans-serif; overflow-x: hidden; }
+        .glass-nav { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(25px) saturate(180%); border-bottom: 1px solid rgba(0,0,0,0.08); }
+        .nav-link { font-size: 14px; font-weight: 700; letter-spacing: 0.1em; }
+        .hero-image-overlay { position: absolute; right: 0; top: 0; width: 50%; height: 100%; z-index: 1; -webkit-mask-image: linear-gradient(to left, black 40%, transparent 100%), linear-gradient(to bottom, black 70%, transparent 100%); mask-image: linear-gradient(to left, black 40%, transparent 100%), linear-gradient(to bottom, black 70%, transparent 100%); -webkit-mask-composite: destination-in; mask-composite: intersect; }
+        .mega-title { font-size: clamp(4rem, 16vw, 14rem); font-weight: 900; line-height: 0.85; letter-spacing: -0.05em; }
         .red-block { background-color: var(--cartier-red); color: white; }
         .project-card { transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
-        .project-card:hover {
-            background-color: var(--cartier-red) !important;
-            color: white !important;
-        }
-        ::-webkit-scrollbar { display: none; }
+        .project-card:hover { background-color: var(--cartier-red) !important; color: white !important; }
         
+        /* --- 个人作品板块专用样式 --- */
+        .work-btn {
+            position: relative;
+            height: 18rem; 
+            overflow: hidden;
+            background-color: #000;
+            display: flex;
+            flex-col;
+            justify-content: space-between;
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .work-cover {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.5; /* 默认半透明 */
+            transition: transform 0.8s ease, opacity 0.6s ease;
+        }
+        .work-btn:hover .work-cover {
+            transform: scale(1.1);
+            opacity: 0.3; /* 悬停时稍微加深，突出红色 */
+        }
+        .work-btn:hover {
+            background-color: var(--cartier-red);
+        }
+        
+        ::-webkit-scrollbar { display: none; }
         .modal-active { overflow: hidden !important; } 
-        #video-modal.invisible { pointer-events: none; } 
         
         @media (max-width: 768px) {
-            .mega-title {
-                font-size: clamp(3rem, 18vw, 6rem);
-                line-height: 0.9;
-            }
+            .mega-title { font-size: clamp(3rem, 18vw, 6rem); line-height: 0.9; }
             nav .flex.space-x-12 { display: none; }
         }
     </style>
@@ -248,22 +238,35 @@
     <div class="max-w-[1400px] mx-auto">
         <h3 class="text-xs font-black uppercase tracking-[1em] mb-16 opacity-30">Works</h3>
         <div class="grid md:grid-cols-4 gap-px bg-black border border-black">
-            <div onclick="openProject(4)" class="project-card bg-white p-12 h-72 flex flex-col justify-between cursor-pointer group hover:text-white">
-                <h4 class="text-xl font-black uppercase">Narrative Film</h4>
-                <p class="text-xs opacity-50">剧情短片 / 影像叙事</p>
-            </div>
-            <div onclick="openProject(5)" class="project-card bg-white p-12 h-72 flex flex-col justify-between cursor-pointer group hover:text-white">
-                <h4 class="text-xl font-black uppercase">AI Experiments</h4>
-                <p class="text-xs opacity-50">AI影像 / 技术实验</p>
-            </div>
-            <div onclick="openProject(6)" class="project-card bg-white p-12 h-72 flex flex-col justify-between cursor-pointer group hover:text-white">
-                <h4 class="text-xl font-black uppercase">Visual & Video</h4>
-                <p class="text-xs opacity-50">影像 / 视觉作品</p>
-            </div>
-            <div onclick="openProject(7)" class="project-card bg-white p-12 h-72 flex flex-col justify-between cursor-pointer group hover:text-white">
-                <h4 class="text-xl font-black uppercase">Writing & Concept</h4>
-                <p class="text-xs opacity-50">剧本 / 策划文本</p>
-            </div>
+            
+            <a href="works-film.html" class="work-btn group">
+                <img src="cover-film.jpg" alt="影像作品" class="work-cover"> <div class="relative z-10 p-10 h-full flex flex-col justify-between text-white">
+                    <h4 class="text-xl font-black uppercase leading-tight">影像作品<br><span class="text-[10px] font-normal opacity-60">Narrative Film</span></h4>
+                    <span class="text-[8px] tracking-[0.3em] opacity-0 group-hover:opacity-100 transition-all">ENTER →</span>
+                </div>
+            </a>
+
+            <a href="works-ai.html" class="work-btn group">
+                <img src="cover-ai.jpg" alt="AI作品" class="work-cover"> <div class="relative z-10 p-10 h-full flex flex-col justify-between text-white">
+                    <h4 class="text-xl font-black uppercase leading-tight">AI作品<br><span class="text-[10px] font-normal opacity-60">AI Experiments</span></h4>
+                    <span class="text-[8px] tracking-[0.3em] opacity-0 group-hover:opacity-100 transition-all">ENTER →</span>
+                </div>
+            </a>
+
+            <a href="works-planning.html" class="work-btn group">
+                <img src="cover-planning.jpg" alt="策划作品" class="work-cover"> <div class="relative z-10 p-10 h-full flex flex-col justify-between text-white">
+                    <h4 class="text-xl font-black uppercase leading-tight">策划作品<br><span class="text-[10px] font-normal opacity-60">Planning & Concept</span></h4>
+                    <span class="text-[8px] tracking-[0.3em] opacity-0 group-hover:opacity-100 transition-all">ENTER →</span>
+                </div>
+            </a>
+
+            <a href="works-visual.html" class="work-btn group">
+                <img src="cover-visual.jpg" alt="视觉作品" class="work-cover"> <div class="relative z-10 p-10 h-full flex flex-col justify-between text-white">
+                    <h4 class="text-xl font-black uppercase leading-tight">视觉作品<br><span class="text-[10px] font-normal opacity-60">Visual & Video</span></h4>
+                    <span class="text-[8px] tracking-[0.3em] opacity-0 group-hover:opacity-100 transition-all">ENTER →</span>
+                </div>
+            </a>
+
         </div>
     </div>
 </section>
@@ -323,45 +326,20 @@
         1: {
             title: "PROJECT 01",
             video: "video01.mp4",
-            bg: "这里是 Project 01 的背景描述。",
-            role: "这里是 Project 01 的职责描述。"
+            bg: "湖北联投集团实习项目。调研短剧市场，策划姐弟恋主题中剧，独立收集数据并制作企划书。",
+            role: "担任主编剧，独立写作31集2万字剧本，并独立制作了800余条分镜。"
         },
         2: {
             title: "PROJECT 02",
             video: "video02.mp4",
-            bg: "这里是 Project 02 的背景描述。",
-            role: "这里是 Project 02 的职责描述。"
+            bg: "小米科技雇主品牌项目。主导抖音、小红书视频策划，提升品牌在顶尖学子中的影响力。",
+            role: "负责视频全程导演、分镜及剪辑，帮助账号实现数万粉丝增长及高额曝光。"
         },
         3: {
             title: "PROJECT 03",
             video: "video03.mp4",
-            bg: "这里是 Project 03 的背景描述。",
-            role: "这里是 Project 03 的职责描述。"
-        },
-        // --- 增加的作品部分 ---
-        4: {
-            title: "NARRATIVE FILM",
-            video: "film.mp4", // 请替换为你真实的视频文件
-            bg: "剧情短片作品集：探索影像叙事的边界。",
-            role: "导演、制片与剪辑。"
-        },
-        5: {
-            title: "AI EXPERIMENTS",
-            video: "ai_works.mp4", // 请替换为你真实的视频文件
-            bg: "AI影像技术实验：利用生成式AI重构视听语言。",
-            role: "AI模型提示词优化与视觉合成。"
-        },
-        6: {
-            title: "VISUAL VIDEO",
-            video: "visual.mp4", // 请替换为你真实的视频文件
-            bg: "视觉作品：商业创意视频与视觉特效展示。",
-            role: "后期特效与创意导演。"
-        },
-        7: {
-            title: "WRITING CONCEPT",
-            video: "writing.mp4", // 这里如果没视频可以放个循环封面视频
-            bg: "剧本与策划文本：文字是影像的灵魂。",
-            role: "文案策划与剧本创作。"
+            bg: "湖南芒果数智AI产品项目。结合《清明上河图密码》IP，开发系列AI短剧。",
+            role: "作为负责人测试多种AI模型（Runway, Luma等），整理出一套高效的AI短剧制作SOP。"
         }
     };
 
