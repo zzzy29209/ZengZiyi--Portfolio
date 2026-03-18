@@ -1,710 +1,779 @@
-import React, { useRef, useState } from 'react';
-import { useScrollReveal } from '@lark-apaas/client-toolkit/hooks/useScrollReveal';
-import { UniversalLink } from '@lark-apaas/client-toolkit/components/UniversalLink';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
-import { toast } from 'sonner';
-import { id } from 'date-fns/locale';
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ziyi Zeng · Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-const HomePage: React.FC = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  useScrollReveal({ containerRef });
+    ::-webkit-scrollbar { display: none; }
+    html { scroll-behavior: smooth; -ms-overflow-style: none; scrollbar-width: none; }
 
-  const [projectDialogOpen, setProjectDialogOpen] = useState<number | null>(null);
-  const [workDialogOpen, setWorkDialogOpen] = useState<string | null>(null);
-
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #F4F4F4;
+      color: #000;
+      overflow-x: hidden;
     }
-  };
 
-  const openProjectDialog = (projectNum: number) => {
-    setProjectDialogOpen(projectNum);
-  };
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      padding: 1.5rem 2.5rem;
+      display: flex; justify-content: space-between; align-items: center;
+      background: rgba(255,255,255,0.7);
+      backdrop-filter: blur(25px) saturate(180%);
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+    }
+    .nav-logo { font-weight: 900; font-size: 1.1rem; letter-spacing: -0.05em; }
+    .nav-links { display: flex; gap: 3rem; }
+    .nav-links button {
+      background: none; border: none; cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links button:hover { color: #9B1B30; }
+    .nav-links button.active { color: #9B1B30; }
+    @media (max-width: 768px) { .nav-links { display: none; } }
 
-  const openWorkDialog = (workType: string) => {
-    setWorkDialogOpen(workType);
-  };
+    /* ── HERO ── */
+    .hero {
+      width: 100%; min-height: 100vh;
+      position: relative; display: flex; align-items: center;
+      padding: 6rem 2.5rem 2.5rem;
+      background: #fff;
+    }
+    .hero-image-overlay {
+      position: absolute; right: 0; top: 5%;
+      width: 55%; height: 95%; z-index: 1;
+      mask-image: linear-gradient(to left, black 50%, transparent 100%),
+                  linear-gradient(to bottom, black 80%, transparent 100%);
+      mask-composite: intersect;
+      -webkit-mask-image: linear-gradient(to left, black 50%, transparent 100%),
+                         linear-gradient(to bottom, black 80%, transparent 100%);
+      -webkit-mask-composite: destination-in;
+    }
+    .hero-image-overlay img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+    .hero-content { position: relative; z-index: 10; }
+    .mega-title {
+      font-size: clamp(4rem, 16vw, 14rem);
+      font-weight: 900; line-height: 0.85; letter-spacing: -0.05em;
+      text-transform: uppercase;
+    }
+    @media (max-width: 768px) {
+      .mega-title { font-size: clamp(3rem, 18vw, 6rem); line-height: 0.9; }
+    }
+    .hero-sub {
+      margin-top: 2rem;
+      font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.2em; opacity: 0.6;
+    }
+    .hero-bar {
+      margin-top: 2.5rem; display: flex; align-items: center; gap: 1.5rem;
+    }
+    .hero-bar-line { width: 4rem; height: 0.25rem; background: #000; }
+    .hero-bar-text {
+      font-size: 0.65rem; font-weight: 900; text-transform: uppercase;
+      letter-spacing: 0.5em; opacity: 0.4;
+    }
 
-  return (
-    <>
-      <style jsx>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap');
-        
-        .mega-title {
-          font-size: clamp(4rem, 16vw, 14rem);
-          font-weight: 900;
-          line-height: 0.85;
-          letter-spacing: -0.05em;
-        }
-        
-        @media (max-width: 768px) {
-          .mega-title {
-            font-size: clamp(3rem, 18vw, 6rem);
-            line-height: 0.9;
-          }
-        }
-        
-        .hero-image-overlay {
-          position: absolute;
-          right: 0;
-          top: 5%;
-          width: 55%;
-          height: 95%;
-          z-index: 1;
-          mask-image: linear-gradient(to left, black 50%, transparent 100%),
-                      linear-gradient(to bottom, black 80%, transparent 100%);
-          mask-composite: intersect;
-          -webkit-mask-image: linear-gradient(to left, black 50%, transparent 100%),
-                             linear-gradient(to bottom, black 80%, transparent 100%);
-          -webkit-mask-composite: destination-in;
-        }
-        
-        .project-card {
-          transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        
-        .project-card:hover {
-          background-color: #9B1B30 !important;
-          color: white !important;
-        }
-        
-        .work-btn {
-          position: relative;
-          height: 18rem;
-          overflow: hidden;
-          background-color: #000;
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-          transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        
-        .work-cover {
-          position: absolute;
-          inset: 0;
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          opacity: 0.5;
-          transition: transform 0.8s ease, opacity 0.6s ease;
-        }
-        
-        .work-btn:hover .work-cover {
-          transform: scale(1.1);
-          opacity: 0.3;
-        }
-        
-        .work-btn:hover {
-          background-color: #9B1B30;
-        }
-        
-        .metric-card {
-          background: rgba(255, 255, 255, 0.05);
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          border-radius: 0.5rem;
-          padding: 1rem 1.5rem;
-          transition: all 0.3s ease;
-        }
-        
-        .metric-card:hover {
-          border-color: rgba(129, 216, 208, 0.3);
-          background: rgba(255, 255, 255, 0.08);
-        }
-        
-        .metric-highlight {
-          color: #81D8D0;
-          font-weight: 700;
-        }
-        
-        @media (max-width: 768px) {
-          .metric-highlight {
-            font-size: 1.25rem;
-          }
-        }
-        
-        .school-logo-bg {
-          position: absolute;
-          right: -20px;
-          bottom: -20px;
-          width: 150px;
-          height: 150px;
-          opacity: 0.08;
-          pointer-events: none;
-          object-fit: contain;
-        }
-        
-        .scroll-reveal {
-          opacity: 0;
-          transform: translateY(24px);
-          transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        
-        .scroll-reveal.visible {
-          opacity: 1;
-          transform: translateY(0);
-        }
-        
-        ::-webkit-scrollbar {
-          display: none;
-        }
-      `}</style>
+    /* ── SCROLL REVEAL ── */
+    .scroll-reveal {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity 0.6s cubic-bezier(0.16,1,0.3,1), transform 0.6s cubic-bezier(0.16,1,0.3,1);
+    }
+    .scroll-reveal.visible { opacity: 1; transform: translateY(0); }
 
-      <div ref={containerRef} className="w-full bg-[#F4F4F4] text-black font-['Inter',sans-serif] overflow-x-hidden">
-        {/* Navigation */}
-        <nav className="fixed top-0 w-full z-[100] px-10 py-6 flex justify-between items-center"
-             style={{
-               background: 'rgba(255, 255, 255, 0.7)',
-               backdropFilter: 'blur(25px) saturate(180%)',
-               borderBottom: '1px solid rgba(0,0,0,0.08)'
-             }}>
-          <div className="font-black text-xl tracking-tighter">ZENG ZIYI</div>
-          <div className="hidden md:flex space-x-12">
-            <button onClick={() => scrollToSection('about')} className="text-sm font-bold tracking-[0.1em] hover:text-[#9B1B30] transition-colors">基本信息</button>
-            <button onClick={() => scrollToSection('internship')} className="text-sm font-bold tracking-[0.1em] hover:text-[#9B1B30] transition-colors">实习经历</button>
-            <button onClick={() => scrollToSection('projects')} className="text-sm font-bold tracking-[0.1em] hover:text-[#9B1B30] transition-colors">项目经历</button>
-            <button onClick={() => scrollToSection('works')} className="text-sm font-bold tracking-[0.1em] hover:text-[#9B1B30] transition-colors">个人作品</button>
-            <button onClick={() => scrollToSection('contact')} className="text-sm font-bold tracking-[0.1em] text-[#9B1B30]">联系我</button>
-          </div>
-        </nav>
+    /* ── ABOUT ── */
+    .about-section {
+      width: 100%; min-height: 80vh;
+      display: grid; grid-template-columns: 1fr 2fr;
+    }
+    @media (max-width: 768px) { .about-section { grid-template-columns: 1fr; } }
+    .about-left {
+      background: #9B1B30; color: #fff;
+      padding: 4rem; display: flex; align-items: center; justify-content: center;
+      border-right: none;
+    }
+    .about-left h2 {
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 900; text-transform: uppercase;
+    }
+    .about-right { background: #fff; padding: 4rem; display: flex; align-items: center; }
+    .about-inner { max-width: 48rem; }
+    .section-label {
+      font-size: 0.6rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.5em; opacity: 0.3; margin-bottom: 2.5rem;
+    }
+    .edu-item { position: relative; overflow: hidden; }
+    .edu-item + .edu-item { margin-top: 2.5rem; padding-top: 2.5rem; border-top: 1px solid #f0f0f0; }
+    .edu-date { font-size: 0.65rem; font-weight: 500; letter-spacing: 0.2em; color: #999; margin-bottom: 0.5rem; }
+    .edu-title { font-size: clamp(0.9rem, 1.5vw, 1.2rem); font-weight: 900; letter-spacing: -0.02em; }
+    .edu-details { margin-top: 0.75rem; }
+    .edu-details p { font-size: 0.75rem; color: #666; font-weight: 500; line-height: 1.6; }
 
-        {/* Hero Section */}
-        <section className="w-full min-h-screen relative flex items-center px-4 lg:px-10 pt-20 lg:pt-24 bg-white">
-          <div className="hero-image-overlay">
-            <img src="https://miaoda.feishu.cn/aily/api/v1/feisuda/attachments/c45ed6a3-dc68-438c-a52e-c79fd2aa8eca/raw" 
-                 className="w-full h-full object-cover object-top" 
-                 alt="曾子懿" />
-          </div>
-          <div className="relative z-10 scroll-reveal">
-            <h1 className="mega-title uppercase text-black">
-              PORT<br /><span className="text-[#9B1B30]">FOLIO</span>
-            </h1>
-            <p className="mt-6 lg:mt-8 text-xs lg:text-sm font-bold uppercase tracking-widest opacity-60">
-              Content Strategist 内容策划 · Film Student 影视专业
-            </p>
-            <div className="mt-8 lg:mt-10 flex items-center gap-4 lg:gap-6">
-              <div className="w-12 lg:w-16 h-3 lg:h-4 bg-black"></div>
-              <p className="text-[10px] lg:text-xs font-black uppercase tracking-[0.4em] lg:tracking-[0.6em] opacity-40">Ziyi Zeng / 2026</p>
-            </div>
-          </div>
-        </section>
+    /* ── INTERNSHIP ── */
+    .internship-section { width: 100%; padding: 5rem 2.5rem; background: #000; color: #fff; }
+    .internship-inner { max-width: 1400px; margin: 0 auto; }
+    .section-header {
+      display: flex; justify-content: space-between; align-items: baseline;
+      margin-bottom: 3rem; padding-bottom: 2rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .section-header h3 {
+      font-size: clamp(1.8rem, 5vw, 4rem);
+      font-weight: 900; text-transform: uppercase; letter-spacing: -0.03em;
+    }
+    .section-header span {
+      font-size: 0.6rem; font-weight: 700; letter-spacing: 1em;
+      opacity: 0.2; text-transform: uppercase;
+    }
 
-        {/* About Section */}
-        <section id="about" className="w-full min-h-[80vh] grid lg:grid-cols-3">
-          <div className="bg-[#9B1B30] text-white p-8 lg:p-16 flex items-center justify-center border-r lg:col-span-1">
-            <h2 className="text-4xl lg:text-6xl font-black uppercase scroll-reveal">关于我</h2>
-          </div>
-          <div className="bg-white p-6 lg:p-16 flex items-center lg:col-span-2">
-            <div className="max-w-3xl space-y-10 lg:space-y-20 scroll-reveal">
-              <p className="text-[9px] lg:text-[10px] font-bold uppercase tracking-[0.3em] lg:tracking-[0.5em] text-black opacity-30">Education Background</p>
-              <div className="space-y-10 lg:space-y-16 text-black leading-relaxed">
-                <div className="education-item relative overflow-hidden">
-                  <p className="text-[10px] lg:text-xs font-medium tracking-widest text-gray-400 mb-2">2022.09 - 2026.06</p>
-                  <h3 className="text-base lg:text-xl font-black tracking-tight">中南财经政法大学｜本科 电影学专业</h3>
-                  <div className="mt-3 lg:mt-4 space-y-1 lg:space-y-2 text-xs lg:text-sm text-gray-600 font-medium">
-                    <p>GPA：3.78 / 4</p>
-                    <p>主修：电影制片管理，剧本写作，导演基础，视听语言设计，艺术概论，视觉设计</p>
-                  </div>
-                </div>
-                <div className="education-item pt-6 lg:pt-10 border-t border-gray-100 relative overflow-hidden">
-                  <p className="text-[10px] lg:text-xs font-medium tracking-widest text-gray-400 mb-2">2024.02 - 2024.12</p>
-                  <h3 className="text-base lg:text-xl font-black tracking-tight">韩国 DongSeo University｜本科双学位 Film & VFX 专业</h3>
-                  <div className="mt-3 lg:mt-4 space-y-1 lg:space-y-2 text-xs lg:text-sm text-gray-600 font-medium">
-                    <p>GPA：3.89 / 4</p>
-                    <p>主修：电影制片管理，分镜头制作，电影剪辑，影视灯光摄影，进阶三维特效制作</p>
-                  </div>
-                </div>
-                <div className="education-item pt-6 lg:pt-10 border-t border-gray-100 relative overflow-hidden">
-                  <p className="text-[10px] lg:text-xs font-medium tracking-widest text-gray-400 mb-2">2024.07 - 2024.08</p>
-                  <h3 className="text-base lg:text-xl font-black tracking-tight text-black">韩国 Studio Kay｜培训经历 AI Workshop</h3>
-                  <div className="mt-3 lg:mt-4 space-y-1 lg:space-y-2 text-xs lg:text-sm text-gray-600 font-medium">
-                    <p>主修：Midjourney、Runway、Luma、Suno、SkyReel、Sora、海螺、可灵、即梦</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+    /* Timeline */
+    .timeline-wrap { overflow-x: auto; padding-bottom: 1rem; margin-bottom: 3rem; }
+    .timeline { position: relative; min-width: 500px; }
+    .timeline-line {
+      position: absolute; top: 0.75rem; left: 0; right: 0;
+      height: 2px; background: rgba(129,216,208,0.6);
+    }
+    .timeline-items { display: flex; justify-content: space-between; align-items: flex-start; position: relative; }
+    .timeline-item { display: flex; flex-direction: column; align-items: center; width: 18%; }
+    .timeline-dot {
+      width: 12px; height: 12px; border-radius: 50%;
+      background: #81D8D0; box-shadow: 0 0 0 4px rgba(129,216,208,0.3);
+      margin-bottom: 0.75rem; flex-shrink: 0;
+    }
+    .timeline-dot.sm { width: 8px; height: 8px; box-shadow: 0 0 0 2px rgba(129,216,208,0.2); }
+    .timeline-name { font-size: 0.7rem; font-weight: 700; color: #81D8D0; text-align: center; }
+    .timeline-date { font-size: 0.6rem; color: rgba(129,216,208,0.55); text-align: center; margin-top: 0.2rem; }
 
-        {/* Internship Section - With Data Highlights */}
-        <section id="internship" className="w-full py-20 lg:py-32 px-4 lg:px-10 bg-black text-white">
-          <div className="max-w-[1400px] mx-auto">
-            <div className="flex justify-between items-baseline mb-10 lg:mb-16 border-b border-white/10 pb-6 lg:pb-10">
-              <h3 className="text-3xl lg:text-6xl font-black uppercase tracking-tighter">实习经历</h3>
-              <span className="text-[8px] lg:text-[10px] font-bold tracking-[0.5em] lg:tracking-[1em] opacity-20 uppercase hidden sm:block">Internship Experience</span>
-            </div>
-            
-            {/* Horizontal Timeline - All Tiffany Blue */}
-            <div className="mb-10 lg:mb-16 overflow-x-auto pb-4">
-              <div className="relative min-w-[500px]">
-                {/* Main Line - Full Tiffany Blue */}
-                <div className="absolute top-3 lg:top-4 left-0 right-0 h-0.5 bg-[#81D8D0]/60"></div>
-                
-                {/* Timeline Items */}
-                <div className="flex justify-between items-start relative">
-                  {/* ByteDance - Current */}
-                  <div className="flex flex-col items-center group cursor-pointer" style={{width: '18%'}}>
-                    <div className="w-2.5 h-2.5 lg:w-3 lg:h-3 rounded-full bg-[#81D8D0] ring-2 lg:ring-4 ring-[#81D8D0]/30 mb-2 lg:mb-3"></div>
-                    <div className="text-center">
-                      <div className="text-[9px] lg:text-[11px] font-bold text-[#81D8D0]">字节跳动</div>
-                      <div className="text-[8px] lg:text-[9px] text-[#81D8D0]/60 mt-0.5">2026.03-至今</div>
-                    </div>
-                  </div>
-                  
-                  {/* 湖北联投 */}
-                  <div className="flex flex-col items-center group cursor-pointer" style={{width: '16%'}}>
-                    <div className="w-1.5 h-1.5 lg:w-2 lg:h-2 rounded-full bg-[#81D8D0]/80 ring-2 ring-[#81D8D0]/20 mb-2 lg:mb-3"></div>
-                    <div className="text-center">
-                      <div className="text-[8px] lg:text-[10px] text-[#81D8D0]/90">联投</div>
-                      <div className="text-[7px] lg:text-[9px] text-[#81D8D0]/50 mt-0.5">25.12-26.01</div>
-                    </div>
-                  </div>
-                  
-                  {/* 小米 */}
-                  <div className="flex flex-col items-center group cursor-pointer" style={{width: '16%'}}>
-                    <div className="w-1.5 h-1.5 lg:w-2 lg:h-2 rounded-full bg-[#81D8D0]/70 ring-2 ring-[#81D8D0]/20 mb-2 lg:mb-3"></div>
-                    <div className="text-center">
-                      <div className="text-[8px] lg:text-[10px] text-[#81D8D0]/80">小米</div>
-                      <div className="text-[7px] lg:text-[9px] text-[#81D8D0]/50 mt-0.5">25.08-11</div>
-                    </div>
-                  </div>
-                  
-                  {/* 作业帮 */}
-                  <div className="flex flex-col items-center group cursor-pointer" style={{width: '16%'}}>
-                    <div className="w-1.5 h-1.5 lg:w-2 lg:h-2 rounded-full bg-[#81D8D0]/60 ring-2 ring-[#81D8D0]/20 mb-2 lg:mb-3"></div>
-                    <div className="text-center">
-                      <div className="text-[8px] lg:text-[10px] text-[#81D8D0]/70">作业帮</div>
-                      <div className="text-[7px] lg:text-[9px] text-[#81D8D0]/40 mt-0.5">25.06-08</div>
-                    </div>
-                  </div>
-                  
-                  {/* 芒果 */}
-                  <div className="flex flex-col items-center group cursor-pointer" style={{width: '16%'}}>
-                    <div className="w-1.5 h-1.5 lg:w-2 lg:h-2 rounded-full bg-[#81D8D0]/50 ring-2 ring-[#81D8D0]/20 mb-2 lg:mb-3"></div>
-                    <div className="text-center">
-                      <div className="text-[8px] lg:text-[10px] text-[#81D8D0]/60">芒果</div>
-                      <div className="text-[7px] lg:text-[9px] text-[#81D8D0]/40 mt-0.5">24.12-25.03</div>
-                    </div>
-                  </div>
-                  
-                  {/* 梵宿 */}
-                  <div className="flex flex-col items-center group cursor-pointer" style={{width: '16%'}}>
-                    <div className="w-1.5 h-1.5 lg:w-2 lg:h-2 rounded-full bg-[#81D8D0]/40 ring-2 ring-[#81D8D0]/20 mb-2 lg:mb-3"></div>
-                    <div className="text-center">
-                      <div className="text-[8px] lg:text-[10px] text-[#81D8D0]/50">梵宿</div>
-                      <div className="text-[7px] lg:text-[9px] text-[#81D8D0]/30 mt-0.5">23.07-11</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <div className="space-y-8 lg:space-y-10">
-              {/* 字节跳动 - First */}
-              <div className="grid lg:grid-cols-12 gap-4 lg:gap-6 scroll-reveal">
-                <div className="lg:col-span-2 py-4 lg:py-8">
-                  <span className="text-sm lg:text-lg font-black tracking-widest text-[#81D8D0]">2026.03 - 至今</span>
-                </div>
-                <div className="lg:col-span-10 bg-white/[0.03] backdrop-blur-xl border border-[#81D8D0]/30 p-6 lg:p-12 rounded-sm group hover:bg-white/[0.06] transition-all duration-700">
-                  <div className="flex items-center gap-3 mb-4">
-                    <span className="px-2 py-1 bg-[#81D8D0]/20 rounded text-[10px] text-[#81D8D0] font-bold">当前职位</span>
-                  </div>
-                  <h4 className="text-lg lg:text-2xl font-bold mb-4">北京字节跳动｜企业文化部｜影像设计</h4>
-                  
-                  {/* Data Highlights - Reserved */}
-                  <div className="flex flex-wrap gap-3 lg:gap-4 mb-6 lg:mb-8">
-                    {/* 数据待补充 */}
-                  </div>
-                  
-                  <div className="grid md:grid-cols-2 gap-6 lg:gap-12 text-xs lg:text-sm leading-relaxed text-gray-400">
-                    <div className="space-y-4 lg:space-y-6">
-                      <p className="text-white/60 italic">内容待补充...</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+    /* Internship cards */
+    .intern-list { display: flex; flex-direction: column; gap: 2rem; }
+    .intern-row { display: grid; grid-template-columns: 1fr 5fr; gap: 1.5rem; }
+    @media (max-width: 768px) { .intern-row { grid-template-columns: 1fr; } }
+    .intern-date { font-size: 0.85rem; font-weight: 900; letter-spacing: 0.1em; color: #81D8D0; padding-top: 2rem; }
+    .intern-card {
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1);
+      padding: 2.5rem; border-radius: 2px;
+      transition: background 0.7s;
+    }
+    .intern-card.current { border-color: rgba(129,216,208,0.3); }
+    .intern-card:hover { background: rgba(255,255,255,0.06); }
+    .intern-tag {
+      display: inline-block; padding: 0.2rem 0.6rem;
+      background: rgba(129,216,208,0.2); border-radius: 2px;
+      font-size: 0.6rem; font-weight: 700; color: #81D8D0;
+      margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em;
+    }
+    .intern-card h4 { font-size: clamp(0.9rem, 1.5vw, 1.3rem); font-weight: 700; margin-bottom: 1rem; }
+    .metrics { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1.5rem; }
+    .metric-card {
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 0.4rem; padding: 0.5rem 0.75rem;
+      display: flex; align-items: center; gap: 0.5rem;
+      transition: all 0.3s;
+    }
+    .metric-card:hover { border-color: rgba(129,216,208,0.3); background: rgba(255,255,255,0.08); }
+    .metric-label { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; color: rgba(255,255,255,0.5); }
+    .metric-value { font-size: 1.4rem; font-weight: 700; color: #81D8D0; }
+    .metric-unit { font-size: 0.6rem; color: rgba(255,255,255,0.5); }
+    .intern-body { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+    @media (max-width: 640px) { .intern-body { grid-template-columns: 1fr; } }
+    .intern-body p { font-size: 0.72rem; line-height: 1.8; color: #999; }
+    .intern-body b { color: #fff; font-weight: 500; text-decoration: underline; text-underline-offset: 4px; text-decoration-color: rgba(255,255,255,0.2); }
 
-              {/* 湖北联投 */}
-              <div className="grid lg:grid-cols-12 gap-4 lg:gap-6 scroll-reveal">
-                <div className="lg:col-span-2 py-4 lg:py-8">
-                  <span className="text-sm lg:text-lg font-black tracking-widest text-[#81D8D0]">2025.12 - 2026.01</span>
-                </div>
-                <div className="lg:col-span-10 bg-white/[0.03] backdrop-blur-xl border border-white/10 p-6 lg:p-12 rounded-sm group hover:bg-white/[0.06] transition-all duration-700">
-                  <h4 className="text-lg lg:text-2xl font-bold mb-4">湖北联投集团｜视频事业部｜短剧策划</h4>
-                  
-                  {/* Data Highlights - Unified Tiffany Blue */}
-                  <div className="flex flex-wrap gap-3 lg:gap-4 mb-6 lg:mb-8">
-                    <div className="metric-card flex items-center gap-2 lg:gap-3 px-3 py-2">
-                      <span className="text-white/60 text-[10px] lg:text-xs uppercase">短剧集数</span>
-                      <span className="metric-highlight text-xl lg:text-3xl">31</span>
-                      <span className="text-white/60 text-[10px] lg:text-xs">集</span>
-                    </div>
-                    <div className="metric-card flex items-center gap-2 lg:gap-3 px-3 py-2">
-                      <span className="text-white/60 text-[10px] lg:text-xs uppercase">分镜制作</span>
-                      <span className="metric-highlight text-xl lg:text-3xl">800+</span>
-                      <span className="text-white/60 text-[10px] lg:text-xs">条</span>
-                    </div>
-                  </div>
-                  
-                  <div className="grid md:grid-cols-2 gap-6 lg:gap-12 text-xs lg:text-sm leading-relaxed text-gray-400">
-                    <div className="space-y-4 lg:space-y-6">
-                      <p><b className="text-white font-medium underline underline-offset-4 lg:underline-offset-8 decoration-white/20">市场调研与选题</b><br />利用百度数据、Vlinkaga指数、中国视听大数据等数据网站关注当下爆火短剧、影视剧，调研市场倾好。与湖南省芒果TV合作，策划姐弟恋主题中剧（仍在保密开发阶段），独立收集市场数据并制作企划书，成功得到立项资格。</p>
-                      <p><b className="text-white font-medium underline underline-offset-4 lg:underline-offset-8 decoration-white/20">剧本与分镜制作</b><br />负责ToB定制短剧与ToC漫剧的剧本创意写作，专业为剧本定制"热梗包袱"进行市场化运营编辑。作为主编剧，与湖北联投置业公司合作定制《银发音乐会》短剧，独立写作31集2万字的故事剧本并独立制作800余条分镜。</p>
-                    </div>
-                    <div className="space-y-4 lg:space-y-6">
-                      <p><b className="text-white font-medium underline underline-offset-4 lg:underline-offset-8 decoration-white/20">剧组现场执行</b><br />深度参与短剧拍摄，在正式拍摄期间作为现场编剧与导演助理，帮助指导演员表演，结合分镜辅助导演执导拍摄，5天内结束全部31集内容拍摄。</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+    /* ── PROJECTS ── */
+    .projects-section { width: 100%; padding: 5rem 2.5rem; background: #fff; }
+    .projects-inner { max-width: 1400px; margin: 0 auto; }
+    .projects-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: #000; border: 1px solid #000; }
+    @media (max-width: 768px) { .projects-grid { grid-template-columns: 1fr; } }
+    .project-card {
+      background: #fff; padding: 3rem; height: 16rem;
+      display: flex; flex-direction: column; justify-content: space-between;
+      cursor: pointer;
+      transition: all 0.6s cubic-bezier(0.16,1,0.3,1);
+    }
+    .project-card:hover { background: #9B1B30 !important; color: white !important; }
+    .project-card h4 { font-size: 1rem; font-weight: 900; text-transform: uppercase; transition: color 0.3s; }
+    .project-card:hover h4 { color: white; }
+    .project-card .view-label {
+      font-size: 0.5rem; font-weight: 700; letter-spacing: 0.3em;
+      opacity: 0; text-transform: uppercase; transition: opacity 0.3s;
+    }
+    .project-card:hover .view-label { opacity: 0.6; }
 
-              {/* 小米科技 */}
-              <div className="grid lg:grid-cols-12 gap-4 lg:gap-6 scroll-reveal">
-                <div className="lg:col-span-2 py-4 lg:py-8">
-                  <span className="text-sm lg:text-lg font-black tracking-widest text-[#81D8D0]">2025.08 - 2025.11</span>
-                </div>
-                <div className="lg:col-span-10 bg-white/[0.03] backdrop-blur-xl border border-white/10 p-6 lg:p-12 rounded-sm group hover:bg-white/[0.06] transition-all duration-700">
-                  <h4 className="text-lg lg:text-2xl font-bold mb-4">小米科技有限责任公司｜雇主品牌｜视频策划</h4>
-                  
-                  {/* Data Highlights - Unified Tiffany Blue */}
-                  <div className="flex gap-3 mb-6 lg:mb-8 overflow-x-auto pb-2 -mx-2 px-2">
-                    <div className="metric-card flex items-center gap-2 shrink-0 px-3 py-2">
-                      <span className="text-white/60 text-[10px] lg:text-xs uppercase">微信公众号</span>
-                      <span className="metric-highlight text-xl lg:text-3xl">78,000</span>
-                      <span className="text-white/60 text-[10px] lg:text-xs">增粉</span>
-                    </div>
-                    <div className="metric-card flex items-center gap-2 shrink-0 px-3 py-2">
-                      <span className="text-white/60 text-[10px] lg:text-xs uppercase">抖音</span>
-                      <span className="metric-highlight text-xl lg:text-3xl">+2,700</span>
-                    </div>
-                    <div className="metric-card flex items-center gap-2 shrink-0 px-3 py-2">
-                      <span className="text-white/60 text-[10px] lg:text-xs uppercase">小红书</span>
-                      <span className="metric-highlight text-xl lg:text-3xl">+2,600</span>
-                    </div>
-                    <div className="metric-card flex items-center gap-2 shrink-0 px-3 py-2">
-                      <span className="text-white/60 text-[10px] lg:text-xs uppercase">微博</span>
-                      <span className="metric-highlight text-xl lg:text-3xl">+4,900</span>
-                    </div>
-                  </div>
-                  
-                  <div className="grid md:grid-cols-2 gap-6 lg:gap-12 text-xs lg:text-sm leading-relaxed text-gray-400">
-                    <div className="space-y-4 lg:space-y-6">
-                      <p><b className="text-white font-medium underline underline-offset-4 lg:underline-offset-8 decoration-white/20">内容策划与执行</b><br />主导抖音、小红书、微信公众号等平台的视频/图文内容策划，负责视频制作与文案创意。制作"顶尖学子座谈会"视频，开发"奇幻漂流"创意短视频，全程担任导演制作剧本、分镜，拍摄并独立剪辑。保持每周1~2条视频/图文内容的产出频率，保证账号内容更新的连续性。</p>
-                      <p><b className="text-white font-medium underline underline-offset-4 lg:underline-offset-8 decoration-white/20">市场调研与选题</b><br />使用PEST分析法对市场情况进行调研，拆解竞品账号的爆款内容，结合当下热点对自家账号进行内容方向的调整与规划。帮助抖音账号增粉2700人、小红书增粉2600人、微信公众号增粉78000人、微博账号增粉4900人（皆为粉丝净增量）。</p>
-                    </div>
-                    <div className="space-y-4 lg:space-y-6">
-                      <p><b className="text-white font-medium underline underline-offset-4 lg:underline-offset-8 decoration-white/20">内容运营与数据驱动</b><br />实时关注抖音、小红书、微信公众号等主要平台的内容数据。建立数据表格，重点关注曝光、互动与粉丝增减等环比数据，与主要竞品账号做对比分析，建立数据周报与月报辅助创意产出。</p>
-                      <p><b className="text-white font-medium underline underline-offset-4 lg:underline-offset-8 decoration-white/20">平面视觉编辑</b><br />对小红书、微博、公众号等图文内容的海报进行设计与编辑，参与56所高校合作致谢活动并制作宣传图，为多条公众号内容制作海报图。</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+    /* ── WORKS ── */
+    .works-section { width: 100%; padding: 5rem 2.5rem; background: #fff; }
+    .works-inner { max-width: 1400px; margin: 0 auto; }
+    .works-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: #000; border: 1px solid #000; }
+    @media (max-width: 768px) { .works-grid { grid-template-columns: repeat(2, 1fr); } }
+    .work-btn {
+      position: relative; height: 18rem; overflow: hidden; background: #000;
+      display: flex; flex-direction: column; justify-content: space-between;
+      cursor: pointer;
+      transition: background 0.6s cubic-bezier(0.16,1,0.3,1);
+    }
+    .work-cover {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; opacity: 0.5;
+      transition: transform 0.8s ease, opacity 0.6s ease;
+    }
+    .work-btn:hover .work-cover { transform: scale(1.1); opacity: 0.3; }
+    .work-btn:hover { background: #9B1B30; }
+    .work-content {
+      position: relative; z-index: 10; padding: 1.5rem 2rem;
+      height: 100%; display: flex; flex-direction: column; justify-content: space-between;
+      color: #fff;
+    }
+    .work-content h4 { font-size: 1rem; font-weight: 900; text-transform: uppercase; line-height: 1.3; }
+    .work-content h4 span { font-size: 0.55rem; font-weight: 400; opacity: 0.6; display: block; margin-top: 0.2rem; }
+    .work-enter { font-size: 0.5rem; letter-spacing: 0.3em; opacity: 0; transition: opacity 0.3s; }
+    .work-btn:hover .work-enter { opacity: 1; }
 
-              {/* 作业帮 */}
-              <div className="grid lg:grid-cols-12 gap-4 lg:gap-6 scroll-reveal">
-                <div className="lg:col-span-2 py-4 lg:py-8">
-                  <span className="text-sm lg:text-lg font-black tracking-widest text-[#81D8D0]">2025.06 - 2025.08</span>
-                </div>
-                <div className="lg:col-span-10 bg-white/[0.03] backdrop-blur-xl border border-white/10 p-6 lg:p-12 rounded-sm group hover:bg-white/[0.06] transition-all duration-700">
-                  <h4 className="text-lg lg:text-2xl font-bold mb-4">作业帮（北京）教育科技有限公司｜用户产品部｜海外视频设计</h4>
-                  
-                  {/* Data Highlights - Unified Tiffany Blue */}
-                  <div className="flex flex-wrap gap-3 lg:gap-4 mb-6 lg:mb-8">
-                    <div className="metric-card flex items-center gap-2 lg:gap-3 px-3 py-2">
-                      <span className="text-white/60 text-[10px] lg:text-xs uppercase">单条最高曝光</span>
-                      <span className="metric-highlight text-xl lg:text-3xl">70万</span>
-                    </div>
-                  </div>
-                  
-                  <div className="grid md:grid-cols-2 gap-6 lg:gap-12 text-xs lg:text-sm leading-relaxed text-gray-400">
-                    <div className="space-y-4 lg:space-y-6">
-                      <p><b className="text-white font-medium underline underline-offset-4 lg:underline-offset-8 decoration-white/20">用户增长运营</b><br />分析App受众群体并结合账号用户画像，精准定位核心用户。与竞品App进行现有数据的分析拆解，对比竞品账号的内容数据，对自家账号内容进行规划与调整。通过视频传播手段，帮助App增加曝光量与用户使用量，最高单条曝光70万。</p>
-                      <p><b className="text-white font-medium underline underline-offset-4 lg:underline-offset-8 decoration-white/20">数据驱动迭代</b><br />结合用户反馈数据与平台最新审核数据，对视频内容进行选题方向与内容制作的调整与编辑，针对不同投放平台的审核标准与推流机制，定制不同的推广方案，输出数据日报并每日进行工作总结。</p>
-                    </div>
-                    <div className="space-y-4 lg:space-y-6">
-                      <p><b className="text-white font-medium underline underline-offset-4 lg:underline-offset-8 decoration-white/20">多语种触达</b><br />主要负责英美日韩德法土耳其与中国台湾的海外用户的多语种内容本地化，结合不同地区的文化背景、语言习性，对视频内容进行二次编辑与翻译，扩大广告覆盖面与渗透深度。</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+    /* ── CONTACT ── */
+    .contact-section {
+      width: 100%; padding: 5rem 2.5rem;
+      background: #9B1B30;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center;
+    }
+    .contact-section h3 {
+      font-size: clamp(2.5rem, 8vw, 6rem);
+      font-weight: 900; text-transform: uppercase;
+      letter-spacing: -0.03em; color: #fff; margin-bottom: 3rem;
+    }
+    .contact-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 4rem; }
+    .contact-item { display: flex; flex-direction: column; gap: 0.4rem; }
+    .contact-label { font-size: 0.55rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.3em; color: rgba(255,255,255,0.5); }
+    .contact-btn {
+      background: none; border: none; cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(0.9rem, 2vw, 1.2rem); font-weight: 700;
+      color: #fff; border-bottom: 2px solid rgba(255,255,255,0.4); padding-bottom: 0.2rem;
+      transition: border-color 0.2s;
+    }
+    .contact-btn:hover { border-color: #fff; }
+    .contact-hint { font-size: 0.55rem; color: rgba(255,255,255,0.4); }
+    footer {
+      margin-top: 4rem;
+      font-size: 0.5rem; font-weight: 900; letter-spacing: 1.5em;
+      text-transform: uppercase; opacity: 0.3; color: #fff;
+    }
 
-              {/* 芒果数智 */}
-              <div className="grid lg:grid-cols-12 gap-4 lg:gap-6 scroll-reveal">
-                <div className="lg:col-span-2 py-4 lg:py-8">
-                  <span className="text-sm lg:text-lg font-black tracking-widest text-[#81D8D0]">2024.12 - 2025.03</span>
-                </div>
-                <div className="lg:col-span-10 bg-white/[0.03] backdrop-blur-xl border border-white/10 p-6 lg:p-12 rounded-sm group hover:bg-white/[0.06] transition-all duration-700">
-                  <h4 className="text-lg lg:text-2xl font-bold mb-4">湖南芒果数智艺术科技有限公司｜产品技术部｜AI产品视频编导</h4>
-                  
-                  {/* Data Highlights - Unified Tiffany Blue */}
-                  <div className="flex flex-wrap gap-3 lg:gap-4 mb-6 lg:mb-8">
-                    <div className="metric-card flex items-center gap-2 lg:gap-3 border-[#81D8D0]/30 px-3 py-2">
-                      <span className="text-white/60 text-[10px] lg:text-xs uppercase">元宵晚会全球直播</span>
-                      <span className="metric-highlight text-xl lg:text-3xl">千万级</span>
-                      <span className="text-white/60 text-[10px] lg:text-xs">触达</span>
-                      <span className="ml-1 lg:ml-2 px-2 py-1 bg-[#81D8D0]/20 rounded text-[9px] lg:text-[10px] text-[#81D8D0] font-bold">全球实时直播</span>
-                    </div>
-                  </div>
-                  
-                  <div className="grid md:grid-cols-2 gap-6 lg:gap-12 text-xs lg:text-sm leading-relaxed text-gray-400">
-                    <div className="space-y-4 lg:space-y-6">
-                      <p><b className="text-white font-medium underline underline-offset-4 lg:underline-offset-8 decoration-white/20">AR创新项目策划</b><br />与湖南省博物馆合作，邀请北京大学历史系教授指导，对湖南省博的文物背景进行梳理统计，挑选项目主题文物。在项目执行阶段，作为策划团队主创，负责编写"AR大空间行走项目"所需的系列短剧剧本，并规划预期效果图，与其他资源部门联动推进项目执行，与开发部对接落地方案并提供画面建议。项目成品在湖南省博物馆科普互动区投入使用。</p>
-                      <p><b className="text-white font-medium underline underline-offset-4 lg:underline-offset-8 decoration-white/20">AI视频制作与SOP归整</b><br />使用PEST分析法，深入分析政治、文化与科技方向的最新热点与技术，结合热门历史向影视剧《清明上河图密码》，趁热推出清明上河图系列AI短剧。作为短剧项目负责人，对多种AI模型进行测试，整理出详细的AI短剧SOP，大幅提升工作效率。</p>
-                    </div>
-                    <div className="space-y-4 lg:space-y-6">
-                      <p><b className="text-white font-medium underline underline-offset-4 lg:underline-offset-8 decoration-white/20">大型活动协同</b><br />湖南卫视2025年元宵晚会，作为核心成员，与TV部合作设计歌舞节目《人间最值得》舞台背景，全程深度参与视频制作，登上全球实时直播并获得30s特写展示，触达观众千万级。湖南芒果集团2025年会，担任部门负责人，与算法部及集团TV部合作，带领小组共同完成颁奖环节的AI开幕视频项目。</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+    /* ── SECTION LABEL SHARED ── */
+    .works-label, .projects-label {
+      font-size: 0.6rem; font-weight: 900; text-transform: uppercase;
+      letter-spacing: 1em; opacity: 0.3; margin-bottom: 3rem;
+    }
 
-              {/* 梵宿文旅 */}
-              <div className="grid lg:grid-cols-12 gap-4 lg:gap-6 scroll-reveal">
-                <div className="lg:col-span-2 py-4 lg:py-8">
-                  <span className="text-sm lg:text-lg font-black tracking-widest text-[#81D8D0]">2023.07 - 2023.11</span>
-                </div>
-                <div className="lg:col-span-10 bg-white/[0.03] backdrop-blur-xl border border-white/10 p-6 lg:p-12 rounded-sm group hover:bg-white/[0.06] transition-all duration-700">
-                  <h4 className="text-lg lg:text-2xl font-bold mb-4">湖北梵宿文旅集团｜广告部｜短视频编导</h4>
-                  
-                  {/* Data Highlights - Unified Tiffany Blue */}
-                  <div className="flex flex-wrap gap-3 lg:gap-4 mb-6 lg:mb-8">
-                    <div className="metric-card flex items-center gap-2 lg:gap-3 px-3 py-2">
-                      <span className="text-white/60 text-[10px] lg:text-xs uppercase">单场直播在线</span>
-                      <span className="metric-highlight text-xl lg:text-3xl">9,600+</span>
-                    </div>
-                    <div className="metric-card flex items-center gap-2 lg:gap-3 px-3 py-2">
-                      <span className="text-white/60 text-[10px] lg:text-xs uppercase">单场成交</span>
-                      <span className="metric-highlight text-xl lg:text-3xl">¥31.6万</span>
-                    </div>
-                  </div>
-                  
-                  <div className="grid md:grid-cols-2 gap-6 lg:gap-12 text-xs lg:text-sm leading-relaxed text-gray-400">
-                    <div className="space-y-4 lg:space-y-6">
-                      <p><b className="text-white font-medium underline underline-offset-4 lg:underline-offset-8 decoration-white/20">直播运营</b><br />实时监控直播后台数据，管理后台商品链接与评论区、福袋等互动环节，提升直播间留存率，增加商品成交数量。单场直播最高累计在线人数9600+，7小时成交31.6万。每场直播后对数据进行复盘，输出直播复盘报告，为后续直播策划做数据参考。</p>
-                      <p><b className="text-white font-medium underline underline-offset-4 lg:underline-offset-8 decoration-white/20">多场景拍摄</b><br />多次出差，参与景区、酒店、宴会中心、餐厅等甲方的广告片场景布置与拍摄工作，提前设计运镜与脚本，保证素材质量。</p>
-                    </div>
-                    <div className="space-y-4 lg:space-y-6">
-                      <p><b className="text-white font-medium underline underline-offset-4 lg:underline-offset-8 decoration-white/20">短视频广告剪辑</b><br />对多场景拍摄的素材进行整理，编写视频文案并剪辑，扩大广告曝光量。</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+    /* ── DIALOG MODAL ── */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0; z-index: 999;
+      background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
+      align-items: center; justify-content: center; padding: 1.5rem;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: #fff; max-width: 48rem; width: 100%;
+      max-height: 85vh; overflow-y: auto; border-radius: 4px;
+      padding: 2.5rem; position: relative;
+      animation: modalIn 0.3s cubic-bezier(0.16,1,0.3,1);
+    }
+    .modal.dark { background: #111; color: #fff; }
+    @keyframes modalIn { from { opacity:0; transform: translateY(20px); } to { opacity:1; transform: none; } }
+    .modal-close {
+      position: absolute; top: 1.25rem; right: 1.25rem;
+      background: none; border: none; cursor: pointer;
+      font-size: 1.25rem; line-height: 1; color: inherit; opacity: 0.5;
+    }
+    .modal-close:hover { opacity: 1; }
+    .modal h2 { font-size: 1.5rem; font-weight: 900; text-transform: uppercase; margin-bottom: 1.5rem; }
+    .modal p { font-size: 0.85rem; color: #666; line-height: 1.7; margin-bottom: 0.75rem; }
+    .modal.dark p { color: #aaa; }
 
-        {/* Projects Section with Dialog */}
-        <section id="projects" className="w-full py-20 lg:py-32 bg-white px-4 lg:px-10">
-          <div className="max-w-[1400px] mx-auto">
-            <h3 className="text-[10px] lg:text-xs font-black uppercase tracking-[0.5em] lg:tracking-[1em] mb-10 lg:mb-16 opacity-30">Projects</h3>
-            <div className="grid md:grid-cols-3 gap-px bg-black border border-black">
-              {/* Project 01 */}
-              <Dialog open={projectDialogOpen === 1} onOpenChange={(open) => setProjectDialogOpen(open ? 1 : null)}>
-                <DialogTrigger asChild>
-                  <div className="project-card bg-white p-8 lg:p-12 h-60 lg:h-80 flex flex-col justify-between cursor-pointer group">
-                    <h4 className="text-lg lg:text-xl font-black uppercase text-black group-hover:text-white transition-colors">Project 01</h4>
-                    <p className="text-[8px] font-bold tracking-widest opacity-0 group-hover:opacity-60 transition-opacity">VIEW CASE 01</p>
-                  </div>
-                </DialogTrigger>
-                <DialogContent className="max-w-3xl bg-white">
-                  <DialogHeader>
-                    <DialogTitle className="text-2xl font-black uppercase">Project 01</DialogTitle>
-                  </DialogHeader>
-                  <div className="py-6">
-                    <p className="text-gray-600 mb-4">项目详情页面 - 预留位置</p>
-                    <p className="text-sm text-gray-500">此处可展示项目详细介绍、图片、视频等内容。</p>
-                  </div>
-                </DialogContent>
-              </Dialog>
+    /* ── TOAST ── */
+    .toast {
+      position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(4rem);
+      background: #000; color: #fff; padding: 0.75rem 1.5rem;
+      border-radius: 99px; font-size: 0.75rem; font-weight: 700;
+      z-index: 9999; opacity: 0; transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
+      white-space: nowrap; pointer-events: none;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  </style>
+</head>
+<body>
 
-              {/* Project 02 */}
-              <Dialog open={projectDialogOpen === 2} onOpenChange={(open) => setProjectDialogOpen(open ? 2 : null)}>
-                <DialogTrigger asChild>
-                  <div className="project-card bg-white p-8 lg:p-12 h-60 lg:h-80 flex flex-col justify-between cursor-pointer group border-l border-black">
-                    <h4 className="text-lg lg:text-xl font-black uppercase text-black group-hover:text-white transition-colors">Project 02</h4>
-                    <p className="text-[8px] font-bold tracking-widest opacity-0 group-hover:opacity-60 transition-opacity">VIEW CASE 02</p>
-                  </div>
-                </DialogTrigger>
-                <DialogContent className="max-w-3xl bg-white">
-                  <DialogHeader>
-                    <DialogTitle className="text-2xl font-black uppercase">Project 02</DialogTitle>
-                  </DialogHeader>
-                  <div className="py-6">
-                    <p className="text-gray-600 mb-4">项目详情页面 - 预留位置</p>
-                    <p className="text-sm text-gray-500">此处可展示项目详细介绍、图片、视频等内容。</p>
-                  </div>
-                </DialogContent>
-              </Dialog>
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">ZENG ZIYI</div>
+  <div class="nav-links">
+    <button onclick="scrollTo('about')">基本信息</button>
+    <button onclick="scrollTo('internship')">实习经历</button>
+    <button onclick="scrollTo('projects')">项目经历</button>
+    <button onclick="scrollTo('works')">个人作品</button>
+    <button onclick="scrollTo('contact')" class="active">联系我</button>
+  </div>
+</nav>
 
-              {/* Project 03 */}
-              <Dialog open={projectDialogOpen === 3} onOpenChange={(open) => setProjectDialogOpen(open ? 3 : null)}>
-                <DialogTrigger asChild>
-                  <div className="project-card bg-white p-8 lg:p-12 h-60 lg:h-80 flex flex-col justify-between cursor-pointer group border-l border-black">
-                    <h4 className="text-lg lg:text-xl font-black uppercase text-black group-hover:text-white transition-colors">Project 03</h4>
-                    <p className="text-[8px] font-bold tracking-widest opacity-0 group-hover:opacity-60 transition-opacity">VIEW CASE 03</p>
-                  </div>
-                </DialogTrigger>
-                <DialogContent className="max-w-3xl bg-white">
-                  <DialogHeader>
-                    <DialogTitle className="text-2xl font-black uppercase">Project 03</DialogTitle>
-                  </DialogHeader>
-                  <div className="py-6">
-                    <p className="text-gray-600 mb-4">项目详情页面 - 预留位置</p>
-                    <p className="text-sm text-gray-500">此处可展示项目详细介绍、图片、视频等内容。</p>
-                  </div>
-                </DialogContent>
-              </Dialog>
-            </div>
-          </div>
-        </section>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-image-overlay">
+    <img src="https://miaoda.feishu.cn/aily/api/v1/feisuda/attachments/c45ed6a3-dc68-438c-a52e-c79fd2aa8eca/raw" alt="曾子懿" />
+  </div>
+  <div class="hero-content scroll-reveal">
+    <h1 class="mega-title">PORT<br /><span style="color:#9B1B30">FOLIO</span></h1>
+    <p class="hero-sub">Content Strategist 内容策划 · Film Student 影视专业</p>
+    <div class="hero-bar">
+      <div class="hero-bar-line"></div>
+      <p class="hero-bar-text">Ziyi Zeng / 2026</p>
+    </div>
+  </div>
+</section>
 
-        {/* Works Section with Dialog */}
-        <section id="works" className="w-full py-20 lg:py-32 bg-white px-4 lg:px-10">
-          <div className="max-w-[1400px] mx-auto">
-            <h3 className="text-[10px] lg:text-xs font-black uppercase tracking-[0.5em] lg:tracking-[1em] mb-10 lg:mb-16 opacity-30">Works</h3>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-black border border-black">
-              {/* 影像作品 */}
-              <Dialog open={workDialogOpen === 'film'} onOpenChange={(open) => setWorkDialogOpen(open ? 'film' : null)}>
-                <DialogTrigger asChild>
-                  <div className="work-btn group cursor-pointer">
-                    <img src="https://miaoda.feishu.cn/aily/api/v1/files/static/40c0445b35e74dbd9c0a041ba9a4f1f0_ve_miaoda" alt="影像作品" className="work-cover" />
-                    <div className="relative z-10 p-6 lg:p-10 h-full flex flex-col justify-between text-white">
-                      <h4 className="text-sm lg:text-xl font-black uppercase leading-tight">影像作品<br /><span className="text-[8px] lg:text-[10px] font-normal opacity-60">Narrative Film</span></h4>
-                      <span className="text-[8px] tracking-[0.3em] opacity-0 group-hover:opacity-100 transition-all">ENTER →</span>
-                    </div>
-                  </div>
-                </DialogTrigger>
-                <DialogContent className="max-w-3xl bg-black text-white border-gray-800">
-                  <DialogHeader>
-                    <DialogTitle className="text-2xl font-black uppercase text-white">影像作品</DialogTitle>
-                  </DialogHeader>
-                  <div className="py-6">
-                    <p className="text-gray-300 mb-4">影像作品展示页面 - 预留位置</p>
-                    <p className="text-sm text-gray-500">此处可展示叙事电影、短片、纪录片等影像作品。</p>
-                  </div>
-                </DialogContent>
-              </Dialog>
-
-              {/* AI作品 */}
-              <Dialog open={workDialogOpen === 'ai'} onOpenChange={(open) => setWorkDialogOpen(open ? 'ai' : null)}>
-                <DialogTrigger asChild>
-                  <div className="work-btn group cursor-pointer">
-                    <img src="https://miaoda.feishu.cn/aily/api/v1/files/static/13a0a2b8d0f2412da3dafb76621a447d_ve_miaoda" alt="AI作品" className="work-cover" />
-                    <div className="relative z-10 p-6 lg:p-10 h-full flex flex-col justify-between text-white">
-                      <h4 className="text-sm lg:text-xl font-black uppercase leading-tight">AI作品<br /><span className="text-[8px] lg:text-[10px] font-normal opacity-60">AI Experiments</span></h4>
-                      <span className="text-[8px] tracking-[0.3em] opacity-0 group-hover:opacity-100 transition-all">ENTER →</span>
-                    </div>
-                  </div>
-                </DialogTrigger>
-                <DialogContent className="max-w-3xl bg-black text-white border-gray-800">
-                  <DialogHeader>
-                    <DialogTitle className="text-2xl font-black uppercase text-white">AI作品</DialogTitle>
-                  </DialogHeader>
-                  <div className="py-6">
-                    <p className="text-gray-300 mb-4">AI实验作品展示页面 - 预留位置</p>
-                    <p className="text-sm text-gray-500">此处可展示AI生成图像、视频、音乐等创意实验作品。</p>
-                  </div>
-                </DialogContent>
-              </Dialog>
-
-              {/* 策划作品 */}
-              <Dialog open={workDialogOpen === 'planning'} onOpenChange={(open) => setWorkDialogOpen(open ? 'planning' : null)}>
-                <DialogTrigger asChild>
-                  <div className="work-btn group cursor-pointer">
-                    <img src="https://miaoda.feishu.cn/aily/api/v1/files/static/6d26f1df9838494190971f3a9443d84b_ve_miaoda" alt="策划作品" className="work-cover" />
-                    <div className="relative z-10 p-6 lg:p-10 h-full flex flex-col justify-between text-white">
-                      <h4 className="text-sm lg:text-xl font-black uppercase leading-tight">策划作品<br /><span className="text-[8px] lg:text-[10px] font-normal opacity-60">Planning & Concept</span></h4>
-                      <span className="text-[8px] tracking-[0.3em] opacity-0 group-hover:opacity-100 transition-all">ENTER →</span>
-                    </div>
-                  </div>
-                </DialogTrigger>
-                <DialogContent className="max-w-3xl bg-black text-white border-gray-800">
-                  <DialogHeader>
-                    <DialogTitle className="text-2xl font-black uppercase text-white">策划作品</DialogTitle>
-                  </DialogHeader>
-                  <div className="py-6">
-                    <p className="text-gray-300 mb-4">策划作品展示页面 - 预留位置</p>
-                    <p className="text-sm text-gray-500">此处可展示内容策划方案、创意概念、项目企划等作品。</p>
-                  </div>
-                </DialogContent>
-              </Dialog>
-
-              {/* 视觉作品 */}
-              <Dialog open={workDialogOpen === 'visual'} onOpenChange={(open) => setWorkDialogOpen(open ? 'visual' : null)}>
-                <DialogTrigger asChild>
-                  <div className="work-btn group cursor-pointer">
-                    <img src="https://miaoda.feishu.cn/aily/api/v1/files/static/19e62adc6ad541119876d227d4a22325_ve_miaoda" alt="视觉作品" className="work-cover" />
-                    <div className="relative z-10 p-6 lg:p-10 h-full flex flex-col justify-between text-white">
-                      <h4 className="text-sm lg:text-xl font-black uppercase leading-tight">视觉作品<br /><span className="text-[8px] lg:text-[10px] font-normal opacity-60">Visual & Video</span></h4>
-                      <span className="text-[8px] tracking-[0.3em] opacity-0 group-hover:opacity-100 transition-all">ENTER →</span>
-                    </div>
-                  </div>
-                </DialogTrigger>
-                <DialogContent className="max-w-3xl bg-black text-white border-gray-800">
-                  <DialogHeader>
-                    <DialogTitle className="text-2xl font-black uppercase text-white">视觉作品</DialogTitle>
-                  </DialogHeader>
-                  <div className="py-6">
-                    <p className="text-gray-300 mb-4">视觉作品展示页面 - 预留位置</p>
-                    <p className="text-sm text-gray-500">此处可展示视觉设计、视频剪辑、动效作品等。</p>
-                  </div>
-                </DialogContent>
-              </Dialog>
-            </div>
-          </div>
-        </section>
-
-        {/* Contact Section */}
-        <section id="contact" className="w-full py-20 lg:py-32 bg-[#9B1B30] flex flex-col items-center justify-center text-center px-4 lg:px-10">
-          <div className="w-full flex flex-col items-center scroll-reveal">
-            <h3 className="text-4xl md:text-6xl lg:text-8xl font-black uppercase mb-10 lg:mb-16 tracking-tighter text-white">Work with me!</h3>
-            <div className="flex flex-col md:flex-row items-center justify-center gap-8 lg:gap-12 md:gap-24">
-              <div className="space-y-2">
-                <p className="text-[9px] lg:text-[10px] font-black opacity-50 uppercase tracking-[0.3em] text-white">Email</p>
-                <button 
-                  onClick={() => {
-                    navigator.clipboard.writeText('zzzy29209@163.com');
-                    toast.success('邮箱已复制到剪贴板');
-                  }}
-                  className="text-base lg:text-xl font-bold border-b-2 border-white/40 pb-1 hover:border-white transition-all text-white cursor-pointer bg-transparent"
-                >
-                  zzzy29209@163.com
-                </button>
-                <p className="text-[9px] lg:text-[10px] text-white/40 mt-1">点击复制</p>
-              </div>
-              <div className="space-y-2">
-                <p className="text-[9px] lg:text-[10px] font-black opacity-50 uppercase tracking-[0.3em] text-white">WeChat</p>
-                <button 
-                  onClick={() => {
-                    navigator.clipboard.writeText('Zzzy_nine');
-                    toast.success('微信号已复制到剪贴板');
-                    setTimeout(() => {
-                      if (confirm('微信号已复制，是否跳转到微信？')) {
-                        // eslint-disable-next-line no-restricted-syntax
-                        window.open('weixin://', '_blank');
-                      }
-                    }, 300);
-                  }}
-                  className="text-base lg:text-xl font-bold border-b-2 border-white/40 pb-1 hover:border-white transition-all text-white cursor-pointer bg-transparent"
-                >
-                  Zzzy_nine
-                </button>
-                <p className="text-[9px] lg:text-[10px] text-white/40 mt-1">点击复制</p>
-              </div>
-            </div>
-          </div>
-          <footer className="mt-16 lg:mt-24 text-[7px] lg:text-[8px] font-black opacity-30 tracking-[1em] lg:tracking-[1.5em] uppercase text-center text-white">© 2026 ZIYI ZENG</footer>
-        </section>
+<!-- ABOUT -->
+<section id="about" class="about-section">
+  <div class="about-left">
+    <h2 class="scroll-reveal">关于我</h2>
+  </div>
+  <div class="about-right">
+    <div class="about-inner scroll-reveal">
+      <p class="section-label">Education Background</p>
+      <div class="edu-item">
+        <p class="edu-date">2022.09 - 2026.06</p>
+        <h3 class="edu-title">中南财经政法大学｜本科 电影学专业</h3>
+        <div class="edu-details">
+          <p>GPA：3.78 / 4</p>
+          <p>主修：电影制片管理，剧本写作，导演基础，视听语言设计，艺术概论，视觉设计</p>
+        </div>
       </div>
-    </>
-  );
-};
+      <div class="edu-item">
+        <p class="edu-date">2024.02 - 2024.12</p>
+        <h3 class="edu-title">韩国 DongSeo University｜本科双学位 Film &amp; VFX 专业</h3>
+        <div class="edu-details">
+          <p>GPA：3.89 / 4</p>
+          <p>主修：电影制片管理，分镜头制作，电影剪辑，影视灯光摄影，进阶三维特效制作</p>
+        </div>
+      </div>
+      <div class="edu-item">
+        <p class="edu-date">2024.07 - 2024.08</p>
+        <h3 class="edu-title">韩国 Studio Kay｜培训经历 AI Workshop</h3>
+        <div class="edu-details">
+          <p>主修：Midjourney、Runway、Luma、Suno、SkyReel、Sora、海螺、可灵、即梦</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-export default HomePage;
+<!-- INTERNSHIP -->
+<section id="internship" class="internship-section">
+  <div class="internship-inner">
+    <div class="section-header">
+      <h3>实习经历</h3>
+      <span>Internship Experience</span>
+    </div>
+
+    <!-- Timeline -->
+    <div class="timeline-wrap">
+      <div class="timeline">
+        <div class="timeline-line"></div>
+        <div class="timeline-items">
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-name">字节跳动</div>
+            <div class="timeline-date">2026.03-至今</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot sm"></div>
+            <div class="timeline-name">联投</div>
+            <div class="timeline-date">25.12-26.01</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot sm"></div>
+            <div class="timeline-name">小米</div>
+            <div class="timeline-date">25.08-11</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot sm"></div>
+            <div class="timeline-name">作业帮</div>
+            <div class="timeline-date">25.06-08</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot sm"></div>
+            <div class="timeline-name">芒果</div>
+            <div class="timeline-date">24.12-25.03</div>
+          </div>
+          <div class="timeline-item" style="width:14%">
+            <div class="timeline-dot sm"></div>
+            <div class="timeline-name">梵宿</div>
+            <div class="timeline-date">23.07-11</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cards -->
+    <div class="intern-list">
+
+      <!-- 字节跳动 -->
+      <div class="intern-row scroll-reveal">
+        <div class="intern-date">2026.03 - 至今</div>
+        <div class="intern-card current">
+          <div class="intern-tag">当前职位</div>
+          <h4>北京字节跳动｜企业文化部｜影像设计</h4>
+          <div class="intern-body">
+            <div><p style="color:rgba(255,255,255,0.35);font-style:italic">内容待补充...</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 湖北联投 -->
+      <div class="intern-row scroll-reveal">
+        <div class="intern-date">2025.12 - 2026.01</div>
+        <div class="intern-card">
+          <h4>湖北联投集团｜视频事业部｜短剧策划</h4>
+          <div class="metrics">
+            <div class="metric-card">
+              <span class="metric-label">短剧集数</span>
+              <span class="metric-value">31</span>
+              <span class="metric-unit">集</span>
+            </div>
+            <div class="metric-card">
+              <span class="metric-label">分镜制作</span>
+              <span class="metric-value">800+</span>
+              <span class="metric-unit">条</span>
+            </div>
+          </div>
+          <div class="intern-body">
+            <div>
+              <p><b>市场调研与选题</b><br />利用百度数据、Vlinkaga指数、中国视听大数据等数据网站关注当下爆火短剧、影视剧，调研市场倾好。与湖南省芒果TV合作，策划姐弟恋主题中剧（仍在保密开发阶段），独立收集市场数据并制作企划书，成功得到立项资格。</p>
+              <br /><p><b>剧本与分镜制作</b><br />负责ToB定制短剧与ToC漫剧的剧本创意写作，专业为剧本定制"热梗包袱"进行市场化运营编辑。作为主编剧，与湖北联投置业公司合作定制《银发音乐会》短剧，独立写作31集2万字的故事剧本并独立制作800余条分镜。</p>
+            </div>
+            <div>
+              <p><b>剧组现场执行</b><br />深度参与短剧拍摄，在正式拍摄期间作为现场编剧与导演助理，帮助指导演员表演，结合分镜辅助导演执导拍摄，5天内结束全部31集内容拍摄。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 小米 -->
+      <div class="intern-row scroll-reveal">
+        <div class="intern-date">2025.08 - 2025.11</div>
+        <div class="intern-card">
+          <h4>小米科技有限责任公司｜雇主品牌｜视频策划</h4>
+          <div class="metrics" style="overflow-x:auto; flex-wrap:nowrap; padding-bottom:0.5rem;">
+            <div class="metric-card" style="flex-shrink:0">
+              <span class="metric-label">微信公众号增粉</span>
+              <span class="metric-value">78,000</span>
+            </div>
+            <div class="metric-card" style="flex-shrink:0">
+              <span class="metric-label">抖音</span>
+              <span class="metric-value">+2,700</span>
+            </div>
+            <div class="metric-card" style="flex-shrink:0">
+              <span class="metric-label">小红书</span>
+              <span class="metric-value">+2,600</span>
+            </div>
+            <div class="metric-card" style="flex-shrink:0">
+              <span class="metric-label">微博</span>
+              <span class="metric-value">+4,900</span>
+            </div>
+          </div>
+          <div class="intern-body">
+            <div>
+              <p><b>内容策划与执行</b><br />主导抖音、小红书、微信公众号等平台的视频/图文内容策划，负责视频制作与文案创意。制作"顶尖学子座谈会"视频，开发"奇幻漂流"创意短视频，全程担任导演制作剧本、分镜，拍摄并独立剪辑。保持每周1~2条视频/图文内容的产出频率。</p>
+              <br /><p><b>市场调研与选题</b><br />使用PEST分析法对市场情况进行调研，拆解竞品账号的爆款内容，结合当下热点对自家账号进行内容方向的调整与规划。帮助抖音增粉2700人、小红书增粉2600人、微信公众号增粉78000人、微博增粉4900人（皆为净增量）。</p>
+            </div>
+            <div>
+              <p><b>内容运营与数据驱动</b><br />实时关注各主要平台的内容数据，建立数据表格，重点关注曝光、互动与粉丝增减等环比数据，建立数据周报与月报辅助创意产出。</p>
+              <br /><p><b>平面视觉编辑</b><br />对小红书、微博、公众号等图文内容的海报进行设计与编辑，参与56所高校合作致谢活动并制作宣传图。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 作业帮 -->
+      <div class="intern-row scroll-reveal">
+        <div class="intern-date">2025.06 - 2025.08</div>
+        <div class="intern-card">
+          <h4>作业帮（北京）教育科技有限公司｜用户产品部｜海外视频设计</h4>
+          <div class="metrics">
+            <div class="metric-card">
+              <span class="metric-label">单条最高曝光</span>
+              <span class="metric-value">70万</span>
+            </div>
+          </div>
+          <div class="intern-body">
+            <div>
+              <p><b>用户增长运营</b><br />分析App受众群体并结合账号用户画像，精准定位核心用户。与竞品App进行现有数据的分析拆解，对比竞品账号的内容数据，对自家账号内容进行规划与调整。通过视频传播手段，帮助App增加曝光量与用户使用量，最高单条曝光70万。</p>
+            </div>
+            <div>
+              <p><b>数据驱动迭代</b><br />结合用户反馈数据与平台最新审核数据，对视频内容进行选题方向与内容制作的调整与编辑，针对不同投放平台的审核标准与推流机制，定制不同的推广方案，输出数据日报并每日进行工作总结。</p>
+              <br /><p><b>多语种触达</b><br />主要负责英美日韩德法土耳其与中国台湾的海外用户的多语种内容本地化，结合不同地区的文化背景、语言习性，对视频内容进行二次编辑与翻译，扩大广告覆盖面与渗透深度。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 芒果数智 -->
+      <div class="intern-row scroll-reveal">
+        <div class="intern-date">2024.12 - 2025.03</div>
+        <div class="intern-card">
+          <h4>湖南芒果数智艺术科技有限公司｜产品技术部｜AI产品视频编导</h4>
+          <div class="metrics">
+            <div class="metric-card">
+              <span class="metric-label">元宵晚会全球直播</span>
+              <span class="metric-value">千万级</span>
+              <span class="metric-unit">触达</span>
+              <span style="margin-left:0.5rem; padding:0.2rem 0.4rem; background:rgba(129,216,208,0.2); border-radius:2px; font-size:0.55rem; color:#81D8D0; font-weight:700;">全球实时直播</span>
+            </div>
+          </div>
+          <div class="intern-body">
+            <div>
+              <p><b>AR创新项目策划</b><br />与湖南省博物馆合作，邀请北京大学历史系教授指导，对湖南省博的文物背景进行梳理统计，挑选项目主题文物。作为策划团队主创，负责编写"AR大空间行走项目"所需的系列短剧剧本，并规划预期效果图，与开发部对接落地方案。项目成品在湖南省博物馆科普互动区投入使用。</p>
+              <br /><p><b>AI视频制作与SOP归整</b><br />使用PEST分析法，结合热门历史向影视剧《清明上河图密码》，趁热推出清明上河图系列AI短剧。作为短剧项目负责人，对多种AI模型进行测试，整理出详细的AI短剧SOP，大幅提升工作效率。</p>
+            </div>
+            <div>
+              <p><b>大型活动协同</b><br />湖南卫视2025年元宵晚会，作为核心成员，与TV部合作设计歌舞节目《人间最值得》舞台背景，全程深度参与视频制作，登上全球实时直播并获得30s特写展示，触达观众千万级。湖南芒果集团2025年会，担任部门负责人，带领小组共同完成颁奖环节的AI开幕视频项目。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 梵宿文旅 -->
+      <div class="intern-row scroll-reveal">
+        <div class="intern-date">2023.07 - 2023.11</div>
+        <div class="intern-card">
+          <h4>湖北梵宿文旅集团｜广告部｜短视频编导</h4>
+          <div class="metrics">
+            <div class="metric-card">
+              <span class="metric-label">单场直播在线</span>
+              <span class="metric-value">9,600+</span>
+            </div>
+            <div class="metric-card">
+              <span class="metric-label">单场成交</span>
+              <span class="metric-value">¥31.6万</span>
+            </div>
+          </div>
+          <div class="intern-body">
+            <div>
+              <p><b>直播运营</b><br />实时监控直播后台数据，管理后台商品链接与评论区、福袋等互动环节，提升直播间留存率，增加商品成交数量。单场直播最高累计在线人数9600+，7小时成交31.6万。每场直播后对数据进行复盘，输出直播复盘报告，为后续直播策划做数据参考。</p>
+              <br /><p><b>多场景拍摄</b><br />多次出差，参与景区、酒店、宴会中心、餐厅等甲方的广告片场景布置与拍摄工作，提前设计运镜与脚本，保证素材质量。</p>
+            </div>
+            <div>
+              <p><b>短视频广告剪辑</b><br />对多场景拍摄的素材进行整理，编写视频文案并剪辑，扩大广告曝光量。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /intern-list -->
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" class="projects-section">
+  <div class="projects-inner">
+    <p class="projects-label">Projects</p>
+    <div class="projects-grid">
+      <div class="project-card" onclick="openModal('project1')">
+        <h4>Project 01</h4>
+        <p class="view-label">VIEW CASE 01</p>
+      </div>
+      <div class="project-card" onclick="openModal('project2')" style="border-left:1px solid #000">
+        <h4>Project 02</h4>
+        <p class="view-label">VIEW CASE 02</p>
+      </div>
+      <div class="project-card" onclick="openModal('project3')" style="border-left:1px solid #000">
+        <h4>Project 03</h4>
+        <p class="view-label">VIEW CASE 03</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WORKS -->
+<section id="works" class="works-section">
+  <div class="works-inner">
+    <p class="works-label">Works</p>
+    <div class="works-grid">
+      <div class="work-btn" onclick="openModal('film')">
+        <img src="https://miaoda.feishu.cn/aily/api/v1/files/static/40c0445b35e74dbd9c0a041ba9a4f1f0_ve_miaoda" alt="影像作品" class="work-cover" />
+        <div class="work-content">
+          <h4>影像作品<span>Narrative Film</span></h4>
+          <span class="work-enter">ENTER →</span>
+        </div>
+      </div>
+      <div class="work-btn" onclick="openModal('ai')">
+        <img src="https://miaoda.feishu.cn/aily/api/v1/files/static/13a0a2b8d0f2412da3dafb76621a447d_ve_miaoda" alt="AI作品" class="work-cover" />
+        <div class="work-content">
+          <h4>AI作品<span>AI Experiments</span></h4>
+          <span class="work-enter">ENTER →</span>
+        </div>
+      </div>
+      <div class="work-btn" onclick="openModal('planning')">
+        <img src="https://miaoda.feishu.cn/aily/api/v1/files/static/6d26f1df9838494190971f3a9443d84b_ve_miaoda" alt="策划作品" class="work-cover" />
+        <div class="work-content">
+          <h4>策划作品<span>Planning &amp; Concept</span></h4>
+          <span class="work-enter">ENTER →</span>
+        </div>
+      </div>
+      <div class="work-btn" onclick="openModal('visual')">
+        <img src="https://miaoda.feishu.cn/aily/api/v1/files/static/19e62adc6ad541119876d227d4a22325_ve_miaoda" alt="视觉作品" class="work-cover" />
+        <div class="work-content">
+          <h4>视觉作品<span>Visual &amp; Video</span></h4>
+          <span class="work-enter">ENTER →</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="contact-section">
+  <div class="scroll-reveal" style="width:100%;display:flex;flex-direction:column;align-items:center">
+    <h3>Work with me!</h3>
+    <div class="contact-row">
+      <div class="contact-item">
+        <p class="contact-label">Email</p>
+        <button class="contact-btn" onclick="copyText('zzzy29209@163.com', '邮箱已复制到剪贴板')">zzzy29209@163.com</button>
+        <p class="contact-hint">点击复制</p>
+      </div>
+      <div class="contact-item">
+        <p class="contact-label">WeChat</p>
+        <button class="contact-btn" onclick="copyWechat()">Zzzy_nine</button>
+        <p class="contact-hint">点击复制</p>
+      </div>
+    </div>
+  </div>
+  <footer>© 2026 ZIYI ZENG</footer>
+</section>
+
+<!-- MODALS -->
+<div id="modal-project1" class="modal-overlay" onclick="closeModalOverlay(event,'project1')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('project1')">✕</button>
+    <h2>Project 01</h2>
+    <p>项目详情页面 - 预留位置</p>
+    <p style="color:#aaa;font-size:0.75rem">此处可展示项目详细介绍、图片、视频等内容。</p>
+  </div>
+</div>
+<div id="modal-project2" class="modal-overlay" onclick="closeModalOverlay(event,'project2')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('project2')">✕</button>
+    <h2>Project 02</h2>
+    <p>项目详情页面 - 预留位置</p>
+    <p style="color:#aaa;font-size:0.75rem">此处可展示项目详细介绍、图片、视频等内容。</p>
+  </div>
+</div>
+<div id="modal-project3" class="modal-overlay" onclick="closeModalOverlay(event,'project3')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('project3')">✕</button>
+    <h2>Project 03</h2>
+    <p>项目详情页面 - 预留位置</p>
+    <p style="color:#aaa;font-size:0.75rem">此处可展示项目详细介绍、图片、视频等内容。</p>
+  </div>
+</div>
+<div id="modal-film" class="modal-overlay" onclick="closeModalOverlay(event,'film')">
+  <div class="modal dark">
+    <button class="modal-close" onclick="closeModal('film')">✕</button>
+    <h2>影像作品</h2>
+    <p>影像作品展示页面 - 预留位置</p>
+    <p style="color:#666;font-size:0.75rem">此处可展示叙事电影、短片、纪录片等影像作品。</p>
+  </div>
+</div>
+<div id="modal-ai" class="modal-overlay" onclick="closeModalOverlay(event,'ai')">
+  <div class="modal dark">
+    <button class="modal-close" onclick="closeModal('ai')">✕</button>
+    <h2>AI作品</h2>
+    <p>AI实验作品展示页面 - 预留位置</p>
+    <p style="color:#666;font-size:0.75rem">此处可展示AI生成图像、视频、音乐等创意实验作品。</p>
+  </div>
+</div>
+<div id="modal-planning" class="modal-overlay" onclick="closeModalOverlay(event,'planning')">
+  <div class="modal dark">
+    <button class="modal-close" onclick="closeModal('planning')">✕</button>
+    <h2>策划作品</h2>
+    <p>策划作品展示页面 - 预留位置</p>
+    <p style="color:#666;font-size:0.75rem">此处可展示内容策划方案、创意概念、项目企划等作品。</p>
+  </div>
+</div>
+<div id="modal-visual" class="modal-overlay" onclick="closeModalOverlay(event,'visual')">
+  <div class="modal dark">
+    <button class="modal-close" onclick="closeModal('visual')">✕</button>
+    <h2>视觉作品</h2>
+    <p>视觉作品展示页面 - 预留位置</p>
+    <p style="color:#666;font-size:0.75rem">此处可展示视觉设计、视频剪辑、动效作品等。</p>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast" class="toast"></div>
+
+<script>
+  // Smooth scroll
+  function scrollTo(id) {
+    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+  }
+
+  // Toast
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+  }
+
+  // Copy helpers
+  function copyText(text, msg) {
+    navigator.clipboard.writeText(text).then(() => showToast(msg));
+  }
+  function copyWechat() {
+    navigator.clipboard.writeText('Zzzy_nine').then(() => {
+      showToast('微信号已复制到剪贴板');
+      setTimeout(() => {
+        if (confirm('微信号已复制，是否跳转到微信？')) {
+          window.open('weixin://', '_blank');
+        }
+      }, 300);
+    });
+  }
+
+  // Modals
+  function openModal(id) {
+    document.getElementById('modal-' + id).classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal(id) {
+    document.getElementById('modal-' + id).classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function closeModalOverlay(e, id) {
+    if (e.target === document.getElementById('modal-' + id)) closeModal(id);
+  }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.modal-overlay.open').forEach(el => {
+        el.classList.remove('open');
+        document.body.style.overflow = '';
+      });
+    }
+  });
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
