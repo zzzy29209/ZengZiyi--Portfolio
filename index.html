@@ -223,10 +223,10 @@
 <nav>
   <div class="nav-logo">ZENG ZIYI</div>
   <div class="nav-links">
-    <button onclick="scrollTo('about')">基本信息</button>
-    <button onclick="scrollTo('internship')">实习经历</button>
-    <button onclick="scrollTo('works')">作品集</button>
-    <button onclick="scrollTo('contact')" class="active">联系我</button>
+    <button onclick="scrollToSection('about')">基本信息</button>
+    <button onclick="scrollToSection('internship')">实习经历</button>
+    <button onclick="scrollToSection('works')">作品集</button>
+    <button onclick="scrollToSection('contact')" class="active">联系我</button>
   </div>
 </nav>
 
@@ -1049,7 +1049,7 @@
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   // Scroll
-  function scrollTo(id) {
+  function scrollToSection(id) {
     document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
   }
 
@@ -1103,4 +1103,15 @@
   }
 
   // Scroll reveal
-  const observer = new IntersectionObserver(entries =
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
+
+  // Hero is always visible immediately
+  document.querySelectorAll('.hero-content').forEach(el => el.classList.add('visible'));
+
+  // Observe all other scroll-reveal elements
+  document.querySelectorAll('.scroll-reveal:not(.hero-content)').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
