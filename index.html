@@ -240,10 +240,114 @@
     .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(4rem); background: #000; color: #fff; padding: 0.75rem 1.5rem; border-radius: 99px; font-size: 0.75rem; font-weight: 700; z-index: 9999; opacity: 0; transition: all 0.4s cubic-bezier(0.16,1,0.3,1); white-space: nowrap; pointer-events: none; }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-    /* ── VERTICAL VIDEO MODAL ── */
-    .modal.vertical { max-width: 28rem; }
-    .modal.vertical .modal-video { aspect-ratio: 9/16; }
-  </style>
+    /* ── VERTICAL VIDEO MODAL (抖音竖屏) ── */
+    .modal.vertical { max-width: 26rem; }
+    .modal.vertical .modal-video {
+      aspect-ratio: 9/16;
+      position: relative;
+      overflow: hidden;
+      background: #000;
+    }
+    .modal.vertical .modal-video iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+      transform: scale(1.15);
+      transform-origin: center center;
+    }
+
+    /* ── MOBILE RESPONSIVE ── */
+    @media (max-width: 768px) {
+      /* 全局间距缩小 */
+      nav { padding: 1rem 1.25rem; }
+      .hero { padding: 5rem 1.25rem 2rem; }
+      .hero-sub { font-size: 0.6rem; margin-top: 1.5rem; }
+      .hero-bar { margin-top: 1.5rem; }
+      .hero-image-overlay { width: 65%; }
+
+      /* About */
+      .about-left { padding: 2.5rem 1.5rem; }
+      .about-right { padding: 2.5rem 1.5rem; }
+      .section-label { margin-bottom: 1.5rem; }
+
+      /* Internship */
+      .internship-section { padding: 3rem 1.25rem; }
+      .section-header { margin-bottom: 2rem; padding-bottom: 1.5rem; }
+      .section-header h3 { font-size: clamp(1.5rem, 6vw, 2.5rem); }
+      .intern-date { font-size: 0.75rem; padding-top: 1.5rem; }
+      .intern-card { padding: 1.5rem; }
+      .intern-card h4 { font-size: 0.95rem; margin-bottom: 0.75rem; }
+      .intern-body p { font-size: 0.7rem; line-height: 1.7; }
+      .intern-body { gap: 1rem; }
+      .metric-value { font-size: 1.15rem; }
+      .metric-label { font-size: 0.55rem; }
+      .metric-unit { font-size: 0.55rem; }
+      .metric-card { padding: 0.4rem 0.6rem; }
+      .metrics { gap: 0.5rem; margin-bottom: 1rem; }
+      .intern-tag { font-size: 0.55rem; padding: 0.15rem 0.5rem; }
+
+      /* Timeline */
+      .timeline-wrap { margin-bottom: 2rem; }
+      .timeline-name { font-size: 0.6rem; }
+      .timeline-date { font-size: 0.5rem; }
+
+      /* Works */
+      .works-section { padding: 3rem 1.25rem; }
+      .works-section-title { font-size: clamp(1.8rem, 6vw, 2.5rem); }
+      .works-section-desc { font-size: 0.75rem; margin-bottom: 2rem; }
+      .works-tab { font-size: 0.75rem; padding: 0.6rem 1rem; }
+      .work-card { min-height: 11rem; }
+      .work-card-thumb { height: 8rem; }
+      .work-card-body { padding: 1rem 1.25rem; }
+      .work-card-title { font-size: 0.85rem; }
+      .work-card-role { font-size: 0.5rem; }
+      .work-card-desc { font-size: 0.6rem; }
+
+      /* Bilibili portal */
+      .bilibili-portal { padding: 2.5rem 1.25rem; }
+      .portal-hint { font-size: 0.95rem; }
+      .portal-desc { font-size: 0.78rem; }
+      .portal-btn { font-size: 0.85rem; padding: 0.75rem 1.8rem; }
+
+      /* Contact */
+      .contact-section { padding: 3rem 1.25rem; }
+      .contact-section h3 { font-size: clamp(2rem, 10vw, 4rem); margin-bottom: 2rem; }
+      .contact-row { gap: 2.5rem; }
+      .contact-btn { font-size: 0.9rem; }
+
+      /* Modal */
+      .modal-overlay { padding: 0.75rem; }
+      .modal { max-width: 100%; }
+      .modal-body { padding: 1.25rem 1.5rem 1.5rem; }
+      .modal-body h2 { font-size: 1.2rem; }
+      .modal-body p { font-size: 0.75rem; }
+      .modal-pill { font-size: 0.55rem; padding: 0.2rem 0.6rem; }
+      .modal-link { font-size: 0.65rem; padding: 0.5rem 1rem; }
+      .modal.vertical { max-width: 85vw; }
+
+      /* Footer */
+      footer { margin-top: 2.5rem; font-size: 0.45rem; letter-spacing: 1em; }
+    }
+
+    /* 超小屏（<420px） */
+    @media (max-width: 420px) {
+      .hero-sub { font-size: 0.5rem; letter-spacing: 0.1em; }
+      .hero-bar-text { font-size: 0.55rem; letter-spacing: 0.3em; }
+      .section-header h3 { font-size: 1.5rem; }
+      .intern-card h4 { font-size: 0.85rem; }
+      .intern-body p { font-size: 0.68rem; }
+      .metric-value { font-size: 1rem; }
+      .works-tab { font-size: 0.65rem; padding: 0.5rem 0.75rem; letter-spacing: 0.08em; }
+      .work-card-title { font-size: 0.8rem; }
+      .contact-section h3 { font-size: 2rem; }
+      .modal.vertical { max-width: 92vw; }
+    }
+
+</style>
 </head>
 <body>
 
@@ -730,7 +834,7 @@
     <div class="contact-row">
       <div class="contact-item">
         <p class="contact-label">Email</p>
-        <button class="contact-btn" onclick="copyText('zzyzzy_nine@163.com','邮箱已复制到剪贴板')">zzyzzy_nine@163.com</button>
+        <button class="contact-btn" onclick="copyText('zzzy29209@163.com','邮箱已复制到剪贴板')">zzzy29209@163.com</button>
         <p class="contact-hint">点击复制</p>
       </div>
       <div class="contact-item">
@@ -818,7 +922,7 @@
 
 <!-- 采访视频 -->
 <div id="modal-interview" class="modal-overlay" onclick="closeModalOverlay(event,'interview')">
-  <div class="modal dark">
+  <div class="modal dark vertical">
     <button class="modal-close" onclick="closeModal('interview')">✕</button>
     <div class="modal-video">
       <iframe src="https://open.douyin.com/player/video?vid=7564621993643904282&autoplay=0"
@@ -839,7 +943,7 @@
 
 <!-- 小米1 -->
 <div id="modal-xiaomi1" class="modal-overlay" onclick="closeModalOverlay(event,'xiaomi1')">
-  <div class="modal">
+  <div class="modal vertical">
     <button class="modal-close" onclick="closeModal('xiaomi1')">✕</button>
     <div class="modal-video">
       <iframe src="https://open.douyin.com/player/video?vid=7543461350660443428&autoplay=0"
@@ -861,7 +965,7 @@
 
 <!-- 小米2 -->
 <div id="modal-xiaomi2" class="modal-overlay" onclick="closeModalOverlay(event,'xiaomi2')">
-  <div class="modal">
+  <div class="modal vertical">
     <button class="modal-close" onclick="closeModal('xiaomi2')">✕</button>
     <div class="modal-video">
       <iframe src="https://open.douyin.com/player/video?vid=7561007858960190772&autoplay=0"
@@ -883,7 +987,7 @@
 
 <!-- 小米3 -->
 <div id="modal-xiaomi3" class="modal-overlay" onclick="closeModalOverlay(event,'xiaomi3')">
-  <div class="modal">
+  <div class="modal vertical">
     <button class="modal-close" onclick="closeModal('xiaomi3')">✕</button>
     <div class="modal-video">
       <iframe src="https://open.douyin.com/player/video?vid=7546164694239694099&autoplay=0"
