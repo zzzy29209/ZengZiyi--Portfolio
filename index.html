@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ziyi Zeng · Portfolio</title>
+  <title>ZENG ZIYI · Portfolio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet" />
@@ -120,7 +120,7 @@
     .works-tabs { display: flex; gap: 0; border-bottom: 2px solid #000; margin-bottom: 2.5rem; overflow-x: auto; }
     .works-tab {
       background: none; border: none; cursor: pointer;
-      font-family: 'Inter', sans-serif; font-size: 0.65rem; font-weight: 900;
+      font-family: 'Inter', sans-serif; font-size: 0.95rem; font-weight: 900;
       text-transform: uppercase; letter-spacing: 0.15em;
       padding: 0.75rem 1.5rem; color: #000; opacity: 0.3;
       border-bottom: 3px solid transparent; margin-bottom: -2px;
@@ -166,6 +166,30 @@
     /* Tab panels */
     .works-panel { display: none; }
     .works-panel.active { display: block; }
+
+    
+    /* ── BILIBILI PORTAL ── */
+    .bilibili-portal {
+      width: 100%; padding: 4rem 2.5rem; background: #fff;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .portal-hint {
+      font-size: 1.1rem; font-weight: 700; color: #000;
+      margin-bottom: 0.8rem; letter-spacing: -0.02em;
+    }
+    .portal-desc {
+      font-size: 0.85rem; color: #666; line-height: 1.7;
+      margin-bottom: 2rem;
+    }
+    .portal-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 0.9rem 2.2rem; border-radius: 50px;
+      background: #00A1D6; color: #fff; border: none;
+      font-family: 'Inter', sans-serif; font-size: 0.95rem; font-weight: 700;
+      cursor: pointer; transition: all 0.25s;
+      letter-spacing: 0.02em;
+    }
+    .portal-btn:hover { background: #0089b8; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,161,214,0.35); }
 
     /* ── CONTACT ── */
     .contact-section { width: 100%; padding: 5rem 2.5rem; background: #9B1B30; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
@@ -215,6 +239,10 @@
     /* ── TOAST ── */
     .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(4rem); background: #000; color: #fff; padding: 0.75rem 1.5rem; border-radius: 99px; font-size: 0.75rem; font-weight: 700; z-index: 9999; opacity: 0; transition: all 0.4s cubic-bezier(0.16,1,0.3,1); white-space: nowrap; pointer-events: none; }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* ── VERTICAL VIDEO MODAL ── */
+    .modal.vertical { max-width: 28rem; }
+    .modal.vertical .modal-video { aspect-ratio: 9/16; }
   </style>
 </head>
 <body>
@@ -233,14 +261,14 @@
 <!-- HERO -->
 <section class="hero">
   <div class="hero-image-overlay">
-    <img src="https://miaoda.feishu.cn/aily/api/v1/feisuda/attachments/c45ed6a3-dc68-438c-a52e-c79fd2aa8eca/raw" alt="曾子懿" />
+    <img src="https://miaoda.feishu.cn/aily/api/v1/feisuda/attachments/c45ed6a3-dc68-438c-a52e-c79fd2aa8eca/raw" alt="hero" />
   </div>
   <div class="hero-content scroll-reveal">
     <h1 class="mega-title">PORT<br /><span style="color:#9B1B30">FOLIO</span></h1>
     <p class="hero-sub">Content Creator 内容创作者 · Film Director 影视导演 · AI Creator</p>
     <div class="hero-bar">
       <div class="hero-bar-line"></div>
-      <p class="hero-bar-text">Ziyi Zeng / 2026</p>
+      <p class="hero-bar-text">ZENG ZIYI / 2026</p>
     </div>
   </div>
 </section>
@@ -449,20 +477,18 @@
 
     <!-- TABS -->
     <div class="works-tabs">
-      <button class="works-tab active" onclick="switchTab('narrative')">🎬 影像叙事</button>
-      <button class="works-tab" onclick="switchTab('brand')">📡 品牌内容</button>
-      <button class="works-tab" onclick="switchTab('ai')">🤖 AI创作</button>
-      <button class="works-tab" onclick="switchTab('overseas')">🌏 海外视角</button>
-      <button class="works-tab" onclick="switchTab('tech')">⚡ 技术拓展</button>
+      <button class="works-tab active" onclick="switchTab('narrative')">影像叙事</button>
+      <button class="works-tab" onclick="switchTab('brand')">品牌内容</button>
+      <button class="works-tab" onclick="switchTab('ai')">AI创作</button>
+      <button class="works-tab" onclick="switchTab('overseas')">海外视角</button>
+      <button class="works-tab" onclick="switchTab('tech')">技术拓展</button>
     </div>
 
     <!-- ── PANEL 1: 影像叙事 ── -->
     <div id="panel-narrative" class="works-panel active">
       <div class="works-grid">
-
-        <!-- 《倒刺》-->
         <div class="work-card" onclick="openModal('daoci')">
-          <div class="work-card-thumb-placeholder">🎬</div>
+          <img class="work-card-thumb" src="https://p-mira-img-sign-sgnontt.byteintl.net/tos-mya-i-xobrcjvdq7/33c8203e5f3741aa941d2ef2e1dc5e13.jpeg~tplv-xobrcjvdq7-image-jpeg.jpeg?lk3s=3523e930&x-orig-authkey=miraorigin&x-orig-expires=1808204400&x-orig-sign=ILfh5MawyfLRfbnHIMSdkVp%2FW1o%3D" alt="倒刺" />
           <div class="work-card-body">
             <div>
               <p class="work-card-role">制片 · 剪辑</p>
@@ -472,36 +498,30 @@
             <p class="work-card-arrow">WATCH →</p>
           </div>
         </div>
-
-        <!-- 《离岸流》-->
         <div class="work-card" onclick="openModal('lianliuflow')">
-          <div class="work-card-thumb-placeholder">🌊</div>
+          <img class="work-card-thumb" src="http://i0.hdslb.com/bfs/archive/a601ca715a57a17c9d1f29039477ec503cf148c2.jpg" alt="离岸流" />
           <div class="work-card-body">
             <div>
               <p class="work-card-role">灯光 · 剪辑</p>
               <p class="work-card-title">《离岸流》</p>
-              <p class="work-card-desc">学生短片作品，点击播放</p>
+              <p class="work-card-desc">韩国釜山拍摄 · 担任灯光指导与剪辑</p>
             </div>
             <p class="work-card-arrow">WATCH →</p>
           </div>
         </div>
-
-        <!-- 《山水涧》-->
         <div class="work-card" onclick="openModal('shanshui')">
-          <div class="work-card-thumb-placeholder">🏔️</div>
+          <img class="work-card-thumb" src="http://i2.hdslb.com/bfs/archive/aa20f8fd11058c213241f1b1fdfcb1a292800125.jpg" alt="山水涧" />
           <div class="work-card-body">
             <div>
               <p class="work-card-role">摄影 · 剪辑</p>
               <p class="work-card-title">《山水涧》</p>
-              <p class="work-card-desc">学生短片作品，点击播放</p>
+              <p class="work-card-desc">湖北麻城乡村人文纪录片 · 摄像与剪辑</p>
             </div>
             <p class="work-card-arrow">WATCH →</p>
           </div>
         </div>
-
-        <!-- 采访视频 -->
         <div class="work-card" onclick="openModal('interview')">
-          <div class="work-card-thumb-placeholder">🎙️</div>
+          <img class="work-card-thumb" src="https://p-mira-img-sign-sgnontt.byteintl.net/tos-mya-i-xobrcjvdq7/aa1c5853cd7a4674b9be20585737c200.jpeg~tplv-xobrcjvdq7-image-jpeg.jpeg?lk3s=3523e930&x-orig-authkey=miraorigin&x-orig-expires=1808204400&x-orig-sign=4MoXPAfy9ZUBoVk%2BpQqgJN1OnLU%3D" alt="采访视频" />
           <div class="work-card-body">
             <div>
               <p class="work-card-role">导演 · 剪辑</p>
@@ -511,17 +531,37 @@
             <p class="work-card-arrow">WATCH →</p>
           </div>
         </div>
-
+        <div class="work-card" onclick="openModal('seji')">
+          <img class="work-card-thumb" src="https://p-mira-img-sign-sgnontt.byteintl.net/tos-mya-i-xobrcjvdq7/1ad47b0da2bc485ba0ff967484ea5b4f.jpeg~tplv-xobrcjvdq7-image-jpeg.jpeg?lk3s=3523e930&x-orig-authkey=miraorigin&x-orig-expires=1808208000&x-orig-sign=VkQ%2Fi5VB%2Bsq0g3YWSYHGeLdl0ro%3D" alt="色戒灯光分析" />
+          <div class="work-card-body">
+            <div>
+              <p class="work-card-role">灯光分析 · 视频论文</p>
+              <p class="work-card-title">电影《色戒》灯光设计分析</p>
+              <p class="work-card-desc">分析《色戒》中易先生首次登场的地牢顶光设计，与《教父》对比研究，探讨灯光如何服务于人物形象塑造</p>
+            </div>
+            <p class="work-card-arrow">WATCH →</p>
+          </div>
+        </div>
+        <div class="work-card" onclick="openModal('liananhuaxu')">
+          <img class="work-card-thumb" src="https://p-mira-img-sign-sgnontt.byteintl.net/tos-mya-i-xobrcjvdq7/18bfdf7836ae49ab900824768f0c9935.jpeg~tplv-xobrcjvdq7-image-jpeg.jpeg?lk3s=3523e930&x-orig-authkey=miraorigin&x-orig-expires=1808208000&x-orig-sign=vxMNxB%2BEsH0cNHOpIxgSWh%2BFdTw%3D" alt="离岸流幕后花絮" />
+          <div class="work-card-body">
+            <div>
+              <p class="work-card-role">灯光 · 幕后记录</p>
+              <p class="work-card-title">自制短片《离岸流》幕后花絮</p>
+              <p class="work-card-desc">作为Gaffer从灯光设计角度记录韩国釜山四天拍摄的设计思路与实践手段，回顾作品、反思不足、汲取经验</p>
+            </div>
+            <p class="work-card-arrow">WATCH →</p>
+          </div>
+        </div>
+        </div>
       </div>
     </div>
 
     <!-- ── PANEL 2: 品牌内容 ── -->
     <div id="panel-brand" class="works-panel">
       <div class="works-grid">
-
-        <!-- 小米 对谈视频 -->
         <div class="work-card" onclick="openModal('xiaomi1')">
-          <div class="work-card-thumb-placeholder">📱</div>
+          <img class="work-card-thumb" src="https://p-mira-img-sign-sgnontt.byteintl.net/tos-mya-i-xobrcjvdq7/9eee71100be8450ba77981fa8a54f5f0.jpeg~tplv-xobrcjvdq7-image-jpeg.jpeg?lk3s=3523e930&x-orig-authkey=miraorigin&x-orig-expires=1808204400&x-orig-sign=QZ59CPrFfrfnByGSvqXz3z%2FnH8A%3D" alt="顶尖学子座谈会" />
           <div class="work-card-body">
             <div>
               <p class="work-card-role">小米雇主品牌 · 导演/剪辑</p>
@@ -531,10 +571,8 @@
             <p class="work-card-arrow">WATCH →</p>
           </div>
         </div>
-
-        <!-- 小米 主题短片2 -->
         <div class="work-card" onclick="openModal('xiaomi2')">
-          <div class="work-card-thumb-placeholder">🎥</div>
+          <img class="work-card-thumb" src="https://p-mira-img-sign-sgnontt.byteintl.net/tos-mya-i-xobrcjvdq7/70ca9aa411f64bbeba7e8eb34959fdf3.jpeg~tplv-xobrcjvdq7-image-jpeg.jpeg?lk3s=3523e930&x-orig-authkey=miraorigin&x-orig-expires=1808204400&x-orig-sign=QO1u7z9jM8CeCE24ZlA0Izh2QMA%3D" alt="奇幻漂流" />
           <div class="work-card-body">
             <div>
               <p class="work-card-role">小米雇主品牌 · 导演/剪辑</p>
@@ -544,10 +582,8 @@
             <p class="work-card-arrow">WATCH →</p>
           </div>
         </div>
-
-        <!-- 小米 第三条 -->
         <div class="work-card" onclick="openModal('xiaomi3')">
-          <div class="work-card-thumb-placeholder">✨</div>
+          <img class="work-card-thumb" src="https://p-mira-img-sign-sgnontt.byteintl.net/tos-mya-i-xobrcjvdq7/63c7f2d6ab7c481e885a6083a3ad8ddb.jpeg~tplv-xobrcjvdq7-image-jpeg.jpeg?lk3s=3523e930&x-orig-authkey=miraorigin&x-orig-expires=1808204400&x-orig-sign=XAF%2B8G9hjF6qRmYkpAKnbu4cWi0%3D" alt="小米品牌内容" />
           <div class="work-card-body">
             <div>
               <p class="work-card-role">小米雇主品牌 · 策划/剪辑</p>
@@ -557,10 +593,8 @@
             <p class="work-card-arrow">WATCH →</p>
           </div>
         </div>
-
-        <!-- 芒果晚会 -->
         <div class="work-card" onclick="openModal('mango')">
-          <div class="work-card-thumb-placeholder">🌟</div>
+          <img class="work-card-thumb" src="https://p-mira-img-sign-sgnontt.byteintl.net/tos-mya-i-xobrcjvdq7/ea81e3f0ed034d6a892713752c103fa7.jpeg~tplv-xobrcjvdq7-image-jpeg.jpeg?lk3s=3523e930&x-orig-authkey=miraorigin&x-orig-expires=1808204400&x-orig-sign=eLouqhx1f46SlnRO5a0oofTsPCg%3D" alt="人间最值得" />
           <div class="work-card-body">
             <div>
               <p class="work-card-role">芒果TV · 视频编导</p>
@@ -570,30 +604,25 @@
             <p class="work-card-arrow">WATCH →</p>
           </div>
         </div>
-
       </div>
     </div>
 
     <!-- ── PANEL 3: AI创作 ── -->
     <div id="panel-ai" class="works-panel">
       <div class="works-grid">
-
-        <!-- 《复苏之刃》-->
         <div class="work-card" onclick="openModal('sixiong')">
-          <div class="work-card-thumb-placeholder">🤖</div>
+          <img class="work-card-thumb" src="http://i2.hdslb.com/bfs/archive/939dc15725e0f3dc77976b2b7d4d3ed76cce46ea.jpg" alt="复苏之刃" />
           <div class="work-card-body">
             <div>
               <p class="work-card-role">AI视频 · 导演/制作</p>
               <p class="work-card-title">《复苏之刃》</p>
-              <p class="work-card-desc">AI短剧作品，B站可直接播放</p>
+              <p class="work-card-desc">AI仙侠短片 · Midjourney+Runway+Luma · 剧本与视频制作</p>
             </div>
             <p class="work-card-arrow">WATCH →</p>
           </div>
         </div>
-
-        <!-- 清明上河图AI短剧 -->
         <div class="work-card" onclick="openModal('qingming')">
-          <div class="work-card-thumb-placeholder">🖼️</div>
+          <img class="work-card-thumb" src="https://p-mira-img-sign-sgnontt.byteintl.net/tos-mya-i-xobrcjvdq7/2caa1feeadc44769802cd9878187da71.jpeg~tplv-xobrcjvdq7-image-jpeg.jpeg?lk3s=3523e930&x-orig-authkey=miraorigin&x-orig-expires=1808204400&x-orig-sign=3P3Saco6mDqXiNfmQ7HFIzQ600s%3D" alt="清明上河图AI短剧" />
           <div class="work-card-body">
             <div>
               <p class="work-card-role">芒果数智 · AI视频编导</p>
@@ -603,10 +632,8 @@
             <p class="work-card-arrow">WATCH →</p>
           </div>
         </div>
-
-        <!-- 技术拓展占位 -->
         <div class="work-card" onclick="openModal('aiplaceholder')">
-          <div class="work-card-thumb-placeholder">➕</div>
+          <img class="work-card-thumb" src="https://p-mira-img-sign-sgnontt.byteintl.net/tos-mya-i-xobrcjvdq7/f733e96e02754babbcfc917a3579e12a.jpeg~tplv-xobrcjvdq7-image-jpeg.jpeg?lk3s=3523e930&x-orig-authkey=miraorigin&x-orig-expires=1808204400&x-orig-sign=GWlM4y%2F64BUvM%2FkTEszxVGYaj68%3D" alt="更多AI作品" />
           <div class="work-card-body">
             <div>
               <p class="work-card-role">更多作品</p>
@@ -616,28 +643,25 @@
             <p class="work-card-arrow">COMING SOON</p>
           </div>
         </div>
-
       </div>
     </div>
 
     <!-- ── PANEL 4: 海外视角 ── -->
     <div id="panel-overseas" class="works-panel">
       <div class="works-grid">
-
-        <div class="work-card" onclick="window.open('https://youtube.com/@zzyzzy-em9pf?si=zJetkNLeGhpd8lJC','_blank')">
-          <div class="work-card-thumb-placeholder">▶️</div>
+        <div class="work-card" onclick="window.open('https://b23.tv/vLkjCpz','_blank')">
+          <img class="work-card-thumb" src="https://p-mira-img-sign-sgnontt.byteintl.net/tos-mya-i-xobrcjvdq7/553f92f10cec44dba3df342d5c9f1d92.jpeg~tplv-xobrcjvdq7-image-jpeg.jpeg?lk3s=3523e930&x-orig-authkey=miraorigin&x-orig-expires=1808204400&x-orig-sign=X%2FlQ7nEvyMkEQ8eWgMc2gCSPHGs%3D" alt="B站主页" />
           <div class="work-card-body">
             <div>
-              <p class="work-card-role">YouTube · 英文影视科普</p>
-              <p class="work-card-title">@zzyzzy YouTube 频道</p>
-              <p class="work-card-desc">英文影视分析内容，面向海外观众</p>
+              <p class="work-card-role">哔哩哔哩 · 影像创作</p>
+              <p class="work-card-title">B站个人主页</p>
+              <p class="work-card-desc">影像作品与创作内容合集</p>
             </div>
-            <p class="work-card-arrow">VISIT CHANNEL →</p>
+            <p class="work-card-arrow">VISIT →</p>
           </div>
         </div>
-
         <div class="work-card" onclick="openModal('overseas_more')">
-          <div class="work-card-thumb-placeholder">✍️</div>
+          <img class="work-card-thumb" src="https://p-mira-img-sign-sgnontt.byteintl.net/tos-mya-i-xobrcjvdq7/36d9f5391816458aa642e505d95ec92b.jpeg~tplv-xobrcjvdq7-image-jpeg.jpeg?lk3s=3523e930&x-orig-authkey=miraorigin&x-orig-expires=1808204400&x-orig-sign=kE3wO6bp5f%2FxVnkguimFh9lvYrs%3D" alt="影评" />
           <div class="work-card-body">
             <div>
               <p class="work-card-role">写作 · 影评</p>
@@ -647,16 +671,14 @@
             <p class="work-card-arrow">READ →</p>
           </div>
         </div>
-
       </div>
     </div>
 
     <!-- ── PANEL 5: 技术拓展 ── -->
     <div id="panel-tech" class="works-panel">
       <div class="works-grid">
-
         <div class="work-card" onclick="openModal('ue')">
-          <div class="work-card-thumb-placeholder">⚡</div>
+          <img class="work-card-thumb" src="https://p-mira-img-sign-sgnontt.byteintl.net/tos-mya-i-xobrcjvdq7/ef2b220fe1e14426ba6b7c8836e67d97.jpeg~tplv-xobrcjvdq7-image-jpeg.jpeg?lk3s=3523e930&x-orig-authkey=miraorigin&x-orig-expires=1808204400&x-orig-sign=jVqrjsYXEXXWDkz2ieRkRkSDDWI%3D" alt="特效视频" />
           <div class="work-card-body">
             <div>
               <p class="work-card-role">UE / Houdini · 特效</p>
@@ -666,9 +688,8 @@
             <p class="work-card-arrow">VIEW →</p>
           </div>
         </div>
-
         <div class="work-card" onclick="openModal('maya')">
-          <div class="work-card-thumb-placeholder">🎨</div>
+          <img class="work-card-thumb" src="https://p-mira-img-sign-sgnontt.byteintl.net/tos-mya-i-xobrcjvdq7/bec90f25f3b64b63a3228984d8480fe7.jpeg~tplv-xobrcjvdq7-image-jpeg.jpeg?lk3s=3523e930&x-orig-authkey=miraorigin&x-orig-expires=1808204400&x-orig-sign=ddj3z3tCJL9YPmPENWRVMT0XXX4%3D" alt="3D渲染" />
           <div class="work-card-body">
             <div>
               <p class="work-card-role">Maya · 建模渲染</p>
@@ -678,9 +699,8 @@
             <p class="work-card-arrow">VIEW →</p>
           </div>
         </div>
-
         <div class="work-card" onclick="openModal('vibecode')">
-          <div class="work-card-thumb-placeholder">💻</div>
+          <img class="work-card-thumb" src="https://p-mira-img-sign-sgnontt.byteintl.net/tos-mya-i-xobrcjvdq7/f7087fa3e5d24166b6b5850cb37a1a3b.jpeg~tplv-xobrcjvdq7-image-jpeg.jpeg?lk3s=3523e930&x-orig-authkey=miraorigin&x-orig-expires=1808204400&x-orig-sign=VAy7ggSmLRDQPvrGNij%2FtkUUwI0%3D" alt="独立开发" />
           <div class="work-card-body">
             <div>
               <p class="work-card-role">Vibecoding · 网页/小程序</p>
@@ -690,9 +710,8 @@
             <p class="work-card-arrow">VIEW →</p>
           </div>
         </div>
-
         <div class="work-card" onclick="openModal('storyboard')">
-          <div class="work-card-thumb-placeholder">📋</div>
+          <img class="work-card-thumb" src="https://p-mira-img-sign-sgnontt.byteintl.net/tos-mya-i-xobrcjvdq7/53dc5d4c23614c5cbf22b950059e6b2a.jpeg~tplv-xobrcjvdq7-image-jpeg.jpeg?lk3s=3523e930&x-orig-authkey=miraorigin&x-orig-expires=1808204400&x-orig-sign=It9JMl9HHddv6EZVcbe39bW%2BDJU%3D" alt="创作文档" />
           <div class="work-card-body">
             <div>
               <p class="work-card-role">分镜 · 剧本 · 策划案</p>
@@ -702,12 +721,25 @@
             <p class="work-card-arrow">VIEW →</p>
           </div>
         </div>
-
       </div>
     </div>
 
   </div>
 </section>
+
+<!-- BILIBILI PORTAL -->
+<section class="bilibili-portal">
+  <div class="scroll-reveal" style="text-align:center; max-width:700px; margin:0 auto;">
+    <p class="portal-hint">以上仅展示了我的部分作品</p>
+    <p class="portal-desc">更多作品请访问我的B站主页，同时我还有很多作品尚未公开展示，欢迎联系我了解更多</p>
+    <button class="portal-btn" onclick="window.open('https://b23.tv/vLkjCpz','_blank')">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" style="vertical-align:middle;margin-right:8px"><path d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v7.36c-.036 1.51-.556 2.769-1.56 3.773s-2.262 1.524-3.773 1.56H5.333c-1.51-.036-2.769-.556-3.773-1.56S.036 18.858 0 17.347v-7.36c.036-1.511.556-2.765 1.56-3.76 1.004-.996 2.262-1.52 3.773-1.574h.774l-1.174-1.12a1.234 1.234 0 0 1-.373-.906c0-.356.124-.658.373-.907l.027-.027c.267-.249.573-.373.92-.373.347 0 .653.124.92.373L9.653 4.44c.071.071.134.142.187.213h4.267a.836.836 0 0 1 .16-.213l2.853-2.747c.267-.249.573-.373.92-.373.347 0 .662.151.929.4.267.249.391.551.391.907 0 .355-.124.657-.373.906zM5.333 7.24c-.746.018-1.373.276-1.88.773-.506.498-.769 1.13-.786 1.894v7.52c.017.764.28 1.395.786 1.893.507.498 1.134.756 1.88.773h13.334c.746-.017 1.373-.275 1.88-.773.506-.498.769-1.129.786-1.893v-7.52c-.017-.765-.28-1.396-.786-1.894-.507-.497-1.134-.755-1.88-.773zM8 11.107c.373 0 .684.124.933.373.25.249.383.569.4.96v1.173c-.017.391-.15.711-.4.96-.249.25-.56.374-.933.374s-.684-.125-.933-.374c-.25-.249-.383-.569-.4-.96V12.44c.017-.391.15-.711.4-.96.249-.25.56-.373.933-.373zm8 0c.373 0 .684.124.933.373.25.249.383.569.4.96v1.173c-.017.391-.15.711-.4.96-.249.25-.56.374-.933.374s-.684-.125-.933-.374c-.25-.249-.383-.569-.4-.96V12.44c.017-.391.15-.711.4-.96.249-.25.56-.373.933-.373z"/></svg>
+      前往我的B站主页
+    </button>
+  </div>
+</section>
+
+
 
 <!-- CONTACT -->
 <section id="contact" class="contact-section">
@@ -716,7 +748,7 @@
     <div class="contact-row">
       <div class="contact-item">
         <p class="contact-label">Email</p>
-        <button class="contact-btn" onclick="copyText('zzzy29209@163.com','邮箱已复制到剪贴板')"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="dfa5a5a5a6ede6edefe69feee9ecf1bcb0b2">[email&#160;protected]</a></button>
+        <button class="contact-btn" onclick="copyText('zzyzzy_nine@163.com','邮箱已复制到剪贴板')">zzyzzy_nine@163.com</button>
         <p class="contact-hint">点击复制</p>
       </div>
       <div class="contact-item">
@@ -725,8 +757,8 @@
         <p class="contact-hint">点击复制</p>
       </div>
       <div class="contact-item">
-        <p class="contact-label">YouTube</p>
-        <button class="contact-btn" onclick="window.open('https://youtube.com/@zzyzzy-em9pf?si=zJetkNLeGhpd8lJC','_blank')">@zzyzzy</button>
+        <p class="contact-label">Bilibili</p>
+        <button class="contact-btn" onclick="window.open('https://b23.tv/vLkjCpz','_blank')">B站主页</button>
         <p class="contact-hint">点击访问</p>
       </div>
     </div>
@@ -741,7 +773,7 @@
   <div class="modal dark">
     <button class="modal-close" onclick="closeModal('daoci')">✕</button>
     <div class="pending-banner" style="background:#1a1a1a;border-color:#333;">
-      <p style="color:#666;font-size:2rem;margin-bottom:0.75rem">🎬</p>
+      
       <strong style="color:#fff;">视频即将上线</strong>
       <p style="color:#555;">正在上传至B站，上线后此处将直接播放</p>
     </div>
@@ -762,18 +794,21 @@
   <div class="modal dark">
     <button class="modal-close" onclick="closeModal('lianliuflow')">✕</button>
     <div class="modal-video">
-      <iframe src="https://player.bilibili.com/player.html?bvid=BV1gow6zWEnw&autoplay=0&high_quality=1"
+      <iframe src="https://player.bilibili.com/player.html?bvid=BV1uZw6zXEq2&autoplay=0&high_quality=1"
               allowfullscreen allow="autoplay; encrypted-media"></iframe>
     </div>
     <div class="modal-body">
       <p class="modal-tag">影像叙事 · 学生短片</p>
-      <h2>《离岸流》</h2>
-      <p>学生时期拍摄的短片作品。</p>
+      <h2>《离岸流》（片头）</h2>
+      <p>2024年10月，在韩国釜山，与另外五位中国同学共同完成的短片，完整版本时长16分钟，此处展示片头部分。</p>
+      <p>故事讲述了一个热爱写诗的少年，在现实与理想的两重选择中坠入迷茫，却意外成为刀人犯，在出狱后继续经历了一系列故事……最终他究竟是走向救赎还是灭亡？</p>
+      <p>担任灯光指导和剪辑职位，4天内拍摄完成，两周内剪辑完成。</p>
       <div class="modal-meta">
-        <span class="modal-pill">灯光</span>
+        <span class="modal-pill">灯光指导</span>
         <span class="modal-pill">剪辑</span>
+        <span class="modal-pill">韩国釜山</span>
       </div>
-      <a class="modal-link outline" href="https://www.bilibili.com/video/BV1gow6zWEnw" target="_blank">在B站观看 →</a>
+      <a class="modal-link outline" href="https://www.bilibili.com/video/BV1uZw6zXEq2" target="_blank">在B站观看 →</a>
     </div>
   </div>
 </div>
@@ -783,28 +818,32 @@
   <div class="modal dark">
     <button class="modal-close" onclick="closeModal('shanshui')">✕</button>
     <div class="modal-video">
-      <iframe src="https://player.bilibili.com/player.html?bvid=BV1uZw6zXEq2&autoplay=0&high_quality=1"
+      <iframe src="https://player.bilibili.com/player.html?bvid=BV1h9w6zxEBF&autoplay=0&high_quality=1"
               allowfullscreen allow="autoplay; encrypted-media"></iframe>
     </div>
     <div class="modal-body">
-      <p class="modal-tag">影像叙事 · 学生短片</p>
-      <h2>《山水涧》</h2>
-      <p>学生时期拍摄的短片作品。</p>
+      <p class="modal-tag">影像叙事 · 纪录片</p>
+      <h2>自制纪录片《山水涧》（节选）</h2>
+      <p>在湖北麻城，与另外3名同学共同制作的纪录片，分为3分钟预告片和7分钟正片，此处节选自预告片。</p>
+      <p>本片记录了湖北麻城龟山镇东垸村村民们的故事，这是一个有关乡村人文的故事，一段寻找内心向往与平静的旅程。</p>
+      <p>担任摄像与剪辑职位，1天内完成拍摄，3天内完成剪辑。</p>
       <div class="modal-meta">
-        <span class="modal-pill">摄影</span>
+        <span class="modal-pill">摄像</span>
         <span class="modal-pill">剪辑</span>
+        <span class="modal-pill">纪录片</span>
+        <span class="modal-pill">湖北麻城</span>
       </div>
-      <a class="modal-link outline" href="https://www.bilibili.com/video/BV1uZw6zXEq2" target="_blank">在B站观看 →</a>
+      <a class="modal-link outline" href="https://www.bilibili.com/video/BV1h9w6zxEBF" target="_blank">在B站观看 →</a>
     </div>
   </div>
 </div>
 
-<!-- 采访视频 (抖音嵌入) -->
+<!-- 采访视频 -->
 <div id="modal-interview" class="modal-overlay" onclick="closeModalOverlay(event,'interview')">
-  <div class="modal dark">
+  <div class="modal dark vertical">
     <button class="modal-close" onclick="closeModal('interview')">✕</button>
     <div class="modal-video">
-      <iframe src="https://open.douyin.com/player/video?vid=7543461350660443428&autoplay=0"
+      <iframe src="https://open.douyin.com/player/video?vid=7564621993643904282&autoplay=0"
               allowfullscreen allow="autoplay; encrypted-media"></iframe>
     </div>
     <div class="modal-body">
@@ -815,39 +854,39 @@
         <span class="modal-pill">导演</span>
         <span class="modal-pill">剪辑</span>
       </div>
-      <a class="modal-link outline" href="https://www.douyin.com/video/7543461350660443428" target="_blank">在抖音观看 →</a>
+      <a class="modal-link outline" href="https://www.douyin.com/video/7564621993643904282" target="_blank">在抖音观看 →</a>
     </div>
   </div>
 </div>
 
-<!-- 小米 对谈视频 1 -->
+<!-- 小米1 -->
 <div id="modal-xiaomi1" class="modal-overlay" onclick="closeModalOverlay(event,'xiaomi1')">
-  <div class="modal">
+  <div class="modal vertical">
     <button class="modal-close" onclick="closeModal('xiaomi1')">✕</button>
     <div class="modal-video">
-      <iframe src="https://open.douyin.com/player/video?vid=7561007858960190772&autoplay=0"
+      <iframe src="https://open.douyin.com/player/video?vid=7543461350660443428&autoplay=0"
               allowfullscreen allow="autoplay; encrypted-media"></iframe>
     </div>
     <div class="modal-body">
       <p class="modal-tag">品牌内容 · 小米雇主品牌</p>
       <h2>顶尖学子座谈会</h2>
-      <p>在小米雇主品牌实习期间，担任导演兼剪辑，制作「顶尖学子座谈会」系列视频，助力小米雇主品牌内容建设。</p>
+      <p>在小米雇主品牌实习期间，全程担任导演兼剪辑。该系列视频聚焦各领域顶尖学子与小米的对话，展现小米的技术文化与人才理念，助力雇主品牌内容建设与校招传播。</p>
       <div class="modal-meta">
         <span class="modal-pill">导演</span>
         <span class="modal-pill">剪辑</span>
         <span class="modal-pill">小米</span>
       </div>
-      <a class="modal-link outline" href="https://www.douyin.com/video/7561007858960190772" target="_blank">在抖音观看 →</a>
+      <a class="modal-link outline" href="https://www.douyin.com/video/7543461350660443428" target="_blank">在抖音观看 →</a>
     </div>
   </div>
 </div>
 
-<!-- 小米 视频2 -->
+<!-- 小米2 -->
 <div id="modal-xiaomi2" class="modal-overlay" onclick="closeModalOverlay(event,'xiaomi2')">
-  <div class="modal">
+  <div class="modal vertical">
     <button class="modal-close" onclick="closeModal('xiaomi2')">✕</button>
     <div class="modal-video">
-      <iframe src="https://open.douyin.com/player/video?vid=7546164694239694099&autoplay=0"
+      <iframe src="https://open.douyin.com/player/video?vid=7561007858960190772&autoplay=0"
               allowfullscreen allow="autoplay; encrypted-media"></iframe>
     </div>
     <div class="modal-body">
@@ -859,17 +898,17 @@
         <span class="modal-pill">导演</span>
         <span class="modal-pill">剪辑</span>
       </div>
-      <a class="modal-link outline" href="https://www.douyin.com/video/7546164694239694099" target="_blank">在抖音观看 →</a>
+      <a class="modal-link outline" href="https://www.douyin.com/video/7561007858960190772" target="_blank">在抖音观看 →</a>
     </div>
   </div>
 </div>
 
-<!-- 小米 视频3 -->
+<!-- 小米3 -->
 <div id="modal-xiaomi3" class="modal-overlay" onclick="closeModalOverlay(event,'xiaomi3')">
-  <div class="modal">
+  <div class="modal vertical">
     <button class="modal-close" onclick="closeModal('xiaomi3')">✕</button>
     <div class="modal-video">
-      <iframe src="https://open.douyin.com/player/video?vid=7564621993643904282&autoplay=0"
+      <iframe src="https://open.douyin.com/player/video?vid=7546164694239694099&autoplay=0"
               allowfullscreen allow="autoplay; encrypted-media"></iframe>
     </div>
     <div class="modal-body">
@@ -880,7 +919,7 @@
         <span class="modal-pill">策划</span>
         <span class="modal-pill">剪辑</span>
       </div>
-      <a class="modal-link outline" href="https://www.douyin.com/video/7564621993643904282" target="_blank">在抖音观看 →</a>
+      <a class="modal-link outline" href="https://www.douyin.com/video/7546164694239694099" target="_blank">在抖音观看 →</a>
     </div>
   </div>
 </div>
@@ -890,7 +929,7 @@
   <div class="modal dark">
     <button class="modal-close" onclick="closeModal('mango')">✕</button>
     <div class="pending-banner" style="background:#1a1a1a;border-color:#333;">
-      <p style="color:#666;font-size:2rem;margin-bottom:0.75rem">🌟</p>
+      
       <strong style="color:#fff;">视频即将上线</strong>
       <p style="color:#555;">节目片段正在整理中，上线后此处将直接播放</p>
     </div>
@@ -913,19 +952,23 @@
   <div class="modal dark">
     <button class="modal-close" onclick="closeModal('sixiong')">✕</button>
     <div class="modal-video">
-      <iframe src="https://player.bilibili.com/player.html?bvid=BV1h9w6zxEBF&autoplay=0&high_quality=1"
+      <iframe src="https://player.bilibili.com/player.html?bvid=BV1gow6zWEnw&autoplay=0&high_quality=1"
               allowfullscreen allow="autoplay; encrypted-media"></iframe>
     </div>
     <div class="modal-body">
-      <p class="modal-tag">AI创作 · AI短剧</p>
-      <h2>《复苏之刃》</h2>
-      <p>AI视频短剧作品，使用Runway、可灵、即梦等AI工具制作。</p>
+      <p class="modal-tag">AI创作 · AI短片</p>
+      <h2>AI短片《复苏之刃》</h2>
+      <p>2024年，与另外4名同学一起完成的AI短片。当时AI技术尚处早期，受限于海外环境，使用了Midjourney、Runway、Luma、Suno等AI工具。</p>
+      <p>故事为纯虚构，构建了一个四雄争霸的战乱世界，融入大量仙侠元素，采用游戏预告片形式呈现。</p>
+      <p>担任剧本开发与图生视频职位，从0到1进行剧本制作到剪辑完成，一周内完成全片。</p>
       <div class="modal-meta">
         <span class="modal-pill">AI视频</span>
-        <span class="modal-pill">导演</span>
-        <span class="modal-pill">剧本</span>
+        <span class="modal-pill">剧本开发</span>
+        <span class="modal-pill">Midjourney</span>
+        <span class="modal-pill">Runway</span>
+        <span class="modal-pill">Luma</span>
       </div>
-      <a class="modal-link outline" href="https://www.bilibili.com/video/BV1h9w6zxEBF" target="_blank">在B站观看 →</a>
+      <a class="modal-link outline" href="https://www.bilibili.com/video/BV1gow6zWEnw" target="_blank">在B站观看 →</a>
     </div>
   </div>
 </div>
@@ -935,7 +978,7 @@
   <div class="modal dark">
     <button class="modal-close" onclick="closeModal('qingming')">✕</button>
     <div class="pending-banner" style="background:#1a1a1a;border-color:#333;">
-      <p style="color:#666;font-size:2rem;margin-bottom:0.75rem">🖼️</p>
+      
       <strong style="color:#fff;">视频即将上线</strong>
       <p style="color:#555;">正在整理中</p>
     </div>
@@ -1047,20 +1090,62 @@
 <!-- TOAST -->
 <div id="toast" class="toast"></div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-  // Scroll
+
+<!-- MODAL: 色戒灯光分析 -->
+<div id="modal-seji" class="modal-overlay" onclick="closeModalOverlay(event,'seji')">
+  <div class="modal dark">
+    <button class="modal-close" onclick="closeModal('seji')">&#10005;</button>
+    <div class="modal-video">
+      <iframe src="https://player.bilibili.com/player.html?bvid=BV116oKBBE6L&autoplay=0&high_quality=1"
+              allowfullscreen allow="autoplay; encrypted-media"></iframe>
+    </div>
+    <div class="modal-body">
+      <p class="modal-tag">影像叙事 · 灯光分析</p>
+      <h2>电影《色戒》灯光设计分析</h2>
+      <p>电影《色戒》中易先生的首次登场是在地牢里，这一段落的顶光设计与电影《教父》中的场景颇为相似，都非常有研究价值，都服务于人物形象塑造。本视频从灯光设计的专业视角出发，深入分析了李安如何运用光影语言来构建角色的权力感与神秘感，以及这种灯光手法在经典电影中的传承与演变。</p>
+      <div class="modal-meta">
+        <span class="modal-pill">灯光分析</span>
+        <span class="modal-pill">视频论文</span>
+        <span class="modal-pill">色戒</span>
+        <span class="modal-pill">教父</span>
+      </div>
+      <a class="modal-link outline" href="https://www.bilibili.com/video/BV116oKBBE6L" target="_blank">在B站观看 &rarr;</a>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: 离岸流幕后花絮 -->
+<div id="modal-liananhuaxu" class="modal-overlay" onclick="closeModalOverlay(event,'liananhuaxu')">
+  <div class="modal dark">
+    <button class="modal-close" onclick="closeModal('liananhuaxu')">&#10005;</button>
+    <div class="modal-video">
+      <iframe src="https://player.bilibili.com/player.html?bvid=BV1z9oKBfEmF&autoplay=0&high_quality=1"
+              allowfullscreen allow="autoplay; encrypted-media"></iframe>
+    </div>
+    <div class="modal-body">
+      <p class="modal-tag">影像叙事 · 幕后记录</p>
+      <h2>自制短片《离岸流》幕后花絮</h2>
+      <p>短片《离岸流》是我和我的同学们用四天时间在韩国釜山拍摄完成的，这则视频记录了《离岸流》拍摄背后的故事。本人作为Gaffer（灯光指导），在这条视频中从灯光设计的角度记录了拍摄时的设计思路与实践手段。这是一次珍贵的记录，能够帮助我们回顾作品，反思不足，汲取经验。</p>
+      <div class="modal-meta">
+        <span class="modal-pill">灯光指导</span>
+        <span class="modal-pill">幕后花絮</span>
+        <span class="modal-pill">韩国釜山</span>
+      </div>
+      <a class="modal-link outline" href="https://www.bilibili.com/video/BV1z9oKBfEmF" target="_blank">在B站观看 &rarr;</a>
+    </div>
+  </div>
+</div>
+
+<script>
   function scrollToSection(id) {
     document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
   }
-
-  // Toast
   function showToast(msg) {
     const t = document.getElementById('toast');
     t.textContent = msg;
     t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 2500);
   }
-
   function copyText(text, msg) {
     navigator.clipboard.writeText(text).then(() => showToast(msg));
   }
@@ -1072,8 +1157,6 @@
       }, 300);
     });
   }
-
-  // Modals
   function openModal(id) {
     document.getElementById('modal-' + id).classList.add('open');
     document.body.style.overflow = 'hidden';
@@ -1093,24 +1176,16 @@
       });
     }
   });
-
-  // Works tabs
   function switchTab(name) {
     document.querySelectorAll('.works-tab').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.works-panel').forEach(p => p.classList.remove('active'));
     event.currentTarget.classList.add('active');
     document.getElementById('panel-' + name).classList.add('active');
   }
-
-  // Scroll reveal
   const observer = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
   }, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
-
-  // Hero is always visible immediately
   document.querySelectorAll('.hero-content').forEach(el => el.classList.add('visible'));
-
-  // Observe all other scroll-reveal elements
   document.querySelectorAll('.scroll-reveal:not(.hero-content)').forEach(el => observer.observe(el));
 </script>
 </body>
