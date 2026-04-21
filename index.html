@@ -10,14 +10,12 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    /* ── 仅对需要隐藏滚动条的容器局部隐藏，不再全局隐藏 ── */
     .hide-scrollbar::-webkit-scrollbar { display: none; }
     .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
     html { scroll-behavior: smooth; }
     body { font-family: 'Inter', sans-serif; background: #F4F4F4; color: #000; overflow-x: hidden; }
 
-    /* ── CSS 变量：统一管理颜色与字号 ── */
     :root {
       --color-primary: #9B1B30;
       --color-primary-dark: #7a1526;
@@ -28,16 +26,15 @@
       --color-text-light: #666;
       --color-border: #e0e0e0;
 
-      --font-xs: 0.75rem;    /* 12px - 最小可读 */
-      --font-sm: 0.8rem;     /* 12.8px */
-      --font-base: 0.875rem; /* 14px */
-      --font-md: 0.95rem;    /* 15.2px */
-      --font-lg: 1.1rem;     /* 17.6px */
-
-      --font-label: 0.7rem;  /* 11.2px - 仅用于极小的装饰标签 */
+      --font-xs: 0.75rem;
+      --font-sm: 0.8rem;
+      --font-base: 0.875rem;
+      --font-md: 0.95rem;
+      --font-lg: 1.1rem;
+      --font-label: 0.7rem;
     }
 
-    /* ── SKIP LINK (a11y) ── */
+    /* ── SKIP LINK ── */
     .skip-link {
       position: absolute; top: -100%; left: 0;
       background: var(--color-primary); color: #fff;
@@ -59,10 +56,11 @@
     }
     .nav-logo { font-weight: 900; font-size: var(--font-lg); letter-spacing: -0.05em; }
     .nav-links { display: flex; gap: 2.5rem; }
+    /* [修改1] 导航字号从 0.7rem 提升到 0.85rem */
     .nav-links a {
       background: none; border: none; cursor: pointer;
       font-family: 'Inter', sans-serif;
-      font-size: var(--font-label); font-weight: 700;
+      font-size: 0.85rem; font-weight: 700;
       letter-spacing: 0.1em; text-transform: uppercase;
       text-decoration: none; color: #000;
       transition: color 0.2s;
@@ -77,18 +75,27 @@
       padding: 6rem 2.5rem 2.5rem; background: #fff;
     }
     .hero-image-overlay {
-      position: absolute; right: 0; top: 5%; width: 55%; height: 95%; z-index: 1;
-      background: url('https://raw.githubusercontent.com/zzzy29209/ZengZiyi--Portfolio/main/hero-me.jpg') center/cover no-repeat;
-      opacity: 0.15;
-      mask-image: linear-gradient(to left, black 50%, transparent 100%), linear-gradient(to bottom, black 80%, transparent 100%);
+      position: absolute; right: 0; top: 0; width: 100%; height: 100%; z-index: 1;
+      background: url('https://raw.githubusercontent.com/zzzy29209/ZengZiyi--Portfolio/main/hero-me.jpg') right center/cover no-repeat;
+      /* 图片原色，无白雾 */
+      /* 从左到右渐变：左边完全透明 → 右边完全可见；底部轻微渐隐 */
+      mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.15) 25%, rgba(0,0,0,0.6) 50%, black 70%, black 100%), linear-gradient(to bottom, black 85%, transparent 100%);
       mask-composite: intersect;
-      -webkit-mask-image: linear-gradient(to left, black 50%, transparent 100%), linear-gradient(to bottom, black 80%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.15) 25%, rgba(0,0,0,0.6) 50%, black 70%, black 100%), linear-gradient(to bottom, black 85%, transparent 100%);
       -webkit-mask-composite: destination-in;
     }
     .hero-content { position: relative; z-index: 10; }
     .mega-title { font-size: clamp(4rem, 16vw, 14rem); font-weight: 900; line-height: 0.85; letter-spacing: -0.05em; text-transform: uppercase; }
     @media (max-width: 768px) { .mega-title { font-size: clamp(3rem, 18vw, 6rem); line-height: 0.9; } }
-    .hero-sub { margin-top: 2rem; font-size: var(--font-label); font-weight: 700; text-transform: uppercase; letter-spacing: 0.2em; opacity: 0.6; }
+    .hero-sub {
+      margin-top: 2rem; font-size: var(--font-label); font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.2em;
+      /* 文字颜色从左(黑)到右(白)渐变，适配背景从白到图片的过渡 */
+      background: linear-gradient(to right, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.5) 30%, rgba(255,255,255,0.9) 65%, #fff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
     .hero-bar { margin-top: 2.5rem; display: flex; align-items: center; gap: 1.5rem; }
     .hero-bar-line { width: 4rem; height: 0.25rem; background: #000; }
     .hero-bar-text { font-size: var(--font-label); font-weight: 900; text-transform: uppercase; letter-spacing: 0.5em; opacity: 0.4; }
@@ -152,9 +159,9 @@
     .works-inner { max-width: 1400px; margin: 0 auto; }
     .works-section-label { font-size: var(--font-label); font-weight: 900; text-transform: uppercase; letter-spacing: 1em; opacity: 0.3; margin-bottom: 1rem; }
     .works-section-title { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900; letter-spacing: -0.04em; margin-bottom: 0.75rem; }
-    .works-section-desc { font-size: var(--font-sm); color: var(--color-text-light); max-width: 36rem; line-height: 1.7; margin-bottom: 3rem; }
+    /* [修改3] max-width 从 36rem 放宽到 48rem，避免不自然断行 */
+    .works-section-desc { font-size: var(--font-sm); color: var(--color-text-light); max-width: 48rem; line-height: 1.7; margin-bottom: 3rem; }
 
-    /* 5-module tabs */
     .works-tabs { display: flex; gap: 0; border-bottom: 2px solid #000; margin-bottom: 2.5rem; overflow-x: auto; }
     .works-tab {
       background: none; border: none; cursor: pointer;
@@ -167,7 +174,6 @@
     .works-tab:hover { opacity: 0.7; }
     .works-tab.active { opacity: 1; border-bottom-color: var(--color-primary); color: var(--color-primary); }
 
-    /* Work cards grid */
     .works-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--color-border); border: 1px solid var(--color-border); }
     @media (max-width: 900px) { .works-grid { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 560px) { .works-grid { grid-template-columns: 1fr; } }
@@ -185,12 +191,6 @@
       opacity: 0.85;
     }
     .work-card:hover .work-card-thumb { transform: scale(1.05); opacity: 0.5; }
-    .work-card-thumb-placeholder {
-      width: 100%; height: 10rem; background: #f0f0f0;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 2rem; transition: background 0.4s;
-    }
-    .work-card:hover .work-card-thumb-placeholder { background: rgba(155,27,48,0.15); }
     .work-card-body { padding: 1.25rem 1.5rem; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
     .work-card-role { font-size: var(--font-label); font-weight: 700; text-transform: uppercase; letter-spacing: 0.2em; color: var(--color-primary); margin-bottom: 0.4rem; transition: color 0.3s; }
     .work-card:hover .work-card-role { color: rgba(255,255,255,0.6); }
@@ -201,7 +201,6 @@
     .work-card-arrow { font-size: var(--font-label); font-weight: 700; letter-spacing: 0.2em; opacity: 0; margin-top: 0.75rem; transition: opacity 0.3s; color: rgba(255,255,255,0.7); }
     .work-card:hover .work-card-arrow { opacity: 1; }
 
-    /* Tab panels */
     .works-panel { display: none; }
     .works-panel.active { display: block; }
 
@@ -210,21 +209,15 @@
       width: 100%; padding: 4rem 2.5rem; background: #fff;
       display: flex; align-items: center; justify-content: center;
     }
-    .portal-hint {
-      font-size: var(--font-lg); font-weight: 700; color: #000;
-      margin-bottom: 0.8rem; letter-spacing: -0.02em;
-    }
-    .portal-desc {
-      font-size: var(--font-sm); color: var(--color-text-light); line-height: 1.7;
-      margin-bottom: 2rem;
-    }
+    .portal-hint { font-size: var(--font-lg); font-weight: 700; color: #000; margin-bottom: 0.8rem; letter-spacing: -0.02em; }
+    .portal-desc { font-size: var(--font-sm); color: var(--color-text-light); line-height: 1.7; margin-bottom: 2rem; }
     .portal-btn {
       display: inline-flex; align-items: center; justify-content: center;
       padding: 0.9rem 2.2rem; border-radius: 50px;
       background: var(--color-primary); color: #fff; border: none;
       font-family: 'Inter', sans-serif; font-size: var(--font-md); font-weight: 700;
-      cursor: pointer; transition: all 0.25s;
-      letter-spacing: 0.02em;
+      cursor: pointer; transition: all 0.25s; letter-spacing: 0.02em;
+      text-decoration: none;
     }
     .portal-btn:hover { background: var(--color-primary-dark); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(155,27,48,0.35); }
 
@@ -265,11 +258,9 @@
     .modal.dark .modal-close { background: rgba(255,255,255,0.1); color: #fff; }
     .modal-close:hover { background: rgba(0,0,0,0.15); }
 
-    /* Video embed */
     .modal-video { width: 100%; aspect-ratio: 16/9; background: #000; }
     .modal-video iframe { width: 100%; height: 100%; border: none; display: block; }
 
-    /* Modal body */
     .modal-body { padding: 1.75rem 2rem 2rem; }
     .modal-tag { font-size: var(--font-label); font-weight: 900; text-transform: uppercase; letter-spacing: 0.2em; color: var(--color-primary); margin-bottom: 0.5rem; }
     .modal.dark .modal-tag { color: var(--color-accent); }
@@ -292,7 +283,6 @@
     .modal.dark .modal-link.outline { color: #fff; border-color: #fff; }
     .modal.dark .modal-link.outline:hover { background: #fff; color: #000; }
 
-    /* Placeholder state for pending videos */
     .pending-banner { background: #f9f5f0; border: 1px dashed #ccc; padding: 2rem; text-align: center; }
     .pending-banner p { font-size: var(--font-xs); color: #999; }
     .pending-banner strong { color: #333; display: block; margin-bottom: 0.4rem; font-size: var(--font-sm); }
@@ -302,6 +292,7 @@
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
     /* ── VERTICAL VIDEO MODAL ── */
+    /* [修改4] 竖屏视频：去掉 scale 偏移，用 overflow hidden + 居中确保完整显示 */
     .modal.vertical { max-width: 26rem; }
     .modal.vertical .modal-video {
       aspect-ratio: 9/16;
@@ -311,15 +302,17 @@
     }
     .modal.vertical .modal-video iframe {
       position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
       border: none; display: block;
-      transform: scale(1.15);
-      transform-origin: center center;
+      /* 不再缩放，确保居中完整显示 */
     }
 
-    /* ── MOBILE RESPONSIVE ── */
+    /* ── MOBILE ── */
     @media (max-width: 768px) {
       nav { padding: 1rem 1.25rem; }
+      /* [修改1-mobile] 移动端导航字号也相应调整 */
+      .nav-links a { font-size: 0.78rem; }
       .hero { padding: 5rem 1.25rem 2rem; }
       .hero-sub { font-size: var(--font-label); margin-top: 1.5rem; }
       .hero-bar { margin-top: 1.5rem; }
@@ -397,7 +390,6 @@
 </head>
 <body>
 
-<!-- SKIP LINK (a11y) -->
 <a class="skip-link" href="#about">跳转到主要内容</a>
 
 <!-- NAV -->
@@ -578,12 +570,15 @@
         <div class="intern-date">2024.12 - 2025.03</div>
         <div class="intern-card">
           <h4>湖南芒果数智艺术科技有限公司｜产品技术部｜AI产品视频编导</h4>
+          <!-- [修改2] "全球实时直播" 改为与 metric-value 统一样式 -->
           <div class="metrics">
             <div class="metric-card">
               <span class="metric-label">元宵晚会全球直播</span>
               <span class="metric-value">千万级</span>
               <span class="metric-unit">触达</span>
-              <span style="margin-left:0.5rem;padding:0.2rem 0.4rem;background:rgba(129,216,208,0.2);border-radius:2px;font-size:0.7rem;color:var(--color-accent);font-weight:700;">全球实时直播</span>
+            </div>
+            <div class="metric-card">
+              <span class="metric-value">全球实时直播</span>
             </div>
           </div>
           <div class="intern-body">
@@ -617,16 +612,13 @@
   </div>
 </section>
 
-<!-- ══════════════════════════════════════════
-     WORKS — TAB PANELS
-══════════════════════════════════════════ -->
+<!-- WORKS -->
 <section id="works" class="works-section">
   <div class="works-inner scroll-reveal">
     <p class="works-section-label">Portfolio</p>
     <h2 class="works-section-title">作品集</h2>
     <p class="works-section-desc">影像创作者 × AI探索者 × 内容策划人。以下作品涵盖影像叙事、品牌内容、AI创作与技术拓展四个维度。</p>
 
-    <!-- TABS — 改为 data-panel 驱动，不再依赖隐式 event -->
     <div class="works-tabs" role="tablist">
       <button class="works-tab active" data-panel="narrative" role="tab" aria-selected="true">影像叙事</button>
       <button class="works-tab" data-panel="brand" role="tab" aria-selected="false">品牌内容</button>
@@ -634,7 +626,7 @@
       <button class="works-tab" data-panel="tech" role="tab" aria-selected="false">技术拓展</button>
     </div>
 
-    <!-- ── PANEL 1: 影像叙事 ── -->
+    <!-- PANEL 1: 影像叙事 -->
     <div id="panel-narrative" class="works-panel active" role="tabpanel">
       <div class="works-grid">
         <div class="work-card" data-modal="daoci">
@@ -706,7 +698,7 @@
       </div>
     </div>
 
-    <!-- ── PANEL 2: 品牌内容 ── -->
+    <!-- PANEL 2: 品牌内容 -->
     <div id="panel-brand" class="works-panel" role="tabpanel">
       <div class="works-grid">
         <div class="work-card" data-modal="xiaomi1">
@@ -756,7 +748,7 @@
       </div>
     </div>
 
-    <!-- ── PANEL 3: AI创作 ── -->
+    <!-- PANEL 3: AI创作 -->
     <div id="panel-ai" class="works-panel" role="tabpanel">
       <div class="works-grid">
         <div class="work-card" data-modal="sixiong">
@@ -795,7 +787,7 @@
       </div>
     </div>
 
-    <!-- ── PANEL 4: 技术拓展 ── -->
+    <!-- PANEL 4: 技术拓展 -->
     <div id="panel-tech" class="works-panel" role="tabpanel">
       <div class="works-grid">
         <div class="work-card" data-modal="ue">
@@ -878,12 +870,12 @@
     <div class="contact-row">
       <div class="contact-item">
         <p class="contact-label">Email</p>
-        <button class="contact-btn" data-copy="zengziyi@example.com" data-toast="邮箱已复制到剪贴板">zzzy29209@163.com</button>
+        <button class="contact-btn" data-copy="zzzy29209@163.com" data-toast="邮箱已复制到剪贴板">zzzy29209@163.com</button>
         <p class="contact-hint">点击复制</p>
       </div>
       <div class="contact-item">
         <p class="contact-label">WeChat</p>
-        <button class="contact-btn" id="wechat-btn" data-copy="Zzzy_nine" data-toast="微信号已复制到剪贴板">Zzzy_nine</button>
+        <button class="contact-btn" data-copy="Zzzy_nine" data-toast="微信号已复制到剪贴板">Zzzy_nine</button>
         <p class="contact-hint">点击复制</p>
       </div>
     </div>
@@ -891,8 +883,7 @@
   <footer>© 2026 ZIYI ZENG</footer>
 </section>
 
-<!-- ══════════════ MODAL 容器 ══════════════ -->
-<!-- 所有 Modal 由 JS 数据驱动动态生成，不再手写重复 HTML -->
+<!-- MODAL 容器 -->
 <div id="modal-container"></div>
 
 <!-- TOAST -->
@@ -902,16 +893,11 @@
 (function () {
   'use strict';
 
-  /* ══════════════════════════════════════
-     MODAL 数据 — 保留你的全部作品内容
-  ══════════════════════════════════════ */
+  /* ── Modal 数据 ── */
   var modalsData = [
     {
-      id: 'daoci',
-      theme: 'dark',
-      vertical: false,
-      tag: '影像叙事 · 学生短片',
-      title: '《倒刺》',
+      id: 'daoci', theme: 'dark', vertical: false,
+      tag: '影像叙事 · 学生短片', title: '《倒刺》',
       paragraphs: ['学生时期拍摄的短片作品。'],
       pills: ['制片', '剪辑'],
       video: null,
@@ -919,11 +905,8 @@
       link: null
     },
     {
-      id: 'lianliuflow',
-      theme: 'dark',
-      vertical: false,
-      tag: '影像叙事 · 学生短片',
-      title: '《离岸流》（片头）',
+      id: 'lianliuflow', theme: 'dark', vertical: false,
+      tag: '影像叙事 · 学生短片', title: '《离岸流》（片头）',
       paragraphs: [
         '2024年10月，在韩国釜山，与另外五位中国同学共同完成的短片，完整版本时长16分钟，此处展示片头部分。',
         '故事讲述了一个热爱写诗的少年，在现实与理想的两重选择中坠入迷茫，却意外成为刀人犯，在出狱后继续经历了一系列故事……最终他究竟是走向救赎还是灭亡？',
@@ -935,11 +918,8 @@
       link: { url: 'https://www.bilibili.com/video/BV1uZw6zXEq2', text: '在B站观看 →' }
     },
     {
-      id: 'shanshui',
-      theme: 'dark',
-      vertical: false,
-      tag: '影像叙事 · 纪录片',
-      title: '自制纪录片《山水涧》（节选）',
+      id: 'shanshui', theme: 'dark', vertical: false,
+      tag: '影像叙事 · 纪录片', title: '自制纪录片《山水涧》（节选）',
       paragraphs: [
         '在湖北麻城，与另外3名同学共同制作的纪录片，分为3分钟预告片和7分钟正片，此处节选自预告片。',
         '本片记录了湖北麻城龟山镇东垸村村民们的故事，这是一个有关乡村人文的故事，一段寻找内心向往与平静的旅程。',
@@ -951,11 +931,8 @@
       link: { url: 'https://www.bilibili.com/video/BV1h9w6zxEBF', text: '在B站观看 →' }
     },
     {
-      id: 'interview',
-      theme: 'dark',
-      vertical: true,
-      tag: '影像叙事 · 采访纪实',
-      title: '采访视频',
+      id: 'interview', theme: 'dark', vertical: true,
+      tag: '影像叙事 · 采访纪实', title: '采访视频',
       paragraphs: ['人物采访与纪实内容创作。'],
       pills: ['导演', '剪辑'],
       video: { type: 'douyin', vid: '7564621993643904282' },
@@ -963,11 +940,8 @@
       link: { url: 'https://www.douyin.com/video/7564621993643904282', text: '在抖音观看 →' }
     },
     {
-      id: 'seji',
-      theme: 'dark',
-      vertical: false,
-      tag: '影像叙事 · 灯光分析',
-      title: '电影《色戒》灯光设计分析',
+      id: 'seji', theme: 'dark', vertical: false,
+      tag: '影像叙事 · 灯光分析', title: '电影《色戒》灯光设计分析',
       paragraphs: [
         '电影《色戒》中易先生的首次登场是在地牢里，这一段落的顶光设计与电影《教父》中的场景颇为相似，都非常有研究价值，都服务于人物形象塑造。本视频从灯光设计的专业视角出发，深入分析了李安如何运用光影语言来构建角色的权力感与神秘感，以及这种灯光手法在经典电影中的传承与演变。'
       ],
@@ -977,11 +951,8 @@
       link: { url: 'https://www.bilibili.com/video/BV116oKBBE6L', text: '在B站观看 →' }
     },
     {
-      id: 'liananhuaxu',
-      theme: 'dark',
-      vertical: false,
-      tag: '影像叙事 · 幕后记录',
-      title: '自制短片《离岸流》幕后花絮',
+      id: 'liananhuaxu', theme: 'dark', vertical: false,
+      tag: '影像叙事 · 幕后记录', title: '自制短片《离岸流》幕后花絮',
       paragraphs: [
         '短片《离岸流》是我和我的同学们用四天时间在韩国釜山拍摄完成的，这则视频记录了《离岸流》拍摄背后的故事。本人作为Gaffer（灯光指导），在这条视频中从灯光设计的角度记录了拍摄时的设计思路与实践手段。这是一次珍贵的记录，能够帮助我们回顾作品，反思不足，汲取经验。'
       ],
@@ -991,11 +962,8 @@
       link: { url: 'https://www.bilibili.com/video/BV1z9oKBfEmF', text: '在B站观看 →' }
     },
     {
-      id: 'xiaomi1',
-      theme: '',
-      vertical: true,
-      tag: '品牌内容 · 小米雇主品牌',
-      title: '顶尖学子座谈会',
+      id: 'xiaomi1', theme: '', vertical: true,
+      tag: '品牌内容 · 小米雇主品牌', title: '顶尖学子座谈会',
       paragraphs: [
         '在小米雇主品牌实习期间，全程担任导演兼剪辑。该系列视频聚焦各领域顶尖学子与小米的对话，展现小米的技术文化与人才理念，助力雇主品牌内容建设与校招传播。'
       ],
@@ -1005,39 +973,26 @@
       link: { url: 'https://www.douyin.com/video/7543461350660443428', text: '在抖音观看 →' }
     },
     {
-      id: 'xiaomi2',
-      theme: '',
-      vertical: true,
-      tag: '品牌内容 · 小米雇主品牌',
-      title: '奇幻漂流',
-      paragraphs: [
-        '小米雇主品牌创意短视频，全程担任导演制作剧本、分镜，拍摄并独立剪辑。'
-      ],
+      id: 'xiaomi2', theme: '', vertical: true,
+      tag: '品牌内容 · 小米雇主品牌', title: '奇幻漂流',
+      paragraphs: ['小米雇主品牌创意短视频，全程担任导演制作剧本、分镜，拍摄并独立剪辑。'],
       pills: ['创意策划', '导演', '剪辑'],
       video: { type: 'douyin', vid: '7561007858960190772' },
       pending: null,
       link: { url: 'https://www.douyin.com/video/7561007858960190772', text: '在抖音观看 →' }
     },
     {
-      id: 'xiaomi3',
-      theme: '',
-      vertical: true,
-      tag: '品牌内容 · 小米雇主品牌',
-      title: '小米品牌内容',
-      paragraphs: [
-        '小米雇主品牌系列内容，负责策划与剪辑。'
-      ],
+      id: 'xiaomi3', theme: '', vertical: true,
+      tag: '品牌内容 · 小米雇主品牌', title: '小米品牌内容',
+      paragraphs: ['小米雇主品牌系列内容，负责策划与剪辑。'],
       pills: ['策划', '剪辑'],
       video: { type: 'douyin', vid: '7546164694239694099' },
       pending: null,
       link: { url: 'https://www.douyin.com/video/7546164694239694099', text: '在抖音观看 →' }
     },
     {
-      id: 'mango',
-      theme: 'dark',
-      vertical: false,
-      tag: '品牌内容 · 芒果TV · 千万级触达',
-      title: '《人间最值得》舞台背景',
+      id: 'mango', theme: 'dark', vertical: false,
+      tag: '品牌内容 · 芒果TV · 千万级触达', title: '《人间最值得》舞台背景',
       paragraphs: [
         '2025湖南卫视元宵晚会，与TV部合作设计歌舞节目《人间最值得》舞台背景视频，全程深度参与制作，登上全球实时直播并获得30s特写展示，触达观众千万级。'
       ],
@@ -1047,11 +1002,8 @@
       link: null
     },
     {
-      id: 'sixiong',
-      theme: 'dark',
-      vertical: false,
-      tag: 'AI创作 · AI短片',
-      title: 'AI短片《复苏之刃》',
+      id: 'sixiong', theme: 'dark', vertical: false,
+      tag: 'AI创作 · AI短片', title: 'AI短片《复苏之刃》',
       paragraphs: [
         '2024年，与另外4名同学一起完成的AI短片。当时AI技术尚处早期，受限于海外环境，使用了Midjourney、Runway、Luma、Suno等AI工具。',
         '故事为纯虚构，构建了一个四雄争霸的战乱世界，融入大量仙侠元素，采用游戏预告片形式呈现。',
@@ -1063,94 +1015,52 @@
       link: { url: 'https://www.bilibili.com/video/BV1gow6zWEnw', text: '在B站观看 →' }
     },
     {
-      id: 'qingming',
-      theme: 'dark',
-      vertical: false,
-      tag: 'AI创作 · 芒果数智',
-      title: '清明上河图 AI短剧系列',
-      paragraphs: [
-        '结合热门历史向影视剧《清明上河图密码》推出的AI短剧系列。使用PEST分析法把握热点，对多种AI模型进行对比测试，整理出完整AI短剧SOP。'
-      ],
+      id: 'qingming', theme: 'dark', vertical: false,
+      tag: 'AI创作 · 芒果数智', title: '清明上河图 AI短剧系列',
+      paragraphs: ['结合热门历史向影视剧《清明上河图密码》推出的AI短剧系列。使用PEST分析法把握热点，对多种AI模型进行对比测试，整理出完整AI短剧SOP。'],
       pills: ['AI视频', '项目负责人', 'SOP制定'],
       video: null,
       pending: { title: '视频即将上线', desc: '正在整理中' },
       link: null
     },
     {
-      id: 'aiplaceholder',
-      theme: 'dark',
-      vertical: false,
-      tag: 'AI创作',
-      title: '更多AI作品',
+      id: 'aiplaceholder', theme: 'dark', vertical: false,
+      tag: 'AI创作', title: '更多AI作品',
       paragraphs: ['AI海报、实验性创作内容即将更新。'],
-      pills: [],
-      video: null,
-      pending: null,
-      link: null
+      pills: [], video: null, pending: null, link: null
     },
     {
-      id: 'ue',
-      theme: 'dark',
-      vertical: false,
-      tag: '技术拓展 · UE / Houdini',
-      title: '特效视频作品',
+      id: 'ue', theme: 'dark', vertical: false,
+      tag: '技术拓展 · UE / Houdini', title: '特效视频作品',
       paragraphs: ['使用Unreal Engine与Houdini制作的特效视频，截图与视频链接即将补充。'],
-      pills: ['UE', 'Houdini', 'VFX'],
-      video: null,
-      pending: null,
-      link: null
+      pills: ['UE', 'Houdini', 'VFX'], video: null, pending: null, link: null
     },
     {
-      id: 'maya',
-      theme: 'dark',
-      vertical: false,
-      tag: '技术拓展 · Maya',
-      title: '3D 渲染作品',
+      id: 'maya', theme: 'dark', vertical: false,
+      tag: '技术拓展 · Maya', title: '3D 渲染作品',
       paragraphs: ['Maya建模与渲染作品，截图即将补充。'],
-      pills: ['Maya', '3D建模', '渲染'],
-      video: null,
-      pending: null,
-      link: null
+      pills: ['Maya', '3D建模', '渲染'], video: null, pending: null, link: null
     },
     {
-      id: 'vibecode',
-      theme: '',
-      vertical: false,
-      tag: '技术拓展 · 独立开发',
-      title: '网页 / 小程序',
+      id: 'vibecode', theme: '', vertical: false,
+      tag: '技术拓展 · 独立开发', title: '网页 / 小程序',
       paragraphs: ['使用Vibecoding独立开发的网页与小程序项目，链接即将补充。'],
-      pills: ['网页开发', '小程序', 'Vibecoding'],
-      video: null,
-      pending: null,
-      link: null
+      pills: ['网页开发', '小程序', 'Vibecoding'], video: null, pending: null, link: null
     },
     {
-      id: 'storyboard',
-      theme: '',
-      vertical: false,
-      tag: '技术拓展 · 创作文档',
-      title: '分镜 · 剧本 · 策划案',
+      id: 'storyboard', theme: '', vertical: false,
+      tag: '技术拓展 · 创作文档', title: '分镜 · 剧本 · 策划案',
       paragraphs: ['包括《银发音乐会》800+条分镜手稿、短剧剧本、内容策划案等文档类作品，截图即将补充。'],
-      pills: ['分镜', '剧本', '策划案'],
-      video: null,
-      pending: null,
-      link: null
+      pills: ['分镜', '剧本', '策划案'], video: null, pending: null, link: null
     },
     {
-      id: 'overseas_more',
-      theme: '',
-      vertical: false,
-      tag: '写作 · 海外视角',
-      title: '影评 / 公众号',
+      id: 'overseas_more', theme: '', vertical: false,
+      tag: '写作 · 海外视角', title: '影评 / 公众号',
       paragraphs: ['影评写作与公众号内容，即将补充链接。'],
-      pills: [],
-      video: null,
-      pending: null,
-      link: null
+      pills: [], video: null, pending: null, link: null
     }
   ];
 
-  /* ── 生成视频 src ── */
   function getVideoSrc(v) {
     if (!v) return '';
     if (v.type === 'bilibili') return 'https://player.bilibili.com/player.html?bvid=' + v.bvid + '&autoplay=0&high_quality=1';
@@ -1158,7 +1068,6 @@
     return '';
   }
 
-  /* ── 动态渲染所有 Modal ── */
   function renderModals() {
     var container = document.getElementById('modal-container');
     var html = '';
@@ -1172,7 +1081,6 @@
       html += '<div class="' + cls + '" role="dialog" aria-modal="true" aria-label="' + w.title + '">';
       html += '<button class="modal-close" aria-label="关闭弹窗">&#10005;</button>';
 
-      // Pending banner
       if (w.pending) {
         html += '<div class="pending-banner"' + pendingStyle + '>';
         html += '<strong' + pendingTitleStyle + '>' + w.pending.title + '</strong>';
@@ -1180,14 +1088,12 @@
         html += '</div>';
       }
 
-      // Video — 使用 data-src 懒加载，打开时才注入 src
       if (w.video) {
         html += '<div class="modal-video">';
         html += '<iframe data-src="' + getVideoSrc(w.video) + '" allowfullscreen allow="autoplay; encrypted-media" title="' + w.title + '"></iframe>';
         html += '</div>';
       }
 
-      // Body
       html += '<div class="modal-body">';
       html += '<p class="modal-tag">' + w.tag + '</p>';
       html += '<h2>' + w.title + '</h2>';
@@ -1203,18 +1109,14 @@
         html += '<a class="modal-link outline" href="' + w.link.url + '" target="_blank" rel="noopener noreferrer">' + w.link.text + '</a>';
       }
 
-      html += '</div>'; // modal-body
-      html += '</div>'; // modal
-      html += '</div>'; // modal-overlay
+      html += '</div></div></div>';
     });
     container.innerHTML = html;
   }
 
   renderModals();
 
-  /* ══════════════════════════════════════
-     TOAST
-  ══════════════════════════════════════ */
+  /* ── Toast ── */
   function showToast(msg) {
     var t = document.getElementById('toast');
     t.textContent = msg;
@@ -1222,22 +1124,16 @@
     setTimeout(function () { t.classList.remove('show'); }, 2500);
   }
 
-  /* ══════════════════════════════════════
-     MODAL 打开 / 关闭 — iframe 懒加载 + 关闭停播
-  ══════════════════════════════════════ */
+  /* ──Modal 打开/关闭 ── */
   function openModal(id) {
     var overlay = document.getElementById('modal-' + id);
     if (!overlay) return;
     overlay.classList.add('open');
     document.body.style.overflow = 'hidden';
-
-    // 懒加载：打开时才注入 iframe src
     var iframe = overlay.querySelector('iframe');
     if (iframe && !iframe.src && iframe.dataset.src) {
       iframe.src = iframe.dataset.src;
     }
-
-    // Focus trap：聚焦到关闭按钮
     var closeBtn = overlay.querySelector('.modal-close');
     if (closeBtn) closeBtn.focus();
   }
@@ -1247,8 +1143,6 @@
     if (!overlay) return;
     overlay.classList.remove('open');
     document.body.style.overflow = '';
-
-    // 停止视频播放：清空 iframe src
     var iframe = overlay.querySelector('iframe');
     if (iframe && iframe.src) {
       iframe.dataset.src = iframe.src;
@@ -1256,45 +1150,31 @@
     }
   }
 
-  // 点击 overlay 背景关闭
   document.getElementById('modal-container').addEventListener('click', function (e) {
     if (e.target.classList.contains('modal-overlay')) {
-      var id = e.target.id.replace('modal-', '');
-      closeModal(id);
+      closeModal(e.target.id.replace('modal-', ''));
     }
-    // 关闭按钮
     if (e.target.classList.contains('modal-close')) {
       var overlay = e.target.closest('.modal-overlay');
-      if (overlay) {
-        var id = overlay.id.replace('modal-', '');
-        closeModal(id);
-      }
+      if (overlay) closeModal(overlay.id.replace('modal-', ''));
     }
   });
 
-  // ESC 关闭所有 modal
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') {
       document.querySelectorAll('.modal-overlay.open').forEach(function (el) {
-        var id = el.id.replace('modal-', '');
-        closeModal(id);
+        closeModal(el.id.replace('modal-', ''));
       });
     }
   });
 
-  /* ══════════════════════════════════════
-     WORK CARDS — 事件委托
-  ══════════════════════════════════════ */
+  /* ── Work card 点击 ── */
   document.addEventListener('click', function (e) {
     var card = e.target.closest('.work-card[data-modal]');
-    if (card) {
-      openModal(card.dataset.modal);
-    }
+    if (card) openModal(card.dataset.modal);
   });
 
-  /* ══════════════════════════════════════
-     TABS — data-panel 驱动，不依赖隐式 event
-  ══════════════════════════════════════ */
+  /* ── Tabs ── */
   document.querySelectorAll('.works-tab').forEach(function (tab) {
     tab.addEventListener('click', function () {
       document.querySelectorAll('.works-tab').forEach(function (t) {
@@ -1309,22 +1189,16 @@
     });
   });
 
-  /* ══════════════════════════════════════
-     COPY — 通用复制 + 微信特殊处理（无 confirm 阻塞）
-  ══════════════════════════════════════ */
+  /* ── Copy ── */
   document.querySelectorAll('.contact-btn[data-copy]').forEach(function (btn) {
     btn.addEventListener('click', function () {
       var text = this.dataset.copy;
       var msg = this.dataset.toast || '已复制到剪贴板';
-      navigator.clipboard.writeText(text).then(function () {
-        showToast(msg);
-      });
+      navigator.clipboard.writeText(text).then(function () { showToast(msg); });
     });
   });
 
-  /* ══════════════════════════════════════
-     NAV — 滚动高亮
-  ══════════════════════════════════════ */
+  /* ── Nav 滚动高亮 ── */
   var sections = ['about', 'internship', 'works', 'contact'];
   var navLinks = document.querySelectorAll('.nav-links a');
 
@@ -1344,16 +1218,13 @@
     if (el) navObserver.observe(el);
   });
 
-  /* ══════════════════════════════════════
-     SCROLL REVEAL
-  ══════════════════════════════════════ */
+  /* ── Scroll Reveal ── */
   var revealObserver = new IntersectionObserver(function (entries) {
     entries.forEach(function (e) {
       if (e.isIntersecting) e.target.classList.add('visible');
     });
   }, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
 
-  // Hero 内容直接可见
   document.querySelectorAll('.hero-content').forEach(function (el) { el.classList.add('visible'); });
   document.querySelectorAll('.scroll-reveal:not(.hero-content)').forEach(function (el) { revealObserver.observe(el); });
 
