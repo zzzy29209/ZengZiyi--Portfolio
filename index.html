@@ -7,252 +7,318 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet" />
-<style>
-/* ═══════════════════════════════════
-   DESIGN TOKENS
-   ═══════════════════════════════════ */
-:root {
-  --c-primary: #9B1B30;
-  --c-primary-dark: #7a1526;
-  --c-accent: #81D8D0;
-  --c-accent-20: rgba(129,216,208,0.2);
-  --c-accent-30: rgba(129,216,208,0.3);
-  --c-accent-55: rgba(129,216,208,0.55);
-  --c-bg: #F4F4F4;
-  --c-surface: #fff;
-  --c-dark: #000;
-  --c-dark-surface: #0d0d0d;
-  --c-border: #e0e0e0;
-  --c-border-light: #f0f0f0;
-  --c-text: #000;
-  --c-muted: #999;
-  --c-secondary: #666;
-  --c-faint: rgba(255,255,255,0.5);
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    .hide-scrollbar::-webkit-scrollbar { display: none; }
+    .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: #F4F4F4; color: #000; overflow-x: hidden; }
+    :root {
+      --color-primary: #9B1B30;
+      --color-primary-dark: #7a1526;
+      --color-accent: #81D8D0;
+      --color-bg: #F4F4F4;
+      --color-text: #000;
+      --color-text-muted: #555;
+      --color-text-light: #666;
+      --color-border: #e0e0e0;
+      --font-xs: 0.75rem;
+      --font-sm: 0.8rem;
+      --font-base: 0.875rem;
+      --font-md: 0.95rem;
+      --font-lg: 1.1rem;
+      --font-label: 0.7rem;
+    }
+    .skip-link {
+      position: absolute; top: -100%; left: 0;
+      background: var(--color-primary); color: #fff;
+      padding: 0.75rem 1.5rem; z-index: 9999;
+      font-size: var(--font-base); font-weight: 700;
+      text-decoration: none;
+    }
+    .skip-link:focus { top: 0; }
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      padding: 1.5rem 2.5rem;
+      display: flex; justify-content: space-between; align-items: center;
+      background: rgba(255,255,255,0.7);
+      backdrop-filter: blur(25px) saturate(180%);
+      -webkit-backdrop-filter: blur(25px) saturate(180%);
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+    }
+    .nav-logo { font-weight: 900; font-size: var(--font-lg); letter-spacing: -0.05em; }
+    .nav-links { display: flex; gap: 2.5rem; }
+    .nav-links a {
+      background: none; border: none; cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      text-decoration: none; color: #000;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--color-primary); }
+    @media (max-width: 768px) { .nav-links { display: none; } }
 
-  --fs-2xs: 0.55rem;
-  --fs-xs: 0.65rem;
-  --fs-sm: 0.75rem;
-  --fs-base: 0.85rem;
-  --fs-md: 0.95rem;
-  --fs-lg: 1.2rem;
-  --fs-xl: 1.5rem;
-
-  --sp-xs: 0.5rem;
-  --sp-sm: 1rem;
-  --sp-md: 2rem;
-  --sp-lg: 3rem;
-  --sp-xl: 5rem;
-
-  --ease: cubic-bezier(0.16,1,0.3,1);
-}
-
-/* ═══════ RESET ═══════ */
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{font-family:'Inter',sans-serif;background:var(--c-bg);color:var(--c-text);overflow-x:hidden;-webkit-font-smoothing:antialiased}
-
-/* ═══════ NAV ═══════ */
-nav{position:fixed;top:0;width:100%;z-index:100;padding:1.5rem 2.5rem;display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,0.7);backdrop-filter:blur(25px) saturate(180%);-webkit-backdrop-filter:blur(25px) saturate(180%);border-bottom:1px solid rgba(0,0,0,0.08)}
-.nav-logo{font-weight:900;font-size:1.1rem;letter-spacing:-0.05em}
-.nav-links{display:flex;gap:2.5rem}
-.nav-links button{background:none;border:none;cursor:pointer;font-family:inherit;font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;transition:color .2s}
-.nav-links button:hover,.nav-links button.active{color:var(--c-primary)}
-
-/* ═══════ HERO ═══════ */
-.hero{width:100%;min-height:100vh;position:relative;display:flex;align-items:center;padding:6rem 2.5rem 2.5rem;background:var(--c-surface)}
-.hero-bg{position:absolute;right:0;top:5%;width:55%;height:95%;z-index:1;background:url('https://cdn.jsdelivr.net/gh/zzzy29209/ZengZiyi--Portfolio@main/hero-me.jpg') center/cover no-repeat;opacity:.15;mask-image:linear-gradient(to left,black 50%,transparent 100%),linear-gradient(to bottom,black 80%,transparent 100%);mask-composite:intersect;-webkit-mask-image:linear-gradient(to left,black 50%,transparent 100%),linear-gradient(to bottom,black 80%,transparent 100%);-webkit-mask-composite:destination-in}
-.hero-content{position:relative;z-index:10}
-.mega-title{font-size:clamp(4rem,16vw,14rem);font-weight:900;line-height:.85;letter-spacing:-0.05em;text-transform:uppercase}
-.accent{color:var(--c-primary)}
-.hero-sub{margin-top:var(--sp-md);font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.2em;opacity:.6}
-.hero-bar{margin-top:2.5rem;display:flex;align-items:center;gap:1.5rem}
-.hero-bar-line{width:4rem;height:.25rem;background:var(--c-dark)}
-.hero-bar-text{font-size:var(--fs-xs);font-weight:900;text-transform:uppercase;letter-spacing:.5em;opacity:.4}
-
-/* ═══════ REVEAL ═══════ */
-.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
-.reveal.visible{opacity:1;transform:translateY(0)}
-
-/* ═══════ ABOUT ═══════ */
-.about-section{width:100%;min-height:80vh;display:grid;grid-template-columns:1fr 2fr}
-.about-left{background:var(--c-primary);color:#fff;padding:4rem;display:flex;align-items:center;justify-content:center}
-.about-left h2{font-size:clamp(2.5rem,6vw,4rem);font-weight:900;text-transform:uppercase}
-.about-right{background:var(--c-surface);padding:4rem;display:flex;align-items:center}
-.about-inner{max-width:48rem}
-.section-label{font-size:var(--fs-2xs);font-weight:700;text-transform:uppercase;letter-spacing:.5em;opacity:.3;margin-bottom:2.5rem}
-.edu-item{position:relative}
-.edu-item+.edu-item{margin-top:2.5rem;padding-top:2.5rem;border-top:1px solid var(--c-border-light)}
-.edu-date{font-size:var(--fs-xs);font-weight:500;letter-spacing:.2em;color:var(--c-muted);margin-bottom:var(--sp-xs)}
-.edu-title{font-size:clamp(0.9rem,1.5vw,1.2rem);font-weight:900;letter-spacing:-0.02em}
-.edu-details{margin-top:.75rem}
-.edu-details p{font-size:var(--fs-sm);color:var(--c-secondary);font-weight:500;line-height:1.6}
-
-/* ═══════ INTERNSHIP ═══════ */
-.internship-section{width:100%;padding:var(--sp-xl) 2.5rem;background:var(--c-dark);color:#fff}
-.internship-inner{max-width:1400px;margin:0 auto}
-.section-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:var(--sp-lg);padding-bottom:var(--sp-md);border-bottom:1px solid rgba(255,255,255,0.1)}
-.section-header h3{font-size:clamp(1.8rem,5vw,4rem);font-weight:900;text-transform:uppercase;letter-spacing:-0.03em}
-.section-header span{font-size:var(--fs-2xs);font-weight:700;letter-spacing:1em;opacity:.2;text-transform:uppercase}
-.timeline-wrap{overflow-x:auto;padding-bottom:var(--sp-sm);margin-bottom:var(--sp-lg)}
-.timeline{position:relative;min-width:500px}
-.timeline-line{position:absolute;top:.75rem;left:0;right:0;height:2px;background:rgba(129,216,208,0.6)}
-.timeline-items{display:flex;justify-content:space-between;align-items:flex-start;position:relative}
-.timeline-item{display:flex;flex-direction:column;align-items:center;width:18%}
-.timeline-dot{width:12px;height:12px;border-radius:50%;background:var(--c-accent);box-shadow:0 0 0 4px var(--c-accent-20);margin-bottom:.75rem}
-.timeline-dot.sm{width:8px;height:8px;box-shadow:0 0 0 2px rgba(129,216,208,0.2)}
-.timeline-name{font-size:.7rem;font-weight:700;color:var(--c-accent);text-align:center}
-.timeline-date{font-size:var(--fs-2xs);color:var(--c-accent-55);text-align:center;margin-top:.2rem}
-.intern-list{display:flex;flex-direction:column;gap:var(--sp-md)}
-.intern-row{display:grid;grid-template-columns:1fr 5fr;gap:1.5rem}
-.intern-date{font-size:var(--fs-base);font-weight:900;letter-spacing:.1em;color:var(--c-accent);padding-top:var(--sp-md)}
-.intern-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.1);padding:2.5rem;border-radius:2px;transition:background .7s}
-.intern-card.current{border-color:var(--c-accent-30)}
-.intern-card:hover{background:rgba(255,255,255,0.06)}
-.intern-tag{display:inline-block;padding:.2rem .6rem;background:var(--c-accent-20);border-radius:2px;font-size:var(--fs-2xs);font-weight:700;color:var(--c-accent);margin-bottom:.75rem;text-transform:uppercase;letter-spacing:.1em}
-.intern-card h4{font-size:clamp(0.9rem,1.5vw,1.3rem);font-weight:700;margin-bottom:var(--sp-sm)}
-.metrics{display:flex;flex-wrap:wrap;gap:.75rem;margin-bottom:1.5rem}
-.metric-card{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:.4rem;padding:.5rem .75rem;display:flex;align-items:center;gap:.5rem;transition:all .3s}
-.metric-card:hover{border-color:var(--c-accent-30);background:rgba(255,255,255,0.08)}
-.metric-label{font-size:var(--fs-2xs);font-weight:700;text-transform:uppercase;color:var(--c-faint)}
-.metric-value{font-size:1.4rem;font-weight:700;color:var(--c-accent)}
-.metric-unit{font-size:var(--fs-2xs);color:var(--c-faint)}
-.metric-badge{margin-left:var(--sp-xs);padding:.2rem .4rem;background:var(--c-accent-20);border-radius:2px;font-size:var(--fs-2xs);color:var(--c-accent);font-weight:700}
-.intern-body{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-md)}
-.intern-body p{font-size:.72rem;line-height:1.8;color:var(--c-muted)}
-.intern-body b{color:#fff;font-weight:500;text-decoration:underline;text-underline-offset:4px;text-decoration-color:rgba(255,255,255,0.2)}
-.placeholder-text{color:rgba(255,255,255,0.35);font-style:italic}
-
-/* ═══════ WORKS ═══════ */
-.works-section{width:100%;padding:var(--sp-xl) 2.5rem;background:var(--c-surface)}
-.works-inner{max-width:1400px;margin:0 auto}
-.works-section-label{font-size:var(--fs-2xs);font-weight:900;text-transform:uppercase;letter-spacing:1em;opacity:.3;margin-bottom:var(--sp-sm)}
-.works-section-title{font-size:clamp(2rem,5vw,3.5rem);font-weight:900;letter-spacing:-0.04em;margin-bottom:.75rem}
-.works-section-desc{font-size:.8rem;color:var(--c-secondary);max-width:36rem;line-height:1.7;margin-bottom:var(--sp-lg)}
-.works-tabs{display:flex;gap:0;border-bottom:2px solid var(--c-dark);margin-bottom:2.5rem;overflow-x:auto}
-.works-tab{background:none;border:none;cursor:pointer;font-family:inherit;font-size:var(--fs-md);font-weight:900;text-transform:uppercase;letter-spacing:.15em;padding:.75rem 1.5rem;color:var(--c-dark);opacity:.3;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .2s;white-space:nowrap}
-.works-tab:hover{opacity:.7}
-.works-tab.active{opacity:1;border-bottom-color:var(--c-primary);color:var(--c-primary)}
-.works-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--c-border);border:1px solid var(--c-border)}
-.works-panel{display:none}
-.works-panel.active{display:block}
-.work-card{background:var(--c-surface);cursor:pointer;position:relative;overflow:hidden;display:flex;flex-direction:column;transition:all .5s var(--ease);min-height:14rem}
-.work-card:hover{background:var(--c-primary)}
-.work-card-thumb{width:100%;height:10rem;object-fit:cover;display:block;transition:transform .6s ease,opacity .4s ease;opacity:.85}
-.work-card:hover .work-card-thumb{transform:scale(1.05);opacity:.5}
-.work-card-body{padding:1.25rem 1.5rem;flex:1;display:flex;flex-direction:column;justify-content:space-between}
-.work-card-role{font-size:var(--fs-2xs);font-weight:700;text-transform:uppercase;letter-spacing:.2em;color:var(--c-primary);margin-bottom:.4rem;transition:color .3s}
-.work-card:hover .work-card-role{color:rgba(255,255,255,0.6)}
-.work-card-title{font-size:var(--fs-md);font-weight:900;letter-spacing:-0.02em;transition:color .3s}
-.work-card:hover .work-card-title{color:#fff}
-.work-card-desc{font-size:var(--fs-xs);color:#888;margin-top:.4rem;line-height:1.5;transition:color .3s}
-.work-card:hover .work-card-desc{color:rgba(255,255,255,0.6)}
-.work-card-arrow{font-size:var(--fs-2xs);font-weight:700;letter-spacing:.2em;opacity:0;margin-top:.75rem;transition:opacity .3s;color:rgba(255,255,255,0.7)}
-.work-card:hover .work-card-arrow{opacity:1}
-
-/* ═══════ BILIBILI PORTAL ═══════ */
-.bilibili-portal{width:100%;padding:4rem 2.5rem;background:var(--c-surface);display:flex;align-items:center;justify-content:center}
-.portal-hint{font-size:1.1rem;font-weight:700;color:var(--c-dark);margin-bottom:.8rem;letter-spacing:-0.02em}
-.portal-desc{font-size:var(--fs-base);color:var(--c-secondary);line-height:1.7;margin-bottom:var(--sp-md)}
-.portal-btn{display:inline-flex;align-items:center;justify-content:center;padding:.9rem 2.2rem;border-radius:50px;background:var(--c-primary);color:#fff;border:none;font-family:inherit;font-size:var(--fs-md);font-weight:700;cursor:pointer;transition:all .25s;letter-spacing:.02em}
-.portal-btn:hover{background:var(--c-primary-dark);transform:translateY(-2px);box-shadow:0 6px 20px rgba(155,27,48,0.35)}
-
-/* ═══════ CONTACT ═══════ */
-.contact-section{width:100%;padding:var(--sp-xl) 2.5rem;background:var(--c-primary);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
-.contact-section h3{font-size:clamp(2.5rem,8vw,6rem);font-weight:900;text-transform:uppercase;letter-spacing:-0.03em;color:#fff;margin-bottom:var(--sp-lg)}
-.contact-row{display:flex;flex-wrap:wrap;justify-content:center;gap:4rem}
-.contact-item{display:flex;flex-direction:column;gap:.4rem}
-.contact-label{font-size:var(--fs-2xs);font-weight:900;text-transform:uppercase;letter-spacing:.3em;color:rgba(255,255,255,0.5)}
-.contact-btn{background:none;border:none;cursor:pointer;font-family:inherit;font-size:clamp(0.9rem,2vw,1.2rem);font-weight:700;color:#fff;border-bottom:2px solid rgba(255,255,255,0.4);padding-bottom:.2rem;transition:border-color .2s}
-.contact-btn:hover{border-color:#fff}
-.contact-hint{font-size:var(--fs-2xs);color:rgba(255,255,255,0.4)}
-footer{margin-top:4rem;font-size:.5rem;font-weight:900;letter-spacing:1.5em;text-transform:uppercase;opacity:.3;color:#fff}
-
-/* ═══════ MODAL ═══════ */
-.modal-overlay{display:none;position:fixed;inset:0;z-index:999;background:rgba(0,0,0,0.75);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:1.5rem}
-.modal-overlay.open{display:flex}
-.modal{background:var(--c-surface);max-width:52rem;width:100%;max-height:90vh;overflow-y:auto;border-radius:4px;position:relative;animation:modalIn .3s var(--ease)}
-.modal.dark{background:var(--c-dark-surface);color:#fff}
-.modal.vertical{max-width:26rem}
-@keyframes modalIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
-.modal-close{position:absolute;top:1rem;right:1rem;background:rgba(0,0,0,0.08);border:none;cursor:pointer;width:2rem;height:2rem;border-radius:50%;font-size:1rem;display:flex;align-items:center;justify-content:center;z-index:10;transition:background .2s}
-.modal.dark .modal-close{background:rgba(255,255,255,0.1);color:#fff}
-.modal-close:hover{background:rgba(0,0,0,0.15)}
-.modal-video{width:100%;aspect-ratio:16/9;background:#000}
-.modal-video iframe{width:100%;height:100%;border:none;display:block}
-.modal.vertical .modal-video{aspect-ratio:9/16;position:relative;overflow:hidden}
-.modal.vertical .modal-video iframe{position:absolute;inset:0;width:100%;height:100%;transform:scale(1.15);transform-origin:center}
-.modal-body{padding:1.75rem 2rem 2rem}
-.modal-tag{font-size:var(--fs-2xs);font-weight:900;text-transform:uppercase;letter-spacing:.2em;color:var(--c-primary);margin-bottom:var(--sp-xs)}
-.modal.dark .modal-tag{color:var(--c-accent)}
-.modal-body h2{font-size:var(--fs-xl);font-weight:900;letter-spacing:-0.03em;margin-bottom:.75rem}
-.modal-body p{font-size:.82rem;line-height:1.8;color:#555;margin-bottom:.75rem}
-.modal.dark .modal-body p{color:#aaa}
-.modal-meta{display:flex;flex-wrap:wrap;gap:var(--sp-xs);margin-top:1.25rem}
-.modal-pill{padding:.25rem .75rem;border:1px solid var(--c-border);border-radius:99px;font-size:var(--fs-2xs);font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--c-secondary)}
-.modal.dark .modal-pill{border-color:rgba(255,255,255,0.15);color:rgba(255,255,255,0.5)}
-.modal-link{display:inline-flex;align-items:center;gap:.5rem;margin-top:1.25rem;padding:.6rem 1.25rem;background:none;color:var(--c-dark);border:2px solid var(--c-dark);border-radius:2px;font-size:.7rem;font-weight:700;text-decoration:none;letter-spacing:.1em;text-transform:uppercase;transition:all .2s}
-.modal-link:hover{background:var(--c-dark);color:#fff}
-.modal.dark .modal-link{color:#fff;border-color:#fff}
-.modal.dark .modal-link:hover{background:#fff;color:var(--c-dark)}
-.pending-banner{padding:2rem;text-align:center}
-.pending-banner strong{display:block;margin-bottom:.4rem;font-size:var(--fs-base)}
-.pending-banner p{font-size:var(--fs-sm)}
-.modal.dark .pending-banner{background:#1a1a1a;border:1px dashed #333}
-.modal.dark .pending-banner strong{color:#fff}
-.modal.dark .pending-banner p{color:#555}
-
-/* ═══════ TOAST ═══════ */
-.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(4rem);background:var(--c-dark);color:#fff;padding:.75rem 1.5rem;border-radius:99px;font-size:var(--fs-sm);font-weight:700;z-index:9999;opacity:0;transition:all .4s var(--ease);white-space:nowrap;pointer-events:none}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-
-/* ═══════ RESPONSIVE ═══════ */
-@media(max-width:900px){.works-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:768px){
-  .nav-links{display:none}nav{padding:1rem 1.25rem}
-  .hero{padding:5rem 1.25rem 2rem}.hero-bg{width:65%}.mega-title{font-size:clamp(3rem,18vw,6rem);line-height:.9}.hero-sub{font-size:var(--fs-2xs);margin-top:1.5rem}.hero-bar{margin-top:1.5rem}
-  .about-section{grid-template-columns:1fr}.about-left{padding:2.5rem 1.5rem}.about-right{padding:2.5rem 1.5rem}
-  .internship-section{padding:3rem 1.25rem}.section-header{margin-bottom:var(--sp-md);padding-bottom:1.5rem}.section-header h3{font-size:clamp(1.5rem,6vw,2.5rem)}.intern-row{grid-template-columns:1fr}.intern-date{font-size:var(--fs-sm);padding-top:1.5rem}.intern-card{padding:1.5rem}.intern-card h4{font-size:var(--fs-md)}.intern-body{grid-template-columns:1fr;gap:var(--sp-sm)}.intern-body p{font-size:.7rem}
-  .works-section{padding:3rem 1.25rem}.works-section-title{font-size:clamp(1.8rem,6vw,2.5rem)}.works-tab{font-size:var(--fs-sm);padding:.6rem 1rem}.work-card{min-height:11rem}.work-card-thumb{height:8rem}.work-card-body{padding:1rem 1.25rem}
-  .bilibili-portal{padding:2.5rem 1.25rem}.contact-section{padding:3rem 1.25rem}.contact-section h3{font-size:clamp(2rem,10vw,4rem);margin-bottom:var(--sp-md)}.contact-row{gap:2.5rem}
-  .modal-overlay{padding:.75rem}.modal{max-width:100%}.modal-body{padding:1.25rem 1.5rem 1.5rem}.modal-body h2{font-size:var(--fs-lg)}.modal.vertical{max-width:85vw}
-  footer{margin-top:2.5rem;font-size:.45rem;letter-spacing:1em}
-}
-@media(max-width:560px){.works-grid{grid-template-columns:1fr}}
-@media(max-width:420px){
-  .hero-sub{font-size:.5rem;letter-spacing:.1em}.hero-bar-text{font-size:var(--fs-2xs);letter-spacing:.3em}
-  .works-tab{font-size:var(--fs-xs);padding:.5rem .75rem;letter-spacing:.08em}
-  .contact-section h3{font-size:2rem}.modal.vertical{max-width:92vw}
-}
-</style>
+    /* Hero - 强制 16:9 横屏比例，所有设备一致 */
+    .hero {
+      width: 100%;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: #000;
+      aspect-ratio: 16 / 9;
+    }
+    #curve-canvas-container {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 1;
+    }
+    .hero-bg-container {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .hero-bg-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+    }
+    .hero-content { 
+      position: relative; 
+      z-index: 10; 
+      pointer-events: none;
+      text-align: center;
+    }
+    .mega-title { 
+      font-size: clamp(4rem, 16vw, 14rem); 
+      font-weight: 900; 
+      line-height: 0.85; 
+      letter-spacing: -0.05em; 
+      text-transform: uppercase;
+      color: #000;
+      white-space: nowrap;
+    }
+    @media (max-width: 768px) { 
+      .mega-title { font-size: clamp(3rem, 18vw, 6rem); line-height: 0.9; white-space: normal; } 
+    }
+    .hero-sub {
+      margin-top: 2rem; 
+      font-size: var(--font-label); 
+      font-weight: 700;
+      text-transform: uppercase; 
+      letter-spacing: 0.2em;
+      color: #fff;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+    .hero-bar { 
+      margin-top: 2.5rem; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center;
+      gap: 1.5rem; 
+    }
+    .hero-bar-line { width: 4rem; height: 0.25rem; background: #fff; }
+    .hero-bar-text { 
+      font-size: var(--font-label); 
+      font-weight: 900; 
+      text-transform: uppercase; 
+      letter-spacing: 0.5em; 
+      opacity: 0.6;
+      color: #fff;
+    }
+    .scroll-reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s cubic-bezier(0.16,1,0.3,1), transform 0.6s cubic-bezier(0.16,1,0.3,1); }
+    .scroll-reveal.visible { opacity: 1; transform: translateY(0); }
+    .about-section { width: 100%; min-height: 80vh; display: grid; grid-template-columns: 1fr 2fr; }
+    @media (max-width: 768px) { .about-section { grid-template-columns: 1fr; } }
+    .about-left { background: var(--color-primary); color: #fff; padding: 4rem; display: flex; align-items: center; justify-content: center; }
+    .about-left h2 { font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 900; text-transform: uppercase; }
+    .about-right { background: #fff; padding: 4rem; display: flex; align-items: center; }
+    .about-inner { max-width: 48rem; }
+    .section-label { font-size: var(--font-label); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5em; opacity: 0.3; margin-bottom: 2.5rem; }
+    .edu-item { position: relative; }
+    .edu-item + .edu-item { margin-top: 2.5rem; padding-top: 2.5rem; border-top: 1px solid #f0f0f0; }
+    .edu-date { font-size: var(--font-xs); font-weight: 500; letter-spacing: 0.2em; color: var(--color-text-light); margin-bottom: 0.5rem; }
+    .edu-title { font-size: clamp(0.9rem, 1.5vw, 1.2rem); font-weight: 900; letter-spacing: -0.02em; }
+    .edu-details { margin-top: 0.75rem; }
+    .edu-details p { font-size: var(--font-xs); color: var(--color-text-light); font-weight: 500; line-height: 1.6; }
+    .internship-section { width: 100%; padding: 5rem 2.5rem; background: #000; color: #fff; }
+    .internship-inner { max-width: 1400px; margin: 0 auto; }
+    .section-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .section-header h3 { font-size: clamp(1.8rem, 5vw, 4rem); font-weight: 900; text-transform: uppercase; letter-spacing: -0.03em; }
+    .section-header span { font-size: var(--font-label); font-weight: 700; letter-spacing: 1em; opacity: 0.2; text-transform: uppercase; }
+    .timeline-wrap { overflow-x: auto; padding-bottom: 1rem; margin-bottom: 3rem; }
+    .timeline { position: relative; min-width: 500px; }
+    .timeline-line { position: absolute; top: 0.75rem; left: 0; right: 0; height: 2px; background: rgba(129,216,208,0.6); }
+    .timeline-items { display: flex; justify-content: space-between; align-items: flex-start; position: relative; }
+    .timeline-item { display: flex; flex-direction: column; align-items: center; width: 18%; }
+    .timeline-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--color-accent); box-shadow: 0 0 0 4px rgba(129,216,208,0.3); margin-bottom: 0.75rem; }
+    .timeline-dot.sm { width: 8px; height: 8px; box-shadow: 0 0 0 2px rgba(129,216,208,0.2); }
+    .timeline-name { font-size: var(--font-xs); font-weight: 700; color: var(--color-accent); text-align: center; }
+    .timeline-date { font-size: var(--font-label); color: rgba(129,216,208,0.55); text-align: center; margin-top: 0.2rem; }
+    .intern-list { display: flex; flex-direction: column; gap: 2rem; }
+    .intern-row { display: grid; grid-template-columns: 1fr 5fr; gap: 1.5rem; }
+    @media (max-width: 768px) { .intern-row { grid-template-columns: 1fr; } }
+    .intern-date { font-size: var(--font-sm); font-weight: 900; letter-spacing: 0.1em; color: var(--color-accent); padding-top: 2rem; }
+    .intern-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 2.5rem; border-radius: 2px; transition: background 0.7s; }
+    .intern-card.current { border-color: rgba(129,216,208,0.3); }
+    .intern-card:hover { background: rgba(255,255,255,0.06); }
+    .intern-tag { display: inline-block; padding: 0.2rem 0.6rem; background: rgba(129,216,208,0.2); border-radius: 2px; font-size: var(--font-label); font-weight: 700; color: var(--color-accent); margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; }
+    .intern-card h4 { font-size: clamp(0.9rem, 1.5vw, 1.3rem); font-weight: 700; margin-bottom: 1rem; }
+    .metrics { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1.5rem; }
+    .metric-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 0.4rem; padding: 0.5rem 0.75rem; display: flex; align-items: center; gap: 0.5rem; transition: all 0.3s; }
+    .metric-card:hover { border-color: rgba(129,216,208,0.3); background: rgba(255,255,255,0.08); }
+    .metric-label { font-size: var(--font-label); font-weight: 700; text-transform: uppercase; color: rgba(255,255,255,0.5); }
+    .metric-value { font-size: 1.4rem; font-weight: 700; color: var(--color-accent); }
+    .metric-unit { font-size: var(--font-label); color: rgba(255,255,255,0.5); }
+    .intern-body { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+    @media (max-width: 640px) { .intern-body { grid-template-columns: 1fr; } }
+    .intern-body p { font-size: var(--font-xs); line-height: 1.8; color: #999; }
+    .intern-body b { color: #fff; font-weight: 500; text-decoration: underline; text-underline-offset: 4px; text-decoration-color: rgba(255,255,255,0.2); }
+    .works-section { width: 100%; padding: 5rem 2.5rem; background: #fff; }
+    .works-inner { max-width: 1400px; margin: 0 auto; }
+    .works-section-label { font-size: var(--font-label); font-weight: 900; text-transform: uppercase; letter-spacing: 1em; opacity: 0.3; margin-bottom: 1rem; }
+    .works-section-title { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900; letter-spacing: -0.04em; margin-bottom: 0.75rem; }
+    .works-section-desc { font-size: var(--font-sm); color: var(--color-text-light); max-width: 48rem; line-height: 1.7; margin-bottom: 3rem; }
+    .works-tabs { display: flex; gap: 0; border-bottom: 2px solid #000; margin-bottom: 2.5rem; overflow-x: auto; }
+    .works-tab {
+      background: none; border: none; cursor: pointer;
+      font-family: 'Inter', sans-serif; font-size: var(--font-md); font-weight: 900;
+      text-transform: uppercase; letter-spacing: 0.15em;
+      padding: 0.75rem 1.5rem; color: #000; opacity: 0.3;
+      border-bottom: 3px solid transparent; margin-bottom: -2px;
+      transition: all 0.2s; white-space: nowrap;
+    }
+    .works-tab:hover { opacity: 0.7; }
+    .works-tab.active { opacity: 1; border-bottom-color: var(--color-primary); color: var(--color-primary); }
+    .works-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--color-border); border: 1px solid var(--color-border); }
+    @media (max-width: 900px) { .works-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 560px) { .works-grid { grid-template-columns: 1fr; } }
+    .work-card {
+      background: #fff; cursor: pointer; position: relative; overflow: hidden;
+      display: flex; flex-direction: column;
+      transition: all 0.5s cubic-bezier(0.16,1,0.3,1);
+      min-height: 14rem;
+    }
+    .work-card:hover { background: var(--color-primary); }
+    .work-card-thumb {
+      width: 100%; height: 10rem; object-fit: cover; display: block;
+      transition: transform 0.6s ease, opacity 0.4s ease;
+      opacity: 0.85;
+    }
+    .work-card:hover .work-card-thumb { transform: scale(1.05); opacity: 0.5; }
+    .work-card-body { padding: 1.25rem 1.5rem; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+    .work-card-role { font-size: var(--font-label); font-weight: 700; text-transform: uppercase; letter-spacing: 0.2em; color: var(--color-primary); margin-bottom: 0.4rem; transition: color 0.3s; }
+    .work-card:hover .work-card-role { color: rgba(255,255,255,0.6); }
+    .work-card-title { font-size: var(--font-md); font-weight: 900; letter-spacing: -0.02em; transition: color 0.3s; }
+    .work-card:hover .work-card-title { color: #fff; }
+    .work-card-desc { font-size: var(--font-xs); color: #888; margin-top: 0.4rem; line-height: 1.5; transition: color 0.3s; }
+    .work-card:hover .work-card-desc { color: rgba(255,255,255,0.6); }
+    .work-card-arrow { font-size: var(--font-label); font-weight: 700; letter-spacing: 0.2em; opacity: 0; margin-top: 0.75rem; transition: opacity 0.3s; color: rgba(255,255,255,0.7); }
+    .work-card:hover .work-card-arrow { opacity: 1; }
+    .works-panel { display: none; }
+    .works-panel.active { display: block; }
+    .bilibili-portal { width: 100%; padding: 4rem 2.5rem; background: #fff; display: flex; align-items: center; justify-content: center; }
+    .portal-hint { font-size: var(--font-lg); font-weight: 700; color: #000; margin-bottom: 0.8rem; letter-spacing: -0.02em; }
+    .portal-desc { font-size: var(--font-sm); color: var(--color-text-light); line-height: 1.7; margin-bottom: 2rem; }
+    .portal-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 0.9rem 2.2rem; border-radius: 50px;
+      background: var(--color-primary); color: #fff; border: none;
+      font-family: 'Inter', sans-serif; font-size: var(--font-md); font-weight: 700;
+      cursor: pointer; transition: all 0.25s; letter-spacing: 0.02em;
+      text-decoration: none;
+    }
+    .portal-btn:hover { background: var(--color-primary-dark); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(155,27,48,0.35); }
+    .contact-section { width: 100%; padding: 5rem 2.5rem; background: var(--color-primary); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+    .contact-section h3 { font-size: clamp(2.5rem, 8vw, 6rem); font-weight: 900; text-transform: uppercase; letter-spacing: -0.03em; color: #fff; margin-bottom: 3rem; }
+    .contact-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 4rem; }
+    .contact-item { display: flex; flex-direction: column; gap: 0.4rem; }
+    .contact-label { font-size: var(--font-label); font-weight: 900; text-transform: uppercase; letter-spacing: 0.3em; color: rgba(255,255,255,0.5); }
+    .contact-btn { background: none; border: none; cursor: pointer; font-family: 'Inter', sans-serif; font-size: clamp(0.9rem, 2vw, 1.2rem); font-weight: 700; color: #fff; border-bottom: 2px solid rgba(255,255,255,0.4); padding-bottom: 0.2rem; transition: border-color 0.2s; }
+    .contact-btn:hover { border-color: #fff; }
+    .contact-hint { font-size: var(--font-label); color: rgba(255,255,255,0.4); }
+    footer { margin-top: 4rem; font-size: 0.5rem; font-weight: 900; letter-spacing: 1.5em; text-transform: uppercase; opacity: 0.3; color: #fff; }
+    .modal-overlay { display: none; position: fixed; inset: 0; z-index: 999; background: rgba(0,0,0,0.75); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); align-items: center; justify-content: center; padding: 1.5rem; }
+    .modal-overlay.open { display: flex; }
+    .modal { background: #fff; max-width: 52rem; width: 100%; max-height: 90vh; overflow-y: auto; border-radius: 4px; position: relative; animation: modalIn 0.3s cubic-bezier(0.16,1,0.3,1); }
+    .modal[role="dialog"] { outline: none; }
+    .modal.dark { background: #0d0d0d; color: #fff; }
+    @keyframes modalIn { from { opacity:0; transform: translateY(20px); } to { opacity:1; transform: none; } }
+    .modal-close { position: absolute; top: 1rem; right: 1rem; background: rgba(0,0,0,0.08); border: none; cursor: pointer; width: 2rem; height: 2rem; border-radius: 50%; font-size: 1rem; display: flex; align-items: center; justify-content: center; z-index: 10; transition: background 0.2s; }
+    .modal.dark .modal-close { background: rgba(255,255,255,0.1); color: #fff; }
+    .modal-close:hover { background: rgba(0,0,0,0.15); }
+    .modal-video { width: 100%; aspect-ratio: 16/9; background: #000; }
+    .modal-video iframe { width: 100%; height: 100%; border: none; display: block; }
+    .modal-body { padding: 1.75rem 2rem 2rem; }
+    .modal-tag { font-size: var(--font-label); font-weight: 900; text-transform: uppercase; letter-spacing: 0.2em; color: var(--color-primary); margin-bottom: 0.5rem; }
+    .modal.dark .modal-tag { color: var(--color-accent); }
+    .modal-body h2 { font-size: 1.5rem; font-weight: 900; letter-spacing: -0.03em; margin-bottom: 0.75rem; }
+    .modal-body p { font-size: var(--font-sm); line-height: 1.8; color: var(--color-text-muted); margin-bottom: 0.75rem; }
+    .modal.dark .modal-body p { color: #aaa; }
+    .modal-meta { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.25rem; }
+    .modal-pill { padding: 0.25rem 0.75rem; border: 1px solid var(--color-border); border-radius: 99px; font-size: var(--font-label); font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-text-light); }
+    .modal.dark .modal-pill { border-color: rgba(255,255,255,0.15); color: rgba(255,255,255,0.5); }
+    .modal-link { display: inline-flex; align-items: center; gap: 0.5rem; margin-top: 1.25rem; padding: 0.6rem 1.25rem; background: #000; color: #fff; border-radius: 2px; font-size: var(--font-xs); font-weight: 700; text-decoration: none; letter-spacing: 0.1em; text-transform: uppercase; transition: background 0.2s; }
+    .modal-link:hover { background: var(--color-primary); }
+    .modal-link.outline { background: none; color: #000; border: 2px solid #000; }
+    .modal-link.outline:hover { background: #000; color: #fff; }
+    .modal.dark .modal-link.outline { color: #fff; border-color: #fff; }
+    .modal.dark .modal-link.outline:hover { background: #fff; color: #000; }
+    .pending-banner { background: #f9f5f0; border: 1px dashed #ccc; padding: 2rem; text-align: center; }
+    .pending-banner p { font-size: var(--font-xs); color: #999; }
+    .pending-banner strong { color: #333; display: block; margin-bottom: 0.4rem; font-size: var(--font-sm); }
+    .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(4rem); background: #000; color: #fff; padding: 0.75rem 1.5rem; border-radius: 99px; font-size: var(--font-xs); font-weight: 700; z-index: 9999; opacity: 0; transition: all 0.4s cubic-bezier(0.16,1,0.3,1); white-space: nowrap; pointer-events: none; }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .modal.vertical { max-width: 26rem; }
+    .modal.vertical .modal-video { aspect-ratio: 9/16; position: relative; overflow: hidden; background: #000; }
+    .modal.vertical .modal-video iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; display: block; }
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.25rem; }
+      .hero { padding: 5rem 1.25rem 2rem; }
+      .about-left { padding: 2.5rem 1.5rem; }
+      .about-right { padding: 2.5rem 1.5rem; }
+      .internship-section { padding: 3rem 1.25rem; }
+      .works-section { padding: 3rem 1.25rem; }
+      .contact-section { padding: 3rem 1.25rem; }
+    }
+  </style>
 </head>
 <body>
-
-<!-- ═══ NAV ═══ -->
-<nav id="main-nav">
+<a class="skip-link" href="#about">跳转到主要内容</a>
+<nav>
   <div class="nav-logo">ZENG ZIYI</div>
   <div class="nav-links">
-    <button data-section="about">基本信息</button>
-    <button data-section="internship">实习经历</button>
-    <button data-section="works">作品集</button>
-    <button data-section="contact" class="active">联系我</button>
+    <a href="#about" data-section="about">基本信息</a>
+    <a href="#internship" data-section="internship">实习经历</a>
+    <a href="#works" data-section="works">作品集</a>
+    <a href="#contact" data-section="contact">联系我</a>
   </div>
 </nav>
-
-<!-- ═══ HERO ═══ -->
 <section class="hero">
-  <div class="hero-bg" aria-hidden="true"></div>
-  <div class="hero-content reveal">
-    <h1 class="mega-title">PORT<br /><span class="accent">FOLIO</span></h1>
+  <div class="hero-bg-container">
+    <img class="hero-bg-image" id="hero-bg" src="https://raw.githubusercontent.com/zzzy29209/ZengZiyi--Portfolio/main/images/Frame%202.png" alt="" />
+  </div>
+  <div id="curve-canvas-container"></div>
+  <div class="hero-content scroll-reveal">
+    <h1 class="mega-title">PORTFOLIO</h1>
     <p class="hero-sub">Content Creator 内容创作者 · Film Director 影视导演 · AI Creator</p>
-    <div class="hero-bar"><div class="hero-bar-line"></div><p class="hero-bar-text">ZENG ZIYI / 2026</p></div>
+    <div class="hero-bar">
+      <div class="hero-bar-line"></div>
+      <p class="hero-bar-text">ZENG ZIYI / 2026</p>
+    </div>
   </div>
 </section>
-
-<!-- ═══ ABOUT ═══ -->
 <section id="about" class="about-section">
-  <div class="about-left"><h2 class="reveal">关于我</h2></div>
+  <div class="about-left"><h2 class="scroll-reveal">关于我</h2></div>
   <div class="about-right">
-    <div class="about-inner reveal">
+    <div class="about-inner scroll-reveal">
       <p class="section-label">Education Background</p>
       <div class="edu-item">
         <p class="edu-date">2022.09 - 2026.06</p>
@@ -272,244 +338,400 @@ footer{margin-top:4rem;font-size:.5rem;font-weight:900;letter-spacing:1.5em;text
     </div>
   </div>
 </section>
-
-<!-- ═══ INTERNSHIP ═══ -->
 <section id="internship" class="internship-section">
   <div class="internship-inner">
     <div class="section-header"><h3>实习经历</h3><span>Internship Experience</span></div>
-    <div class="timeline-wrap"><div class="timeline"><div class="timeline-line"></div><div class="timeline-items">
-      <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-name">字节跳动</div><div class="timeline-date">2026.03-至今</div></div>
-      <div class="timeline-item"><div class="timeline-dot sm"></div><div class="timeline-name">联投</div><div class="timeline-date">25.12-26.01</div></div>
-      <div class="timeline-item"><div class="timeline-dot sm"></div><div class="timeline-name">小米</div><div class="timeline-date">25.08-11</div></div>
-      <div class="timeline-item"><div class="timeline-dot sm"></div><div class="timeline-name">作业帮</div><div class="timeline-date">25.06-08</div></div>
-      <div class="timeline-item"><div class="timeline-dot sm"></div><div class="timeline-name">芒果</div><div class="timeline-date">24.12-25.03</div></div>
-      <div class="timeline-item" style="width:14%"><div class="timeline-dot sm"></div><div class="timeline-name">梵宿</div><div class="timeline-date">23.07-11</div></div>
-    </div></div></div>
+    <div class="timeline-wrap hide-scrollbar">
+      <div class="timeline">
+        <div class="timeline-line"></div>
+        <div class="timeline-items">
+          <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-name">字节跳动</div><div class="timeline-date">2026.03-至今</div></div>
+          <div class="timeline-item"><div class="timeline-dot sm"></div><div class="timeline-name">联投</div><div class="timeline-date">25.12-26.01</div></div>
+          <div class="timeline-item"><div class="timeline-dot sm"></div><div class="timeline-name">小米</div><div class="timeline-date">25.08-11</div></div>
+          <div class="timeline-item"><div class="timeline-dot sm"></div><div class="timeline-name">作业帮</div><div class="timeline-date">25.06-08</div></div>
+          <div class="timeline-item"><div class="timeline-dot sm"></div><div class="timeline-name">芒果</div><div class="timeline-date">24.12-25.03</div></div>
+          <div class="timeline-item" style="width:14%"><div class="timeline-dot sm"></div><div class="timeline-name">梵宿</div><div class="timeline-date">23.07-11</div></div>
+        </div>
+      </div>
+    </div>
     <div class="intern-list">
-      <div class="intern-row reveal"><div class="intern-date">2026.03 - 至今</div><div class="intern-card current"><div class="intern-tag">当前职位</div><h4>北京字节跳动｜企业文化部｜影像设计</h4><div class="intern-body"><div><p class="placeholder-text">内容待补充...</p></div></div></div></div>
-      <div class="intern-row reveal"><div class="intern-date">2025.12 - 2026.01</div><div class="intern-card"><h4>湖北联投集团｜视频事业部｜短剧策划</h4><div class="metrics"><div class="metric-card"><span class="metric-label">短剧集数</span><span class="metric-value">31</span><span class="metric-unit">集</span></div><div class="metric-card"><span class="metric-label">分镜制作</span><span class="metric-value">800+</span><span class="metric-unit">条</span></div></div><div class="intern-body"><div><p><b>市场调研与选题</b><br />利用百度数据、Vlinkaga指数、中国视听大数据等数据网站关注当下爆火短剧、影视剧，调研市场倾向。与湖南省芒果TV合作，策划姐弟恋主题中剧，独立收集市场数据并制作企划书，成功得到立项资格。</p><br /><p><b>剧本与分镜制作</b><br />负责ToB定制短剧与ToC漫剧的剧本创意写作。作为主编剧，与湖北联投置业公司合作定制《银发音乐会》短剧，独立写作31集2万字故事剧本并制作800余条分镜。</p></div><div><p><b>剧组现场执行</b><br />深度参与短剧拍摄，作为现场编剧与导演助理，帮助指导演员表演，结合分镜辅助导演执导拍摄，5天内结束全部31集内容拍摄。</p></div></div></div></div>
-      <div class="intern-row reveal"><div class="intern-date">2025.08 - 2025.11</div><div class="intern-card"><h4>小米科技有限责任公司｜雇主品牌｜视频策划</h4><div class="metrics"><div class="metric-card"><span class="metric-label">微信公众号增粉</span><span class="metric-value">78,000</span></div><div class="metric-card"><span class="metric-label">抖音</span><span class="metric-value">+2,700</span></div><div class="metric-card"><span class="metric-label">小红书</span><span class="metric-value">+2,600</span></div><div class="metric-card"><span class="metric-label">微博</span><span class="metric-value">+4,900</span></div></div><div class="intern-body"><div><p><b>内容策划与执行</b><br />主导抖音、小红书、微信公众号等平台的视频/图文内容策划，负责视频制作与文案创意。制作"顶尖学子座谈会"视频，开发"奇幻漂流"创意短视频，全程担任导演制作剧本、分镜，拍摄并独立剪辑。</p><br /><p><b>市场调研与选题</b><br />使用PEST分析法对市场情况进行调研，拆解竞品账号的爆款内容，帮助抖音增粉2700人、小红书增粉2600人、微信公众号增粉78000人、微博增粉4900人（皆为净增量）。</p></div><div><p><b>内容运营与数据驱动</b><br />实时关注各主要平台内容数据，建立数据表格，重点关注曝光、互动与粉丝增减等环比数据，建立数据周报与月报辅助创意产出。</p><br /><p><b>平面视觉编辑</b><br />对小红书、微博、公众号等图文内容的海报进行设计与编辑，参与56所高校合作致谢活动并制作宣传图。</p></div></div></div></div>
-      <div class="intern-row reveal"><div class="intern-date">2025.06 - 2025.08</div><div class="intern-card"><h4>作业帮（北京）教育科技有限公司｜用户产品部｜海外视频设计</h4><div class="metrics"><div class="metric-card"><span class="metric-label">单条最高曝光</span><span class="metric-value">70万</span></div></div><div class="intern-body"><div><p><b>用户增长运营</b><br />分析App受众群体并结合账号用户画像，精准定位核心用户。通过视频传播手段，帮助App增加曝光量与用户使用量，最高单条曝光70万。</p></div><div><p><b>数据驱动迭代</b><br />结合用户反馈数据与平台最新审核数据，针对不同投放平台的审核标准与推流机制，定制不同推广方案，输出数据日报并每日进行工作总结。</p><br /><p><b>多语种触达</b><br />主要负责英美日韩德法土耳其与中国台湾的多语种内容本地化，结合不同地区的文化背景、语言习性，对视频内容进行二次编辑与翻译。</p></div></div></div></div>
-      <div class="intern-row reveal"><div class="intern-date">2024.12 - 2025.03</div><div class="intern-card"><h4>湖南芒果数智艺术科技有限公司｜产品技术部｜AI产品视频编导</h4><div class="metrics"><div class="metric-card"><span class="metric-label">元宵晚会全球直播</span><span class="metric-value">千万级</span><span class="metric-unit">触达</span><span class="metric-badge">全球实时直播</span></div></div><div class="intern-body"><div><p><b>AR创新项目策划</b><br />与湖南省博物馆合作，邀请北京大学历史系教授指导，负责编写"AR大空间行走项目"所需的系列短剧剧本，与开发部对接落地方案。项目成品在湖南省博物馆科普互动区投入使用。</p><br /><p><b>AI视频制作与SOP归整</b><br />结合热门历史向影视剧《清明上河图密码》推出AI短剧。作为短剧项目负责人，对多种AI模型进行测试，整理出详细AI短剧SOP，大幅提升工作效率。</p></div><div><p><b>大型活动协同</b><br />湖南卫视2025年元宵晚会，与TV部合作设计歌舞节目《人间最值得》舞台背景，全程深度参与视频制作，登上全球实时直播并获得30s特写展示，触达观众千万级。</p></div></div></div></div>
-      <div class="intern-row reveal"><div class="intern-date">2023.07 - 2023.11</div><div class="intern-card"><h4>湖北梵宿文旅集团｜广告部｜短视频编导</h4><div class="metrics"><div class="metric-card"><span class="metric-label">单场直播在线</span><span class="metric-value">9,600+</span></div><div class="metric-card"><span class="metric-label">单场成交</span><span class="metric-value">¥31.6万</span></div></div><div class="intern-body"><div><p><b>直播运营</b><br />实时监控直播后台数据，管理后台商品链接与评论区、福袋等互动环节。单场直播最高累计在线9600+，7小时成交31.6万。每场直播后输出复盘报告。</p><br /><p><b>多场景拍摄</b><br />多次出差，参与景区、酒店、宴会中心、餐厅等甲方的广告片场景布置与拍摄工作，提前设计运镜与脚本。</p></div><div><p><b>短视频广告剪辑</b><br />对多场景拍摄的素材进行整理，编写视频文案并剪辑，扩大广告曝光量。</p></div></div></div></div>
+      <div class="intern-row scroll-reveal">
+        <div class="intern-date">2026.03 - 至今</div>
+        <div class="intern-card current"><div class="intern-tag">当前职位</div><h4>北京字节跳动｜企业文化部｜影像设计</h4><div class="intern-body"><div><p style="color:rgba(255,255,255,0.35);font-style:italic">内容待补充...</p></div></div></div>
+      </div>
+      <div class="intern-row scroll-reveal">
+        <div class="intern-date">2025.12 - 2026.01</div>
+        <div class="intern-card"><h4>湖北联投集团｜视频事业部｜短剧策划</h4>
+          <div class="metrics"><div class="metric-card"><span class="metric-label">短剧集数</span><span class="metric-value">31</span><span class="metric-unit">集</span></div><div class="metric-card"><span class="metric-label">分镜制作</span><span class="metric-value">800+</span><span class="metric-unit">条</span></div></div>
+          <div class="intern-body"><div><p><b>市场调研与选题</b><br/>利用百度数据、Vlinkaga指数、中国视听大数据等数据网站关注当下爆火短剧、影视剧，调研市场倾向。与湖南省芒果TV合作，策划姐弟恋主题中剧，独立收集市场数据并制作企划书，成功得到立项资格。</p><br/><p><b>剧本与分镜制作</b><br/>负责ToB定制短剧与ToC漫剧的剧本创意写作。作为主编剧，与湖北联投置业公司合作定制《银发音乐会》短剧，独立写作31集2万字故事剧本并制作800余条分镜。</p></div><div><p><b>剧组现场执行</b><br/>深度参与短剧拍摄，作为现场编剧与导演助理，帮助指导演员表演，结合分镜辅助导演执导拍摄，5天内结束全部31集内容拍摄。</p></div></div>
+        </div>
+      </div>
+      <div class="intern-row scroll-reveal">
+        <div class="intern-date">2025.08 - 2025.11</div>
+        <div class="intern-card"><h4>小米科技有限责任公司｜雇主品牌｜视频策划</h4>
+          <div class="metrics"><div class="metric-card"><span class="metric-label">微信公众号增粉</span><span class="metric-value">78,000</span></div><div class="metric-card"><span class="metric-label">抖音</span><span class="metric-value">+2,700</span></div><div class="metric-card"><span class="metric-label">小红书</span><span class="metric-value">+2,600</span></div><div class="metric-card"><span class="metric-label">微博</span><span class="metric-value">+4,900</span></div></div>
+          <div class="intern-body"><div><p><b>内容策划与执行</b><br/>主导抖音、小红书、微信公众号等平台的视频/图文内容策划，负责视频制作与文案创意。制作"顶尖学子座谈会"视频，开发"奇幻漂流"创意短视频，全程担任导演制作剧本、分镜，拍摄并独立剪辑。</p><br/><p><b>市场调研与选题</b><br/>使用PEST分析法对市场情况进行调研，拆解竞品账号的爆款内容，帮助抖音增粉2700人、小红书增粉2600人、微信公众号增粉78000人、微博增粉4900人（皆为净增量）。</p></div><div><p><b>内容运营与数据驱动</b><br/>实时关注各主要平台内容数据，建立数据表格，重点关注曝光、互动与粉丝增减等环比数据，建立数据周报与月报辅助创意产出。</p><br/><p><b>平面视觉编辑</b><br/>对小红书、微博、公众号等图文内容的海报进行设计与编辑，参与56所高校合作致谢活动并制作宣传图。</p></div></div>
+        </div>
+      </div>
+      <div class="intern-row scroll-reveal">
+        <div class="intern-date">2025.06 - 2025.08</div>
+        <div class="intern-card"><h4>作业帮（北京）教育科技有限公司｜用户产品部｜海外视频设计</h4>
+          <div class="metrics"><div class="metric-card"><span class="metric-label">单条最高曝光</span><span class="metric-value">70万</span></div></div>
+          <div class="intern-body"><div><p><b>用户增长运营</b><br/>分析App受众群体并结合账号用户画像，精准定位核心用户。通过视频传播手段，帮助App增加曝光量与用户使用量，最高单条曝光70万。</p></div><div><p><b>数据驱动迭代</b><br/>结合用户反馈数据与平台最新审核数据，针对不同投放平台的审核标准与推流机制，定制不同推广方案，输出数据日报并每日进行工作总结。</p><br/><p><b>多语种触达</b><br/>主要负责英美日韩德法土耳其与中国台湾的多语种内容本地化，结合不同地区的文化背景、语言习性，对视频内容进行二次编辑与翻译。</p></div></div>
+        </div>
+      </div>
+      <div class="intern-row scroll-reveal">
+        <div class="intern-date">2024.12 - 2025.03</div>
+        <div class="intern-card"><h4>湖南芒果数智艺术科技有限公司｜产品技术部｜AI产品视频编导</h4>
+          <div class="metrics"><div class="metric-card"><span class="metric-label">元宵晚会全球直播</span><span class="metric-value">千万级</span><span class="metric-unit">触达</span></div><div class="metric-card"><span class="metric-value">全球实时直播</span></div></div>
+          <div class="intern-body"><div><p><b>AR创新项目策划</b><br/>与湖南省博物馆合作，邀请北京大学历史系教授指导，负责编写"AR大空间行走项目"所需的系列短剧剧本，与开发部对接落地方案。项目成品在湖南省博物馆科普互动区投入使用。</p><br/><p><b>AI视频制作与SOP归整</b><br/>结合热门历史向影视剧《清明上河图密码》推出AI短剧。作为短剧项目负责人，对多种AI模型进行测试，整理出详细AI短剧SOP，大幅提升工作效率。</p></div><div><p><b>大型活动协同</b><br/>湖南卫视2025年元宵晚会，与TV部合作设计歌舞节目《人间最值得》舞台背景，全程深度参与视频制作，登上全球实时直播并获得30s特写展示，触达观众千万级。</p></div></div>
+        </div>
+      </div>
+      <div class="intern-row scroll-reveal">
+        <div class="intern-date">2023.07 - 2023.11</div>
+        <div class="intern-card"><h4>湖北梵宿文旅集团｜广告部｜短视频编导</h4>
+          <div class="metrics"><div class="metric-card"><span class="metric-label">单场直播在线</span><span class="metric-value">9,600+</span></div><div class="metric-card"><span class="metric-label">单场成交</span><span class="metric-value">¥31.6万</span></div></div>
+          <div class="intern-body"><div><p><b>直播运营</b><br/>实时监控直播后台数据，管理后台商品链接与评论区、福袋等互动环节。单场直播最高累计在线9600+，7小时成交31.6万。每场直播后输出复盘报告。</p><br/><p><b>多场景拍摄</b><br/>多次出差，参与景区、酒店、宴会中心、餐厅等甲方的广告片场景布置与拍摄工作，提前设计运镜与脚本。</p></div><div><p><b>短视频广告剪辑</b><br/>对多场景拍摄的素材进行整理，编写视频文案并剪辑，扩大广告曝光量。</p></div></div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
-
-<!-- ═══ WORKS (data-driven) ═══ -->
 <section id="works" class="works-section">
-  <div class="works-inner reveal">
+  <div class="works-inner scroll-reveal">
     <p class="works-section-label">Portfolio</p>
     <h2 class="works-section-title">作品集</h2>
     <p class="works-section-desc">影像创作者 × AI探索者 × 内容策划人。以下作品涵盖影像叙事、品牌内容、AI创作与技术拓展四个维度。</p>
-    <div class="works-tabs" id="works-tabs"></div>
-    <div id="works-panels"></div>
+    <div class="works-tabs" role="tablist">
+      <button class="works-tab active" data-panel="narrative" role="tab" aria-selected="true">影像叙事</button>
+      <button class="works-tab" data-panel="brand" role="tab" aria-selected="false">品牌内容</button>
+      <button class="works-tab" data-panel="ai" role="tab" aria-selected="false">AI创作</button>
+      <button class="works-tab" data-panel="tech" role="tab" aria-selected="false">技术拓展</button>
+    </div>
+    <div id="panel-narrative" class="works-panel active" role="tabpanel">
+      <div class="works-grid">
+        <div class="work-card" data-modal="daoci"><img class="work-card-thumb" src="https://raw.githubusercontent.com/zzzy29209/ZengZiyi--Portfolio/main/01_daoci.jpg" alt="短片《倒刺》剧照" loading="lazy" /><div class="work-card-body"><div><p class="work-card-role">制片 · 剪辑</p><p class="work-card-title">《倒刺》</p><p class="work-card-desc">学生短片作品，即将上传B站</p></div><p class="work-card-arrow">WATCH →</p></div></div>
+        <div class="work-card" data-modal="lianliuflow"><img class="work-card-thumb" src="https://raw.githubusercontent.com/zzzy29209/ZengZiyi--Portfolio/main/16_lianliuflow_bilibili.jpg" alt="短片《离岸流》剧照" loading="lazy" /><div class="work-card-body"><div><p class="work-card-role">灯光 · 剪辑</p><p class="work-card-title">《离岸流》</p><p class="work-card-desc">韩国釜山拍摄 · 担任灯光指导与剪辑</p></div><p class="work-card-arrow">WATCH →</p></div></div>
+        <div class="work-card" data-modal="shanshui"><img class="work-card-thumb" src="https://raw.githubusercontent.com/zzzy29209/ZengZiyi--Portfolio/main/17_shanshui_bilibili.jpg" alt="纪录片《山水涧》截图" loading="lazy" /><div class="work-card-body"><div><p class="work-card-role">摄影 · 剪辑</p><p class="work-card-title">《山水涧》</p><p class="work-card-desc">湖北麻城乡村人文纪录片 · 摄像与剪辑</p></div><p class="work-card-arrow">WATCH →</p></div></div>
+        <div class="work-card" data-modal="interview"><img class="work-card-thumb" src="https://raw.githubusercontent.com/zzzy29209/ZengZiyi--Portfolio/main/02_interview.jpg" alt="采访视频截图" loading="lazy" /><div class="work-card-body"><div><p class="work-card-role">导演 · 剪辑</p><p class="work-card-title">采访视频</p><p class="work-card-desc">人物采访纪实内容</p></div><p class="work-card-arrow">WATCH →</p></div></div>
+        <div class="work-card" data-modal="seji"><img class="work-card-thumb" src="https://raw.githubusercontent.com/zzzy29209/ZengZiyi--Portfolio/main/03_seji.jpg" alt="电影《色戒》灯光分析视频截图" loading="lazy" /><div class="work-card-body"><div><p class="work-card-role">灯光分析 · 视频论文</p><p class="work-card-title">电影《色戒》灯光设计分析</p><p class="work-card-desc">分析《色戒》中易先生首次登场的地牢顶光设计，与《教父》对比研究，探讨灯光如何服务于人物形象塑造</p></div><p class="work-card-arrow">WATCH →</p></div></div>
+        <div class="work-card" data-modal="liananhuaxu"><img class="work-card-thumb" src="https://raw.githubusercontent.com/zzzy29209/ZengZiyi--Portfolio/main/04_lianan_behind.jpg" alt="《离岸流》幕后花絮截图" loading="lazy" /><div class="work-card-body"><div><p class="work-card-role">灯光 · 幕后记录</p><p class="work-card-title">自制短片《离岸流》幕后花絮</p><p class="work-card-desc">作为Gaffer从灯光设计角度记录韩国釜山四天拍摄的设计思路与实践手段，回顾作品、反思不足、汲取经验</p></div><p class="work-card-arrow">WATCH →</p></div></div>
+      </div>
+    </div>
+    <div id="panel-brand" class="works-panel" role="tabpanel">
+      <div class="works-grid">
+        <div class="work-card" data-modal="xiaomi1"><img class="work-card-thumb" src="https://raw.githubusercontent.com/zzzy29209/ZengZiyi--Portfolio/main/05_xiaomi1.jpg" alt="小米顶尖学子座谈会视频截图" loading="lazy" /><div class="work-card-body"><div><p class="work-card-role">小米雇主品牌 · 导演/剪辑</p><p class="work-card-title">顶尖学子座谈会</p><p class="work-card-desc">小米招聘系列对谈视频</p></div><p class="work-card-arrow">WATCH →</p></div></div>
+        <div class="work-card" data-modal="xiaomi2"><img class="work-card-thumb" src="https://raw.githubusercontent.com/zzzy29209/ZengZiyi--Portfolio/main/06_xiaomi2.jpg" alt="小米奇幻漂流视频截图" loading="lazy" /><div class="work-card-body"><div><p class="work-card-role">小米雇主品牌 · 导演/剪辑</p><p class="work-card-title">奇幻漂流</p><p class="work-card-desc">小米雇主品牌创意短视频</p></div><p class="work-card-arrow">WATCH →</p></div></div>
+        <div class="work-card" data-modal="xiaomi3"><img class="work-card-thumb" src="https://raw.githubusercontent.com/zzzy29209/ZengZiyi--Portfolio/main/07_xiaomi3.jpg" alt="小米品牌内容视频截图" loading="lazy" /><div class="work-card-body"><div><p class="work-card-role">小米雇主品牌 · 策划/剪辑</p><p class="work-card-title">小米品牌内容</p><p class="work-card-desc">小米雇主品牌系列视频</p></div><p class="work-card-arrow">WATCH →</p></div></div>
+        <div class="work-card" data-modal="mango"><img class="work-card-thumb" src="https://raw.githubusercontent.com/zzzy29209/ZengZiyi--Portfolio/main/08_mango.jpg" alt="湖南卫视元宵晚会《人间最值得》舞台截图" loading="lazy" /><div class="work-card-body"><div><p class="work-card-role">芒果TV · 视频编导</p><p class="work-card-title">《人间最值得》舞台背景</p><p class="work-card-desc">2025湖南卫视元宵晚会，千万级触达</p></div><p class="work-card-arrow">WATCH →</p></div></div>
+      </div>
+    </div>
+    <div id="panel-ai" class="works-panel" role="tabpanel">
+      <div class="works-grid">
+        <div class="work-card" data-modal="sixiong"><img class="work-card-thumb" src="https://raw.githubusercontent.com/zzzy29209/ZengZiyi--Portfolio/main/18_sixiong_bilibili.jpg" alt="AI短片《复苏之刃》截图" loading="lazy" /><div class="work-card-body"><div><p class="work-card-role">AI视频 · 导演/制作</p><p class="work-card-title">《复苏之刃》</p><p class="work-card-desc">AI仙侠短片 · Midjourney+Runway+Luma · 剧本与视频制作</p></div><p class="work-card-arrow">WATCH →</p></div></div>
+        <div class="work-card" data-modal="qingming"><img class="work-card-thumb" src="https://raw.githubusercontent.com/zzzy29209/ZengZiyi--Portfolio/main/09_qingming.jpg" alt="清明上河图AI短剧截图" loading="lazy" /><div class="work-card-body"><div><p class="work-card-role">芒果数智 · AI视频编导</p><p class="work-card-title">清明上河图 AI短剧系列</p><p class="work-card-desc">结合热门历史IP的AI生成短剧</p></div><p class="work-card-arrow">WATCH →</p></div></div>
+        <div class="work-card" data-modal="aiplaceholder"><img class="work-card-thumb" src="https://raw.githubusercontent.com/zzzy29209/ZengZiyi--Portfolio/main/10_ai_more.jpg" alt="更多AI作品即将更新" loading="lazy" /><div class="work-card-body"><div><p class="work-card-role">更多作品</p><p class="work-card-title">AI海报 / 实验创作</p><p class="work-card-desc">即将更新</p></div><p class="work-card-arrow">COMING SOON</p></div></div>
+      </div>
+    </div>
+    <div id="panel-tech" class="works-panel" role="tabpanel">
+      <div class="works-grid">
+        <div class="work-card" data-modal="ue"><img class="work-card-thumb" src="https://raw.githubusercontent.com/zzzy29209/ZengZiyi--Portfolio/main/11_ue.jpg" alt="UE/Houdini特效视频截图" loading="lazy" /><div class="work-card-body"><div><p class="work-card-role">UE / Houdini · 特效</p><p class="work-card-title">特效视频作品</p><p class="work-card-desc">即将补充截图与链接</p></div><p class="work-card-arrow">VIEW →</p></div></div>
+        <div class="work-card" data-modal="maya"><img class="work-card-thumb" src="https://raw.githubusercontent.com/zzzy29209/ZengZiyi--Portfolio/main/12_maya.jpg" alt="Maya 3D渲染作品截图" loading="lazy" /><div class="work-card-body"><div><p class="work-card-role">Maya · 建模渲染</p><p class="work-card-title">3D 渲染作品</p><p class="work-card-desc">即将补充截图与链接</p></div><p class="work-card-arrow">VIEW →</p></div></div>
+        <div class="work-card" data-modal="vibecode"><img class="work-card-thumb" src="https://raw.githubusercontent.com/zzzy29209/ZengZiyi--Portfolio/main/13_vibecode.jpg" alt="Vibecoding独立开发作品截图" loading="lazy" /><div class="work-card-body"><div><p class="work-card-role">Vibecoding · 网页/小程序</p><p class="work-card-title">独立开发作品</p><p class="work-card-desc">即将补充链接</p></div><p class="work-card-arrow">VIEW →</p></div></div>
+        <div class="work-card" data-modal="storyboard"><img class="work-card-thumb" src="https://raw.githubusercontent.com/zzzy29209/ZengZiyi--Portfolio/main/14_storyboard.jpg" alt="分镜手稿与剧本文档" loading="lazy" /><div class="work-card-body"><div><p class="work-card-role">分镜 · 剧本 · 策划案</p><p class="work-card-title">创作文档</p><p class="work-card-desc">分镜手稿、剧本、项目策划案</p></div><p class="work-card-arrow">VIEW →</p></div></div>
+        <div class="work-card" data-modal="overseas_more"><img class="work-card-thumb" src="https://raw.githubusercontent.com/zzzy29209/ZengZiyi--Portfolio/main/15_review.jpg" alt="影评与公众号文章截图" loading="lazy" /><div class="work-card-body"><div><p class="work-card-role">写作 · 影评</p><p class="work-card-title">影评 / 公众号</p><p class="work-card-desc">即将补充链接</p></div><p class="work-card-arrow">READ →</p></div></div>
+      </div>
+    </div>
   </div>
 </section>
-
-<!-- ═══ BILIBILI PORTAL ═══ -->
 <section class="bilibili-portal">
-  <div class="reveal" style="text-align:center;max-width:700px;margin:0 auto">
+  <div class="scroll-reveal" style="text-align:center; max-width:700px; margin:0 auto;">
     <p class="portal-hint">以上仅展示了我的部分作品</p>
     <p class="portal-desc">更多作品请访问我的B站主页，同时我还有很多作品尚未公开展示，欢迎联系我了解更多</p>
-    <button class="portal-btn" data-href="https://b23.tv/vLkjCpz">
-      <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" style="vertical-align:middle;margin-right:8px"><path d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v7.36c-.036 1.51-.556 2.769-1.56 3.773s-2.262 1.524-3.773 1.56H5.333c-1.51-.036-2.769-.556-3.773-1.56S.036 18.858 0 17.347v-7.36c.036-1.511.556-2.765 1.56-3.76 1.004-.996 2.262-1.52 3.773-1.574h.774l-1.174-1.12a1.234 1.234 0 0 1-.373-.906c0-.356.124-.658.373-.907l.027-.027c.267-.249.573-.373.92-.373.347 0 .653.124.92.373L9.653 4.44c.071.071.134.142.187.213h4.267a.836.836 0 0 1 .16-.213l2.853-2.747c.267-.249.573-.373.92-.373.347 0 .662.151.929.4.267.249.391.551.391.907 0 .355-.124.657-.373.906zM5.333 7.24c-.746.018-1.373.276-1.88.773-.506.498-.769 1.13-.786 1.894v7.52c.017.764.28 1.395.786 1.893.507.498 1.134.756 1.88.773h13.334c.746-.017 1.373-.275 1.88-.773.506-.498.769-1.129.786-1.893v-7.52c-.017-.765-.28-1.396-.786-1.894-.507-.497-1.134-.755-1.88-.773zM8 11.107c.373 0 .684.124.933.373.25.249.383.569.4.96v1.173c-.017.391-.15.711-.4.96-.249.25-.56.374-.933.374s-.684-.125-.933-.374c-.25-.249-.383-.569-.4-.96V12.44c.017-.391.15-.711.4-.96.249-.25.56-.373.933-.373zm8 0c.373 0 .684.124.933.373.25.249.383.569.4.96v1.173c-.017.391-.15.711-.4.96-.249.25-.56.374-.933.374s-.684-.125-.933-.374c-.25-.249-.383-.569-.4-.96V12.44c.017-.391.15-.711.4-.96.249-.25.56-.373.933-.373z"/></svg>
+    <a class="portal-btn" href="https://b23.tv/vLkjCpz" target="_blank" rel="noopener noreferrer">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" style="vertical-align:middle;margin-right:8px" aria-hidden="true"><path d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v7.36c-.036 1.51-.556 2.769-1.56 3.773s-2.262 1.524-3.773 1.56H5.333c-1.51-.036-2.769-.556-3.773-1.56S.036 18.858 0 17.347v-7.36c.036-1.511.556-2.765 1.56-3.76 1.004-.996 2.262-1.52 3.773-1.574h.774l-1.174-1.12a1.234 1.234 0 0 1-.373-.906c0-.356.124-.658.373-.907l.027-.027c.267-.249.573-.373.92-.373.347 0 .653.124.92.373L9.653 4.44c.071.071.134.142.187.213h4.267a.836.836 0 0 1 .16-.213l2.853-2.747c.267-.249.573-.373.92-.373.347 0 .662.151.929.4.267.249.391.551.391.907 0 .355-.124.657-.373.906zM5.333 7.24c-.746.018-1.373.276-1.88.773-.506.498-.769 1.13-.786 1.894v7.52c.017.764.28 1.395.786 1.893.507.498 1.134.756 1.88.773h13.334c.746-.017 1.373-.275 1.88-.773.506-.498.769-1.129.786-1.893v-7.52c-.017-.765-.28-1.396-.786-1.894-.507-.497-1.134-.755-1.88-.773zM8 11.107c.373 0 .684.124.933.373.25.249.383.569.4.96v1.173c-.017.391-.15.711-.4.96-.249.25-.56.374-.933.374s-.684-.125-.933-.374c-.25-.249-.383-.569-.4-.96V12.44c.017-.391.15-.711.4-.96.249-.25.56-.373.933-.373zm8 0c.373 0 .684.124.933.373.25.249.383.569.4.96v1.173c-.017.391-.15.711-.4.96-.249.25-.56.374-.933.374s-.684-.125-.933-.374c-.25-.249-.383-.569-.4-.96V12.44c.017-.391.15-.711.4-.96.249-.25.56-.373.933-.373z"/></svg>
       前往我的B站主页
-    </button>
+    </a>
   </div>
 </section>
-
-<!-- ═══ CONTACT ═══ -->
 <section id="contact" class="contact-section">
-  <div class="reveal" style="width:100%;display:flex;flex-direction:column;align-items:center">
+  <div class="scroll-reveal" style="width:100%;display:flex;flex-direction:column;align-items:center">
     <h3>Work with me!</h3>
     <div class="contact-row">
-      <div class="contact-item"><p class="contact-label">Email</p><button class="contact-btn" data-copy="zzzy29209@gmail.com" data-toast="邮箱已复制到剪贴板">zzzy29209@gmail.com</button><p class="contact-hint">点击复制</p></div>
-      <div class="contact-item"><p class="contact-label">WeChat</p><button class="contact-btn" data-copy="Zzzy_nine" data-toast="微信号已复制到剪贴板" data-wechat="true">Zzzy_nine</button><p class="contact-hint">点击复制</p></div>
+      <div class="contact-item"><p class="contact-label">Email</p><button class="contact-btn" data-copy="zzzy29209@163.com" data-toast="邮箱已复制到剪贴板">zzzy29209@163.com</button><p class="contact-hint">点击复制</p></div>
+      <div class="contact-item"><p class="contact-label">WeChat</p><button class="contact-btn" data-copy="Zzzy_nine" data-toast="微信号已复制到剪贴板">Zzzy_nine</button><p class="contact-hint">点击复制</p></div>
     </div>
   </div>
   <footer>© 2026 ZIYI ZENG</footer>
 </section>
-
-<!-- ═══ SINGLE REUSABLE MODAL ═══ -->
-<div id="modal-overlay" class="modal-overlay" role="dialog" aria-modal="true">
-  <div class="modal" id="modal-container">
-    <button class="modal-close" id="modal-close-btn" aria-label="关闭">✕</button>
-    <div id="modal-media"></div>
-    <div class="modal-body" id="modal-body"></div>
-  </div>
-</div>
-
-<div id="toast" class="toast" aria-live="polite"></div>
-
+<div id="modal-container"></div>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
 <script>
-/* ═══════════════════════════════════════
-   WORKS DATA — Single source of truth.
-   Add new work = push one object. Done.
-   ═══════════════════════════════════════ */
-const TABS=[
-  {id:'narrative',label:'影像叙事'},
-  {id:'brand',label:'品牌内容'},
-  {id:'ai',label:'AI创作'},
-  {id:'tech',label:'技术拓展'},
-];
-const W=[
-  // ── 影像叙事 ──
-  {id:'daoci',tab:'narrative',thumb:'https://cdn.jsdelivr.net/gh/zzzy29209/ZengZiyi--Portfolio@main/01_daoci.jpg',role:'制片 · 剪辑',title:'《倒刺》',desc:'学生短片作品，即将上传B站',arrow:'WATCH →',m:{dark:1,pending:{t:'视频即将上线',d:'正在上传至B站，上线后此处将直接播放'},tag:'影像叙事 · 学生短片',h:'《倒刺》',p:['学生时期拍摄的短片作品。'],pills:['制片','剪辑']}},
-  {id:'lianliuflow',tab:'narrative',thumb:'https://cdn.jsdelivr.net/gh/zzzy29209/ZengZiyi--Portfolio@main/16_lianliuflow_bilibili.jpg',role:'灯光 · 剪辑',title:'《离岸流》',desc:'韩国釜山拍摄 · 担任灯光指导与剪辑',arrow:'WATCH →',m:{dark:1,vid:{t:'b',id:'BV1uZw6zXEq2'},tag:'影像叙事 · 学生短片',h:'《离岸流》（片头）',p:['2024年10月，在韩国釜山，与另外五位中国同学共同完成的短片，完整版本时长16分钟，此处展示片头部分。','故事讲述了一个热爱写诗的少年，在现实与理想的两重选择中坠入迷茫，却意外成为刀人犯，在出狱后继续经历了一系列故事……最终他究竟是走向救赎还是灭亡？','担任灯光指导和剪辑职位，4天内拍摄完成，两周内剪辑完成。'],pills:['灯光指导','剪辑','韩国釜山'],link:{l:'在B站观看 →',u:'https://www.bilibili.com/video/BV1uZw6zXEq2'}}},
-  {id:'shanshui',tab:'narrative',thumb:'https://cdn.jsdelivr.net/gh/zzzy29209/ZengZiyi--Portfolio@main/17_shanshui_bilibili.jpg',role:'摄影 · 剪辑',title:'《山水涧》',desc:'湖北麻城乡村人文纪录片 · 摄像与剪辑',arrow:'WATCH →',m:{dark:1,vid:{t:'b',id:'BV1h9w6zxEBF'},tag:'影像叙事 · 纪录片',h:'自制纪录片《山水涧》（节选）',p:['在湖北麻城，与另外3名同学共同制作的纪录片，分为3分钟预告片和7分钟正片，此处节选自预告片。','本片记录了湖北麻城龟山镇东垸村村民们的故事，这是一个有关乡村人文的故事，一段寻找内心向往与平静的旅程。','担任摄像与剪辑职位，1天内完成拍摄，3天内完成剪辑。'],pills:['摄像','剪辑','纪录片','湖北麻城'],link:{l:'在B站观看 →',u:'https://www.bilibili.com/video/BV1h9w6zxEBF'}}},
-  {id:'interview',tab:'narrative',thumb:'https://cdn.jsdelivr.net/gh/zzzy29209/ZengZiyi--Portfolio@main/02_interview.jpg',role:'导演 · 剪辑',title:'采访视频',desc:'人物采访纪实内容',arrow:'WATCH →',m:{dark:1,vert:1,vid:{t:'d',id:'7564621993643904282'},tag:'影像叙事 · 采访纪实',h:'采访视频',p:['人物采访与纪实内容创作。'],pills:['导演','剪辑'],link:{l:'在抖音观看 →',u:'https://www.douyin.com/video/7564621993643904282'}}},
-  {id:'seji',tab:'narrative',thumb:'https://cdn.jsdelivr.net/gh/zzzy29209/ZengZiyi--Portfolio@main/03_seji.jpg',role:'灯光分析 · 视频论文',title:'电影《色戒》灯光设计分析',desc:'分析《色戒》中易先生首次登场的地牢顶光设计，与《教父》对比研究',arrow:'WATCH →',m:{dark:1,vid:{t:'b',id:'BV116oKBBE6L'},tag:'影像叙事 · 灯光分析',h:'电影《色戒》灯光设计分析',p:['电影《色戒》中易先生的首次登场是在地牢里，这一段落的顶光设计与电影《教父》中的场景颇为相似，都非常有研究价值，都服务于人物形象塑造。本视频从灯光设计的专业视角出发，深入分析了李安如何运用光影语言来构建角色的权力感与神秘感，以及这种灯光手法在经典电影中的传承与演变。'],pills:['灯光分析','视频论文','色戒','教父'],link:{l:'在B站观看 →',u:'https://www.bilibili.com/video/BV116oKBBE6L'}}},
-  {id:'liananhuaxu',tab:'narrative',thumb:'https://cdn.jsdelivr.net/gh/zzzy29209/ZengZiyi--Portfolio@main/04_lianan_behind.jpg',role:'灯光 · 幕后记录',title:'自制短片《离岸流》幕后花絮',desc:'作为Gaffer从灯光设计角度记录韩国釜山四天拍摄的设计思路与实践手段',arrow:'WATCH →',m:{dark:1,vid:{t:'b',id:'BV1z9oKBfEmF'},tag:'影像叙事 · 幕后记录',h:'自制短片《离岸流》幕后花絮',p:['短片《离岸流》是我和我的同学们用四天时间在韩国釜山拍摄完成的，这则视频记录了《离岸流》拍摄背后的故事。本人作为Gaffer（灯光指导），在这条视频中从灯光设计的角度记录了拍摄时的设计思路与实践手段。这是一次珍贵的记录，能够帮助我们回顾作品，反思不足，汲取经验。'],pills:['灯光指导','幕后花絮','韩国釜山'],link:{l:'在B站观看 →',u:'https://www.bilibili.com/video/BV1z9oKBfEmF'}}},
+const CURVE_CONFIG = {
+  images: { 
+    backgroundPath: 'https://raw.githubusercontent.com/zzzy29209/ZengZiyi--Portfolio/main/images/Frame%202.png', 
+    maskedPath: 'https://raw.githubusercontent.com/zzzy29209/ZengZiyi--Portfolio/main/images/Frame%203.png' 
+  },
+  curve: { 
+    startYRange: [-50, -10], 
+    growthSpeedRange: [2, 5], 
+    xDriftOptions: [[-0.3, 0.3]], 
+    maxLengthRange: [600, 900], 
+    weightRange: [3, 6],
+    fadeSpeedRange: [2, 5]
+  },
+  generator: { spawnInterval: 45, maxCurves: 30 }
+};
 
-  // ── 品牌内容 ──
-  {id:'xiaomi1',tab:'brand',thumb:'https://cdn.jsdelivr.net/gh/zzzy29209/ZengZiyi--Portfolio@main/05_xiaomi1.jpg',role:'小米雇主品牌 · 导演/剪辑',title:'顶尖学子座谈会',desc:'小米招聘系列对谈视频',arrow:'WATCH →',m:{vert:1,vid:{t:'d',id:'7543461350660443428'},tag:'品牌内容 · 小米雇主品牌',h:'顶尖学子座谈会',p:['在小米雇主品牌实习期间，全程担任导演兼剪辑。该系列视频聚焦各领域顶尖学子与小米的对话，展现小米的技术文化与人才理念，助力雇主品牌内容建设与校招传播。'],pills:['导演','剪辑','小米'],link:{l:'在抖音观看 →',u:'https://www.douyin.com/video/7543461350660443428'}}},
-  {id:'xiaomi2',tab:'brand',thumb:'https://cdn.jsdelivr.net/gh/zzzy29209/ZengZiyi--Portfolio@main/06_xiaomi2.jpg',role:'小米雇主品牌 · 导演/剪辑',title:'奇幻漂流',desc:'小米雇主品牌创意短视频',arrow:'WATCH →',m:{vert:1,vid:{t:'d',id:'7561007858960190772'},tag:'品牌内容 · 小米雇主品牌',h:'奇幻漂流',p:['小米雇主品牌创意短视频，全程担任导演制作剧本、分镜，拍摄并独立剪辑。'],pills:['创意策划','导演','剪辑'],link:{l:'在抖音观看 →',u:'https://www.douyin.com/video/7561007858960190772'}}},
-  {id:'xiaomi3',tab:'brand',thumb:'https://cdn.jsdelivr.net/gh/zzzy29209/ZengZiyi--Portfolio@main/07_xiaomi3.jpg',role:'小米雇主品牌 · 策划/剪辑',title:'小米品牌内容',desc:'小米雇主品牌系列视频',arrow:'WATCH →',m:{vert:1,vid:{t:'d',id:'7546164694239694099'},tag:'品牌内容 · 小米雇主品牌',h:'小米品牌内容',p:['小米雇主品牌系列内容，负责策划与剪辑。'],pills:['策划','剪辑'],link:{l:'在抖音观看 →',u:'https://www.douyin.com/video/7546164694239694099'}}},
-  {id:'mango',tab:'brand',thumb:'https://cdn.jsdelivr.net/gh/zzzy29209/ZengZiyi--Portfolio@main/08_mango.jpg',role:'芒果TV · 视频编导',title:'《人间最值得》舞台背景',desc:'2025湖南卫视元宵晚会，千万级触达',arrow:'WATCH →',m:{dark:1,pending:{t:'视频即将上线',d:'节目片段正在整理中，上线后此处将直接播放'},tag:'品牌内容 · 芒果TV · 千万级触达',h:'《人间最值得》舞台背景',p:['2025湖南卫视元宵晚会，与TV部合作设计歌舞节目《人间最值得》舞台背景视频，全程深度参与制作，登上全球实时直播并获得30s特写展示，触达观众千万级。'],pills:['视频编导','芒果数智','全球直播','千万触达']}},
+let curves = [], bgImg, maskImg, maskGraphics, frameCounter = 0;
 
-  // ── AI创作 ──
-  {id:'sixiong',tab:'ai',thumb:'https://cdn.jsdelivr.net/gh/zzzy29209/ZengZiyi--Portfolio@main/18_sixiong_bilibili.jpg',role:'AI视频 · 导演/制作',title:'《复苏之刃》',desc:'AI仙侠短片 · Midjourney+Runway+Luma · 剧本与视频制作',arrow:'WATCH →',m:{dark:1,vid:{t:'b',id:'BV1gow6zWEnw'},tag:'AI创作 · AI短片',h:'AI短片《复苏之刃》',p:['2024年，与另外4名同学一起完成的AI短片。当时AI技术尚处早期，受限于海外环境，使用了Midjourney、Runway、Luma、Suno等AI工具。','故事为纯虚构，构建了一个四雄争霸的战乱世界，融入大量仙侠元素，采用游戏预告片形式呈现。','担任剧本开发与图生视频职位，从0到1进行剧本制作到剪辑完成，一周内完成全片。'],pills:['AI视频','剧本开发','Midjourney','Runway','Luma'],link:{l:'在B站观看 →',u:'https://www.bilibili.com/video/BV1gow6zWEnw'}}},
-  {id:'qingming',tab:'ai',thumb:'https://cdn.jsdelivr.net/gh/zzzy29209/ZengZiyi--Portfolio@main/09_qingming.jpg',role:'芒果数智 · AI视频编导',title:'清明上河图 AI短剧系列',desc:'结合热门历史IP的AI生成短剧',arrow:'WATCH →',m:{dark:1,pending:{t:'视频即将上线',d:'正在整理中'},tag:'AI创作 · 芒果数智',h:'清明上河图 AI短剧系列',p:['结合热门历史向影视剧《清明上河图密码》推出的AI短剧系列。使用PEST分析法把握热点，对多种AI模型进行对比测试，整理出完整AI短剧SOP。'],pills:['AI视频','项目负责人','SOP制定']}},
-  {id:'aiplaceholder',tab:'ai',thumb:'https://cdn.jsdelivr.net/gh/zzzy29209/ZengZiyi--Portfolio@main/10_ai_more.jpg',role:'更多作品',title:'AI海报 / 实验创作',desc:'即将更新',arrow:'COMING SOON',m:{dark:1,tag:'AI创作',h:'更多AI作品',p:['AI海报、实验性创作内容即将更新。']}},
-
-  // ── 技术拓展 ──
-  {id:'ue',tab:'tech',thumb:'https://cdn.jsdelivr.net/gh/zzzy29209/ZengZiyi--Portfolio@main/11_ue.jpg',role:'UE / Houdini · 特效',title:'特效视频作品',desc:'即将补充截图与链接',arrow:'VIEW →',m:{dark:1,tag:'技术拓展 · UE / Houdini',h:'特效视频作品',p:['使用Unreal Engine与Houdini制作的特效视频，截图与视频链接即将补充。'],pills:['UE','Houdini','VFX']}},
-  {id:'maya',tab:'tech',thumb:'https://cdn.jsdelivr.net/gh/zzzy29209/ZengZiyi--Portfolio@main/12_maya.jpg',role:'Maya · 建模渲染',title:'3D 渲染作品',desc:'即将补充截图与链接',arrow:'VIEW →',m:{dark:1,tag:'技术拓展 · Maya',h:'3D 渲染作品',p:['Maya建模与渲染作品，截图即将补充。'],pills:['Maya','3D建模','渲染']}},
-  {id:'vibecode',tab:'tech',thumb:'https://cdn.jsdelivr.net/gh/zzzy29209/ZengZiyi--Portfolio@main/13_vibecode.jpg',role:'Vibecoding · 网页/小程序',title:'独立开发作品',desc:'即将补充链接',arrow:'VIEW →',m:{tag:'技术拓展 · 独立开发',h:'网页 / 小程序',p:['使用Vibecoding独立开发的网页与小程序项目，链接即将补充。'],pills:['网页开发','小程序','Vibecoding']}},
-  {id:'storyboard',tab:'tech',thumb:'https://cdn.jsdelivr.net/gh/zzzy29209/ZengZiyi--Portfolio@main/14_storyboard.jpg',role:'分镜 · 剧本 · 策划案',title:'创作文档',desc:'分镜手稿、剧本、项目策划案',arrow:'VIEW →',m:{tag:'技术拓展 · 创作文档',h:'分镜 · 剧本 · 策划案',p:['包括《银发音乐会》800+条分镜手稿、短剧剧本、内容策划案等文档类作品，截图即将补充。'],pills:['分镜','剧本','策划案']}},
-  {id:'overseas_more',tab:'tech',thumb:'https://cdn.jsdelivr.net/gh/zzzy29209/ZengZiyi--Portfolio@main/15_review.jpg',role:'写作 · 影评',title:'影评 / 公众号',desc:'即将补充链接',arrow:'READ →',m:{tag:'写作 · 海外视角',h:'影评 / 公众号',p:['影评写作与公众号内容，即将补充链接。']}},
-];
-
-/* ═══════════════════════════════════════
-   APP LOGIC
-   ═══════════════════════════════════════ */
-(function(){
-  'use strict';
-  const $=s=>document.querySelector(s);
-  const $$=s=>document.querySelectorAll(s);
-
-  // ── Escape HTML ──
-  const _e=document.createElement('span');
-  function esc(s){_e.textContent=s;return _e.innerHTML}
-
-  // ── Render tabs + grids ──
-  const tabsEl=$('#works-tabs'), panelsEl=$('#works-panels');
-  TABS.forEach((tab,i)=>{
-    const btn=document.createElement('button');
-    btn.className='works-tab'+(i===0?' active':'');
-    btn.textContent=tab.label;
-    btn.dataset.tab=tab.id;
-    tabsEl.appendChild(btn);
-
-    const panel=document.createElement('div');
-    panel.id='panel-'+tab.id;
-    panel.className='works-panel'+(i===0?' active':'');
-    const grid=document.createElement('div');
-    grid.className='works-grid';
-
-    W.filter(w=>w.tab===tab.id).forEach(w=>{
-      const card=document.createElement('div');
-      card.className='work-card';
-      card.dataset.wid=w.id;
-      card.innerHTML=`<img class="work-card-thumb" src="${esc(w.thumb)}" alt="${esc(w.title)}" loading="lazy" decoding="async"/><div class="work-card-body"><div><p class="work-card-role">${esc(w.role)}</p><p class="work-card-title">${esc(w.title)}</p><p class="work-card-desc">${esc(w.desc)}</p></div><p class="work-card-arrow">${esc(w.arrow)}</p></div>`;
-      grid.appendChild(card);
-    });
-    panel.appendChild(grid);
-    panelsEl.appendChild(panel);
-  });
-
-  // ── Tab switching (delegation) ──
-  tabsEl.addEventListener('click',e=>{
-    const btn=e.target.closest('.works-tab');
-    if(!btn)return;
-    $$('.works-tab').forEach(t=>t.classList.remove('active'));
-    $$('.works-panel').forEach(p=>p.classList.remove('active'));
-    btn.classList.add('active');
-    $('#panel-'+btn.dataset.tab).classList.add('active');
-  });
-
-  // ── Modal ──
-  const overlay=$('#modal-overlay'),box=$('#modal-container'),media=$('#modal-media'),body=$('#modal-body'),closeBtn=$('#modal-close-btn');
-
-  function openModal(id){
-    const w=W.find(x=>x.id===id);
-    if(!w||!w.m)return;
-    const m=w.m;
-    box.classList.toggle('dark',!!m.dark);
-    box.classList.toggle('vertical',!!m.vert);
-
-    // Media
-    media.innerHTML='';
-    if(m.pending){
-      media.innerHTML=`<div class="pending-banner"><strong>${esc(m.pending.t)}</strong><p>${esc(m.pending.d)}</p></div>`;
-    }else if(m.vid){
-      const wrap=document.createElement('div');wrap.className='modal-video';
-      const iframe=document.createElement('iframe');
-      iframe.allowFullscreen=true;iframe.allow='autoplay; encrypted-media';iframe.loading='lazy';
-      iframe.src=m.vid.t==='b'
-        ?`https://player.bilibili.com/player.html?bvid=${m.vid.id}&autoplay=0&high_quality=1`
-        :`https://open.douyin.com/player/video?vid=${m.vid.id}&autoplay=0`;
-      wrap.appendChild(iframe);media.appendChild(wrap);
+class SmoothCurve {
+  constructor() { 
+    this.reset(); 
+  }
+  
+  reset() {
+    this.points = []; 
+    this.currentLength = 0;
+    this.startX = random(width); 
+    this.startY = random(CURVE_CONFIG.curve.startYRange[0], CURVE_CONFIG.curve.startYRange[1]);
+    this.currentX = this.startX; 
+    this.currentY = this.startY;
+    let driftMode = random(CURVE_CONFIG.curve.xDriftOptions);
+    this.xDriftRange = driftMode;
+    this.growthSpeed = random(CURVE_CONFIG.curve.growthSpeedRange[0], CURVE_CONFIG.curve.growthSpeedRange[1]);
+    this.maxLength = random(CURVE_CONFIG.curve.maxLengthRange[0], CURVE_CONFIG.curve.maxLengthRange[1]);
+    this.weight = random(CURVE_CONFIG.curve.weightRange[0], CURVE_CONFIG.curve.weightRange[1]);
+    this.points.push({x: this.currentX, y: this.currentY}); 
+    this.isGrowing = true; 
+    this.growTimer = 0; 
+    this.noiseOffset = random(1000);
+    // 渐隐相关
+    this.opacity = 255;
+    this.isFading = false;
+    this.fadeSpeed = random(CURVE_CONFIG.curve.fadeSpeedRange[0], CURVE_CONFIG.curve.fadeSpeedRange[1]);
+  }
+  
+  update() {
+    // 如果正在渐隐
+    if (this.isFading) {
+      this.opacity -= this.fadeSpeed;
+      return this.opacity > 0;
     }
+    
+    // 如果已经停止生长，开始渐隐
+    if (!this.isGrowing) {
+      this.isFading = true;
+      return true;
+    }
+    
+    this.growTimer++;
+    let stepInterval = Math.max(1, Math.floor(6 - this.growthSpeed));
+    if (this.growTimer % stepInterval === 0) {
+      this.noiseOffset += 0.05; 
+      let noiseVal = noise(this.noiseOffset);
+      let xOffset = map(noiseVal, 0, 1, this.xDriftRange[0], this.xDriftRange[1]);
+      let dy = this.growthSpeed, dx = xOffset;
+      this.currentX += dx; 
+      this.currentY += dy; 
+      this.currentLength += Math.sqrt(dx * dx + dy * dy);
+      let last = this.points[this.points.length - 1];
+      if (dist(this.currentX, this.currentY, last.x, last.y) >= 4) {
+        this.points.push({x: this.currentX, y: this.currentY});
+      }
+    }
+    if (this.currentLength >= this.maxLength || this.currentY >= height || this.currentX < -50 || this.currentX > width + 50) {
+      this.isGrowing = false;
+    }
+    return true;
+  }
+  
+  drawToMask(pg) {
+    if (this.points.length < 4 || this.opacity <= 0) return;
+    pg.noFill(); 
+    pg.stroke(255, this.opacity); 
+    pg.strokeWeight(this.weight * 8); 
+    pg.strokeCap(ROUND); 
+    pg.strokeJoin(ROUND);
+    pg.beginShape(); 
+    pg.curveVertex(this.points[0].x, this.points[0].y);
+    for (let p of this.points) pg.curveVertex(p.x, p.y);
+    let last = this.points[this.points.length - 1]; 
+    pg.curveVertex(last.x, last.y); 
+    pg.endShape();
+  }
+  
+  display() {
+    if (this.points.length < 4 || this.opacity <= 0) return;
+    noFill(); 
+    strokeWeight(this.weight); 
+    strokeCap(ROUND); 
+    strokeJoin(ROUND);
+    beginShape(); 
+    curveVertex(this.points[0].x, this.points[0].y);
+    for (let i = 0; i < this.points.length; i++) { 
+      let alpha = map(i, 0, this.points.length - 1, 20, 60) * (this.opacity / 255);
+      stroke(0, 0, 0, alpha); 
+      curveVertex(this.points[i].x, this.points[i].y); 
+    }
+    let last = this.points[this.points.length - 1]; 
+    curveVertex(last.x, last.y); 
+    endShape();
+  }
+  
+  isFinished() { 
+    return this.isFading && this.opacity <= 0; 
+  }
+}
 
-    // Body
-    let html=`<p class="modal-tag">${esc(m.tag)}</p><h2>${esc(m.h)}</h2>`;
-    if(m.p)m.p.forEach(t=>{html+=`<p>${esc(t)}</p>`;});
-    if(m.pills&&m.pills.length)html+='<div class="modal-meta">'+m.pills.map(p=>`<span class="modal-pill">${esc(p)}</span>`).join('')+'</div>';
-    if(m.link)html+=`<a class="modal-link" href="${esc(m.link.u)}" target="_blank" rel="noopener">${esc(m.link.l)}</a>`;
-    body.innerHTML=html;
+function preload() {
+  bgImg = loadImage(CURVE_CONFIG.images.backgroundPath, () => console.log('Frame 2 loaded'), () => { console.log('Frame 2 failed'); bgImg = null; });
+  maskImg = loadImage(CURVE_CONFIG.images.maskedPath, () => console.log('Frame 3 loaded'), () => { console.log('Frame 3 failed'); maskImg = null; });
+}
 
+function setup() {
+  let canvas = createCanvas(window.innerWidth, window.innerHeight);
+  canvas.parent('curve-canvas-container');
+  maskGraphics = createGraphics(width, height);
+  curves.push(new SmoothCurve());
+}
+
+function draw() {
+  maskGraphics.background(0);
+  frameCounter++;
+  if (frameCounter % CURVE_CONFIG.generator.spawnInterval === 0 && curves.length < CURVE_CONFIG.generator.maxCurves) {
+    curves.push(new SmoothCurve());
+  }
+  
+  // 更新所有曲线
+  for (let i = curves.length - 1; i >= 0; i--) {
+    let stillAlive = curves[i].update();
+    curves[i].drawToMask(maskGraphics);
+    if (!stillAlive) {
+      curves.splice(i, 1);
+    }
+  }
+  
+  // 绘制背景（底图）
+  if (bgImg) {
+    image(bgImg, 0, 0, width, height);
+  } else {
+    background(0);
+  }
+  
+  // 绘制覆盖图（带mask）
+  if (maskImg && maskImg.width > 0) {
+    push();
+    let maskedImg = createImage(maskImg.width, maskImg.height);
+    maskedImg.copy(maskImg, 0, 0, maskImg.width, maskImg.height, 0, 0, maskImg.width, maskImg.height);
+    maskedImg.mask(maskGraphics);
+    image(maskedImg, 0, 0, width, height);
+    pop();
+  }
+  
+  // 绘制曲线
+  for (let c of curves) c.display();
+}
+
+function windowResized() { 
+  resizeCanvas(window.innerWidth, window.innerHeight); 
+  maskGraphics = createGraphics(width, height); 
+}
+
+function mousePressed() { 
+  if (curves.length < CURVE_CONFIG.generator.maxCurves) curves.push(new SmoothCurve()); 
+}
+</script>
+<script>
+(function () {
+  'use strict';
+  var modalsData = [
+    { id: 'daoci', theme: 'dark', vertical: false, tag: '影像叙事 · 学生短片', title: '《倒刺》', paragraphs: ['学生时期拍摄的短片作品。'], pills: ['制片', '剪辑'], video: null, pending: { title: '视频即将上线', desc: '正在上传至B站，上线后此处将直接播放' }, link: null },
+    { id: 'lianliuflow', theme: 'dark', vertical: false, tag: '影像叙事 · 学生短片', title: '《离岸流》（片头）', paragraphs: ['2024年10月，在韩国釜山，与另外五位中国同学共同完成的短片，完整版本时长16分钟，此处展示片头部分。','故事讲述了一个热爱写诗的少年，在现实与理想的两重选择中坠入迷茫，却意外成为刀人犯，在出狱后继续经历了一系列故事……最终他究竟是走向救赎还是灭亡？','担任灯光指导和剪辑职位，4天内拍摄完成，两周内剪辑完成。'], pills: ['灯光指导', '剪辑', '韩国釜山'], video: { type: 'bilibili', bvid: 'BV1uZw6zXEq2' }, pending: null, link: { url: 'https://www.bilibili.com/video/BV1uZw6zXEq2', text: '在B站观看 →' } },
+    { id: 'shanshui', theme: 'dark', vertical: false, tag: '影像叙事 · 纪录片', title: '自制纪录片《山水涧》（节选）', paragraphs: ['在湖北麻城，与另外3名同学共同制作的纪录片，分为3分钟预告片和7分钟正片，此处节选自预告片。','本片记录了湖北麻城龟山镇东垸村村民们的故事，这是一个有关乡村人文的故事，一段寻找内心向往与平静的旅程。','担任摄像与剪辑职位，1天内完成拍摄，3天内完成剪辑。'], pills: ['摄像', '剪辑', '纪录片', '湖北麻城'], video: { type: 'bilibili', bvid: 'BV1h9w6zxEBF' }, pending: null, link: { url: 'https://www.bilibili.com/video/BV1h9w6zxEBF', text: '在B站观看 →' } },
+    { id: 'interview', theme: 'dark', vertical: true, tag: '影像叙事 · 采访纪实', title: '采访视频', paragraphs: ['人物采访与纪实内容创作。'], pills: ['导演', '剪辑'], video: { type: 'douyin', vid: '7564621993643904282' }, pending: null, link: { url: 'https://www.douyin.com/video/7564621993643904282', text: '在抖音观看 →' } },
+    { id: 'seji', theme: 'dark', vertical: false, tag: '影像叙事 · 灯光分析', title: '电影《色戒》灯光设计分析', paragraphs: ['电影《色戒》中易先生的首次登场是在地牢里，这一段落的顶光设计与电影《教父》中的场景颇为相似，都非常有研究价值，都服务于人物形象塑造。本视频从灯光设计的专业视角出发，深入分析了李安如何运用光影语言来构建角色的权力感与神秘感，以及这种灯光手法在经典电影中的传承与演变。'], pills: ['灯光分析', '视频论文', '色戒', '教父'], video: { type: 'bilibili', bvid: 'BV116oKBBE6L' }, pending: null, link: { url: 'https://www.bilibili.com/video/BV116oKBBE6L', text: '在B站观看 →' } },
+    { id: 'liananhuaxu', theme: 'dark', vertical: false, tag: '影像叙事 · 幕后记录', title: '自制短片《离岸流》幕后花絮', paragraphs: ['短片《离岸流》是我和我的同学们用四天时间在韩国釜山拍摄完成的，这则视频记录了《离岸流》拍摄背后的故事。本人作为Gaffer（灯光指导），在这条视频中从灯光设计的角度记录了拍摄时的设计思路与实践手段。这是一次珍贵的记录，能够帮助我们回顾作品，反思不足，汲取经验。'], pills: ['灯光指导', '幕后花絮', '韩国釜山'], video: { type: 'bilibili', bvid: 'BV1z9oKBfEmF' }, pending: null, link: { url: 'https://www.bilibili.com/video/BV1z9oKBfEmF', text: '在B站观看 →' } },
+    { id: 'xiaomi1', theme: '', vertical: true, tag: '品牌内容 · 小米雇主品牌', title: '顶尖学子座谈会', paragraphs: ['在小米雇主品牌实习期间，全程担任导演兼剪辑。该系列视频聚焦各领域顶尖学子与小米的对话，展现小米的技术文化与人才理念，助力雇主品牌内容建设与校招传播。'], pills: ['导演', '剪辑', '小米'], video: { type: 'douyin', vid: '7543461350660443428' }, pending: null, link: { url: 'https://www.douyin.com/video/7543461350660443428', text: '在抖音观看 →' } },
+    { id: 'xiaomi2', theme: '', vertical: true, tag: '品牌内容 · 小米雇主品牌', title: '奇幻漂流', paragraphs: ['小米雇主品牌创意短视频，全程担任导演制作剧本、分镜，拍摄并独立剪辑。'], pills: ['创意策划', '导演', '剪辑'], video: { type: 'douyin', vid: '7561007858960190772' }, pending: null, link: { url: 'https://www.douyin.com/video/7561007858960190772', text: '在抖音观看 →' } },
+    { id: 'xiaomi3', theme: '', vertical: true, tag: '品牌内容 · 小米雇主品牌', title: '小米品牌内容', paragraphs: ['小米雇主品牌系列内容，负责策划与剪辑。'], pills: ['策划', '剪辑'], video: { type: 'douyin', vid: '7546164694239694099' }, pending: null, link: { url: 'https://www.douyin.com/video/7546164694239694099', text: '在抖音观看 →' } },
+    { id: 'mango', theme: 'dark', vertical: false, tag: '品牌内容 · 芒果TV · 千万级触达', title: '《人间最值得》舞台背景', paragraphs: ['2025湖南卫视元宵晚会，与TV部合作设计歌舞节目《人间最值得》舞台背景视频，全程深度参与制作，登上全球实时直播并获得30s特写展示，触达观众千万级。'], pills: ['视频编导', '芒果数智', '全球直播', '千万触达'], video: null, pending: { title: '视频即将上线', desc: '节目片段正在整理中，上线后此处将直接播放' }, link: null },
+    { id: 'sixiong', theme: 'dark', vertical: false, tag: 'AI创作 · AI短片', title: 'AI短片《复苏之刃》', paragraphs: ['2024年，与另外4名同学一起完成的AI短片。当时AI技术尚处早期，受限于海外环境，使用了Midjourney、Runway、Luma、Suno等AI工具。','故事为纯虚构，构建了一个四雄争霸的战乱世界，融入大量仙侠元素，采用游戏预告片形式呈现。','担任剧本开发与图生视频职位，从0到1进行剧本制作到剪辑完成，一周内完成全片。'], pills: ['AI视频', '剧本开发', 'Midjourney', 'Runway', 'Luma'], video: { type: 'bilibili', bvid: 'BV1gow6zWEnw' }, pending: null, link: { url: 'https://www.bilibili.com/video/BV1gow6zWEnw', text: '在B站观看 →' } },
+    { id: 'qingming', theme: 'dark', vertical: false, tag: 'AI创作 · 芒果数智', title: '清明上河图 AI短剧系列', paragraphs: ['结合热门历史向影视剧《清明上河图密码》推出的AI短剧系列。使用PEST分析法把握热点，对多种AI模型进行对比测试，整理出完整AI短剧SOP。'], pills: ['AI视频', '项目负责人', 'SOP制定'], video: null, pending: { title: '视频即将上线', desc: '正在整理中' }, link: null },
+    { id: 'aiplaceholder', theme: 'dark', vertical: false, tag: 'AI创作', title: '更多AI作品', paragraphs: ['AI海报、实验性创作内容即将更新。'], pills: [], video: null, pending: null, link: null },
+    { id: 'ue', theme: 'dark', vertical: false, tag: '技术拓展 · UE / Houdini', title: '特效视频作品', paragraphs: ['使用Unreal Engine与Houdini制作的特效视频，截图与视频链接即将补充。'], pills: ['UE', 'Houdini', 'VFX'], video: null, pending: null, link: null },
+    { id: 'maya', theme: 'dark', vertical: false, tag: '技术拓展 · Maya', title: '3D 渲染作品', paragraphs: ['Maya建模与渲染作品，截图即将补充。'], pills: ['Maya', '3D建模', '渲染'], video: null, pending: null, link: null },
+    { id: 'vibecode', theme: '', vertical: false, tag: '技术拓展 · 独立开发', title: '网页 / 小程序', paragraphs: ['使用Vibecoding独立开发的网页与小程序项目，链接即将补充。'], pills: ['网页开发', '小程序', 'Vibecoding'], video: null, pending: null, link: null },
+    { id: 'storyboard', theme: '', vertical: false, tag: '技术拓展 · 创作文档', title: '分镜 · 剧本 · 策划案', paragraphs: ['包括《银发音乐会》800+条分镜手稿、短剧剧本、内容策划案等文档类作品，截图即将补充。'], pills: ['分镜', '剧本', '策划案'], video: null, pending: null, link: null },
+    { id: 'overseas_more', theme: '', vertical: false, tag: '写作 · 海外视角', title: '影评 / 公众号', paragraphs: ['影评写作与公众号内容，即将补充链接。'], pills: [], video: null, pending: null, link: null }
+  ];
+  function getVideoSrc(v) { if (!v) return ''; if (v.type === 'bilibili') return 'https://player.bilibili.com/player.html?bvid=' + v.bvid + '&autoplay=0&high_quality=1'; if (v.type === 'douyin') return 'https://open.douyin.com/player/video?vid=' + v.vid + '&autoplay=0'; return ''; }
+  function renderModals() {
+    var container = document.getElementById('modal-container'), html = '';
+    modalsData.forEach(function (w) {
+      var cls = 'modal' + (w.theme === 'dark' ? ' dark' : '') + (w.vertical ? ' vertical' : '');
+      var pendingStyle = w.theme === 'dark' ? ' style="background:#1a1a1a;border-color:#333;"' : '';
+      var pendingTitleStyle = w.theme === 'dark' ? ' style="color:#fff;"' : '';
+      var pendingDescStyle = w.theme === 'dark' ? ' style="color:#555;"' : '';
+      html += '<div id="modal-' + w.id + '" class="modal-overlay">';
+      html += '<div class="' + cls + '" role="dialog" aria-modal="true" aria-label="' + w.title + '">';
+      html += '<button class="modal-close" aria-label="关闭弹窗">&#10005;</button>';
+      if (w.pending) { html += '<div class="pending-banner"' + pendingStyle + '><strong' + pendingTitleStyle + '>' + w.pending.title + '</strong><p' + pendingDescStyle + '>' + w.pending.desc + '</p></div>'; }
+      if (w.video) { html += '<div class="modal-video"><iframe data-src="' + getVideoSrc(w.video) + '" allowfullscreen allow="autoplay; encrypted-media" title="' + w.title + '"></iframe></div>'; }
+      html += '<div class="modal-body"><p class="modal-tag">' + w.tag + '</p><h2>' + w.title + '</h2>';
+      w.paragraphs.forEach(function (p) { html += '<p>' + p + '</p>'; });
+      if (w.pills.length > 0) { html += '<div class="modal-meta">'; w.pills.forEach(function (pill) { html += '<span class="modal-pill">' + pill + '</span>'; }); html += '</div>'; }
+      if (w.link) html += '<a class="modal-link outline" href="' + w.link.url + '" target="_blank" rel="noopener noreferrer">' + w.link.text + '</a>';
+      html += '</div></div></div>';
+    });
+    container.innerHTML = html;
+  }
+  renderModals();
+  function showToast(msg) { var t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(function () { t.classList.remove('show'); }, 2500); }
+  function openModal(id) {
+    var overlay = document.getElementById('modal-' + id);
+    if (!overlay) return;
     overlay.classList.add('open');
-    document.body.style.overflow='hidden';
-    closeBtn.focus();
+    document.body.style.overflow = 'hidden';
+    var iframe = overlay.querySelector('iframe');
+    if (iframe && !iframe.src && iframe.dataset.src) iframe.src = iframe.dataset.src;
+    var closeBtn = overlay.querySelector('.modal-close');
+    if (closeBtn) closeBtn.focus();
   }
-
-  function closeModal(){
+  function closeModal(id) {
+    var overlay = document.getElementById('modal-' + id);
+    if (!overlay) return;
     overlay.classList.remove('open');
-    document.body.style.overflow='';
-    media.querySelectorAll('iframe').forEach(f=>{f.src='';f.remove();});
-    box.className='modal';
+    document.body.style.overflow = '';
+    var iframe = overlay.querySelector('iframe');
+    if (iframe && iframe.src) { iframe.dataset.src = iframe.src; iframe.src = ''; }
   }
-
-  // Card click (delegation)
-  $('#works').addEventListener('click',e=>{
-    const card=e.target.closest('.work-card');
-    if(card&&card.dataset.wid)openModal(card.dataset.wid);
+  document.getElementById('modal-container').addEventListener('click', function (e) {
+    if (e.target.classList.contains('modal-overlay')) closeModal(e.target.id.replace('modal-', ''));
+    if (e.target.classList.contains('modal-close')) { var overlay = e.target.closest('.modal-overlay'); if (overlay) closeModal(overlay.id.replace('modal-', '')); }
   });
-  closeBtn.addEventListener('click',closeModal);
-  overlay.addEventListener('click',e=>{if(e.target===overlay)closeModal();});
-  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&overlay.classList.contains('open'))closeModal();});
-
-  // ── Nav (delegation) ──
-  $('#main-nav').addEventListener('click',e=>{
-    const btn=e.target.closest('[data-section]');
-    if(btn){const t=document.getElementById(btn.dataset.section);if(t)t.scrollIntoView({behavior:'smooth'});}
-  });
-
-  // ── Contact ──
-  $$('.contact-btn').forEach(btn=>{
-    btn.addEventListener('click',()=>{
-      navigator.clipboard.writeText(btn.dataset.copy).then(()=>{
-        showToast(btn.dataset.toast);
-        if(btn.dataset.wechat)setTimeout(()=>{if(confirm('微信号已复制，是否跳转到微信？'))window.open('weixin://','_blank');},300);
-      });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.open').forEach(function (el) { closeModal(el.id.replace('modal-', '')); }); });
+  document.addEventListener('click', function (e) { var card = e.target.closest('.work-card[data-modal]'); if (card) openModal(card.dataset.modal); });
+  document.querySelectorAll('.works-tab').forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      document.querySelectorAll('.works-tab').forEach(function (t) { t.classList.remove('active'); t.setAttribute('aria-selected', 'false'); });
+      document.querySelectorAll('.works-panel').forEach(function (p) { p.classList.remove('active'); });
+      this.classList.add('active'); this.setAttribute('aria-selected', 'true');
+      var panel = document.getElementById('panel-' + this.dataset.panel);
+      if (panel) panel.classList.add('active');
     });
   });
-  const portalBtn=$('.portal-btn[data-href]');
-  if(portalBtn)portalBtn.addEventListener('click',()=>window.open(portalBtn.dataset.href,'_blank'));
-
-  // ── Toast ──
-  const toastEl=$('#toast');let toastT;
-  function showToast(msg){clearTimeout(toastT);toastEl.textContent=msg;toastEl.classList.add('show');toastT=setTimeout(()=>toastEl.classList.remove('show'),2500);}
-
-  // ── Scroll Reveal ──
-  const obs=new IntersectionObserver(entries=>{
-    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});
-  },{threshold:0.05,rootMargin:'0px 0px -40px 0px'});
-  $$('.hero-content').forEach(el=>el.classList.add('visible'));
-  $$('.reveal:not(.hero-content)').forEach(el=>obs.observe(el));
-
+  document.querySelectorAll('.contact-btn[data-copy]').forEach(function (btn) {
+    btn.addEventListener('click', function () { var text = this.dataset.copy, msg = this.dataset.toast || '已复制到剪贴板'; navigator.clipboard.writeText(text).then(function () { showToast(msg); }); });
+  });
+  var sections = ['about', 'internship', 'works', 'contact'], navLinks = document.querySelectorAll('.nav-links a');
+  var navObserver = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) { if (entry.isIntersecting) { var id = entry.target.id; navLinks.forEach(function (link) { link.classList.toggle('active', link.dataset.section === id); }); } });
+  }, { threshold: 0.3, rootMargin: '-80px 0px 0px 0px' });
+  sections.forEach(function (id) { var el = document.getElementById(id); if (el) navObserver.observe(el); });
+  var revealObserver = new IntersectionObserver(function (entries) { entries.forEach(function (e) { if (e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.hero-content').forEach(function (el) { el.classList.add('visible'); });
+  document.querySelectorAll('.scroll-reveal:not(.hero-content)').forEach(function (el) { revealObserver.observe(el); });
 })();
 </script>
 </body>
