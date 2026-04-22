@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -56,7 +57,6 @@
     }
     .nav-logo { font-weight: 900; font-size: var(--font-lg); letter-spacing: -0.05em; }
     .nav-links { display: flex; gap: 2.5rem; }
-    /* [修改1] 导航字号从 0.7rem 提升到 0.85rem */
     .nav-links a {
       background: none; border: none; cursor: pointer;
       font-family: 'Inter', sans-serif;
@@ -68,33 +68,62 @@
     .nav-links a:hover, .nav-links a.active { color: var(--color-primary); }
     @media (max-width: 768px) { .nav-links { display: none; } }
 
-    /* ── HERO ── */
+    /* ── HERO WITH CURVE ANIMATION ── */
     .hero {
       width: 100%; min-height: 100vh; position: relative;
       display: flex; align-items: center;
       padding: 6rem 2.5rem 2.5rem; background: #fff;
+      overflow: hidden;
     }
+    
+    /* 曲线动画画布容器 */
+    #curve-canvas-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+    
+    /* 原有的图片覆盖层 */
     .hero-image-overlay {
-      position: absolute; right: 0; top: 0; width: 100%; height: 100%; z-index: 1;
+      position: absolute; right: 0; top: 0; width: 100%; height: 100%; z-index: 2;
       background: url('https://raw.githubusercontent.com/zzzy29209/ZengZiyi--Portfolio/main/hero-me.jpg') right center/cover no-repeat;
-      /* 图片原色，无白雾 */
-      /* 从左到右渐变：左边完全透明 → 右边完全可见；底部轻微渐隐 */
       mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.15) 25%, rgba(0,0,0,0.6) 50%, black 70%, black 100%), linear-gradient(to bottom, black 85%, transparent 100%);
       mask-composite: intersect;
       -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.15) 25%, rgba(0,0,0,0.6) 50%, black 70%, black 100%), linear-gradient(to bottom, black 85%, transparent 100%);
       -webkit-mask-composite: destination-in;
     }
-    .hero-content { position: relative; z-index: 10; }
-    .mega-title { font-size: clamp(4rem, 16vw, 14rem); font-weight: 900; line-height: 0.85; letter-spacing: -0.05em; text-transform: uppercase; }
-    @media (max-width: 768px) { .mega-title { font-size: clamp(3rem, 18vw, 6rem); line-height: 0.9; } }
+    
+    .hero-content { 
+      position: relative; 
+      z-index: 10; 
+      pointer-events: none;
+    }
+    
+    .mega-title { 
+      font-size: clamp(4rem, 16vw, 14rem); 
+      font-weight: 900; 
+      line-height: 0.85; 
+      letter-spacing: -0.05em; 
+      text-transform: uppercase;
+      mix-blend-mode: difference;
+      color: #fff;
+    }
+    @media (max-width: 768px) { 
+      .mega-title { font-size: clamp(3rem, 18vw, 6rem); line-height: 0.9; } 
+    }
     .hero-sub {
-      margin-top: 2rem; font-size: var(--font-label); font-weight: 700;
-      text-transform: uppercase; letter-spacing: 0.2em;
-      /* 文字颜色从左(黑)到右(白)渐变，适配背景从白到图片的过渡 */
-      background: linear-gradient(to right, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.5) 30%, rgba(255,255,255,0.9) 65%, #fff 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      margin-top: 2rem; 
+      font-size: var(--font-label); 
+      font-weight: 700;
+      text-transform: uppercase; 
+      letter-spacing: 0.2em;
+      color: #000;
+      background: rgba(255,255,255,0.8);
+      padding: 0.5rem 1rem;
+      display: inline-block;
     }
     .hero-bar { margin-top: 2.5rem; display: flex; align-items: center; gap: 1.5rem; }
     .hero-bar-line { width: 4rem; height: 0.25rem; background: #000; }
@@ -159,7 +188,6 @@
     .works-inner { max-width: 1400px; margin: 0 auto; }
     .works-section-label { font-size: var(--font-label); font-weight: 900; text-transform: uppercase; letter-spacing: 1em; opacity: 0.3; margin-bottom: 1rem; }
     .works-section-title { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900; letter-spacing: -0.04em; margin-bottom: 0.75rem; }
-    /* [修改3] max-width 从 36rem 放宽到 48rem，避免不自然断行 */
     .works-section-desc { font-size: var(--font-sm); color: var(--color-text-light); max-width: 48rem; line-height: 1.7; margin-bottom: 3rem; }
 
     .works-tabs { display: flex; gap: 0; border-bottom: 2px solid #000; margin-bottom: 2.5rem; overflow-x: auto; }
@@ -292,7 +320,6 @@
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
     /* ── VERTICAL VIDEO MODAL ── */
-    /* [修改4] 竖屏视频：去掉 scale 偏移，用 overflow hidden + 居中确保完整显示 */
     .modal.vertical { max-width: 26rem; }
     .modal.vertical .modal-video {
       aspect-ratio: 9/16;
@@ -305,13 +332,11 @@
       top: 0; left: 0;
       width: 100%; height: 100%;
       border: none; display: block;
-      /* 不再缩放，确保居中完整显示 */
     }
 
     /* ── MOBILE ── */
     @media (max-width: 768px) {
       nav { padding: 1rem 1.25rem; }
-      /* [修改1-mobile] 移动端导航字号也相应调整 */
       .nav-links a { font-size: 0.78rem; }
       .hero { padding: 5rem 1.25rem 2rem; }
       .hero-sub { font-size: var(--font-label); margin-top: 1.5rem; }
@@ -403,9 +428,13 @@
   </div>
 </nav>
 
-<!-- HERO -->
+<!-- HERO WITH CURVE ANIMATION -->
 <section class="hero">
+  <!-- 曲线动画画布 -->
+  <div id="curve-canvas-container"></div>
+  <!-- 原图片覆盖层 -->
   <div class="hero-image-overlay" aria-hidden="true"></div>
+  <!-- 内容 -->
   <div class="hero-content scroll-reveal">
     <h1 class="mega-title">PORT<br /><span style="color:var(--color-primary)">FOLIO</span></h1>
     <p class="hero-sub">Content Creator 内容创作者 · Film Director 影视导演 · AI Creator</p>
@@ -570,7 +599,6 @@
         <div class="intern-date">2024.12 - 2025.03</div>
         <div class="intern-card">
           <h4>湖南芒果数智艺术科技有限公司｜产品技术部｜AI产品视频编导</h4>
-          <!-- [修改2] "全球实时直播" 改为与 metric-value 统一样式 -->
           <div class="metrics">
             <div class="metric-card">
               <span class="metric-label">元宵晚会全球直播</span>
@@ -889,6 +917,212 @@
 <!-- TOAST -->
 <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
+<!-- ========== CURVE ANIMATION SCRIPT ========== -->
+<script>
+// 曲线动画配置
+const CURVE_CONFIG = {
+  images: {
+    backgroundPath: 'images/Frame 2.png',    // 背景图路径（直接显示）
+    maskedPath: 'images/Frame 3.png'          // 蒙版图路径（仅曲线区域显示）
+  },
+  curve: {
+    startYRange: [-50, -10],
+    growthSpeedRange: [2, 5],
+    xDriftOptions: [[-0.3, 0.3]],
+    maxLengthRange: [600, 900],
+    weightRange: [2, 4],
+    color: '#64C8FF'
+  },
+  generator: {
+    spawnInterval: 45,
+    maxCurves: 30
+  }
+};
+
+let curves = [];
+let bgImg, maskImg;
+let maskGraphics;
+let imagesLoaded = false;
+let frameCounter = 0;
+
+function hexToRgb(hex) {
+  let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result ? {
+    r: parseInt(result[1], 16),
+    g: parseInt(result[2], 16),
+    b: parseInt(result[3], 16)
+  } : { r: 100, g: 200, b: 255 };
+}
+
+class SmoothCurve {
+  constructor() {
+    this.reset();
+  }
+  
+  reset() {
+    this.points = [];
+    this.currentLength = 0;
+    this.startX = random(width);
+    this.startY = random(CURVE_CONFIG.curve.startYRange[0], CURVE_CONFIG.curve.startYRange[1]);
+    this.currentX = this.startX;
+    this.currentY = this.startY;
+    let driftMode = random(CURVE_CONFIG.curve.xDriftOptions);
+    this.xDriftRange = driftMode;
+    this.growthSpeed = random(CURVE_CONFIG.curve.growthSpeedRange[0], CURVE_CONFIG.curve.growthSpeedRange[1]);
+    this.maxLength = random(CURVE_CONFIG.curve.maxLengthRange[0], CURVE_CONFIG.curve.maxLengthRange[1]);
+    this.weight = random(CURVE_CONFIG.curve.weightRange[0], CURVE_CONFIG.curve.weightRange[1]);
+    this.points.push({x: this.currentX, y: this.currentY});
+    this.isGrowing = true;
+    this.growTimer = 0;
+    this.noiseOffset = random(1000);
+  }
+  
+  update() {
+    if (!this.isGrowing) return false;
+    this.growTimer++;
+    let stepInterval = Math.max(1, Math.floor(6 - this.growthSpeed));
+    if (this.growTimer % stepInterval === 0) {
+      this.noiseOffset += 0.05;
+      let noiseVal = noise(this.noiseOffset);
+      let xOffset = map(noiseVal, 0, 1, this.xDriftRange[0], this.xDriftRange[1]);
+      let dy = this.growthSpeed;
+      let dx = xOffset;
+      this.currentX += dx;
+      this.currentY += dy;
+      this.currentLength += Math.sqrt(dx * dx + dy * dy);
+      let last = this.points[this.points.length - 1];
+      if (dist(this.currentX, this.currentY, last.x, last.y) >= 4) {
+        this.points.push({x: this.currentX, y: this.currentY});
+      }
+    }
+    if (this.currentLength >= this.maxLength || 
+        this.currentY >= height ||
+        this.currentX < -50 || 
+        this.currentX > width + 50) {
+      this.isGrowing = false;
+    }
+    return this.isGrowing;
+  }
+  
+  drawToMask(pg) {
+    if (this.points.length < 4) return;
+    pg.noFill();
+    pg.stroke(255);
+    pg.strokeWeight(this.weight * 6);
+    pg.strokeCap(ROUND);
+    pg.strokeJoin(ROUND);
+    pg.beginShape();
+    pg.curveVertex(this.points[0].x, this.points[0].y);
+    for (let p of this.points) {
+      pg.curveVertex(p.x, p.y);
+    }
+    let last = this.points[this.points.length - 1];
+    pg.curveVertex(last.x, last.y);
+    pg.endShape();
+  }
+  
+  display() {
+    if (this.points.length < 4) return;
+    let rgb = hexToRgb(CURVE_CONFIG.curve.color);
+    noFill();
+    strokeWeight(this.weight);
+    strokeCap(ROUND);
+    strokeJoin(ROUND);
+    beginShape();
+    curveVertex(this.points[0].x, this.points[0].y);
+    for (let i = 0; i < this.points.length; i++) {
+      let alpha = map(i, 0, this.points.length - 1, 40, 150);
+      stroke(rgb.r, rgb.g, rgb.b, alpha);
+      curveVertex(this.points[i].x, this.points[i].y);
+    }
+    let last = this.points[this.points.length - 1];
+    curveVertex(last.x, last.y);
+    endShape();
+  }
+  
+  isFinished() {
+    return !this.isGrowing;
+  }
+}
+
+function preload() {
+  // 加载图片，如果失败则使用纯色背景
+  bgImg = loadImage(CURVE_CONFIG.images.backgroundPath, 
+    () => {},
+    () => { bgImg = null; }
+  );
+  maskImg = loadImage(CURVE_CONFIG.images.maskedPath,
+    () => {},
+    () => { maskImg = null; }
+  );
+}
+
+function setup() {
+  let canvas = createCanvas(window.innerWidth, window.innerHeight);
+  canvas.parent('curve-canvas-container');
+  maskGraphics = createGraphics(width, height);
+  curves.push(new SmoothCurve());
+  imagesLoaded = true;
+}
+
+function draw() {
+  // 清空蒙版（黑色=隐藏）
+  maskGraphics.background(0);
+  
+  frameCounter++;
+  if (frameCounter % CURVE_CONFIG.generator.spawnInterval === 0) {
+    if (curves.length < CURVE_CONFIG.generator.maxCurves) {
+      curves.push(new SmoothCurve());
+    }
+  }
+  
+  for (let c of curves) {
+    c.update();
+    c.drawToMask(maskGraphics);
+  }
+  
+  for (let i = curves.length - 1; i >= 0; i--) {
+    if (curves[i].isFinished() && curves.length > CURVE_CONFIG.generator.maxCurves / 3) {
+      curves.splice(i, 1);
+    }
+  }
+  
+  // 绘制背景图或纯色
+  if (bgImg) {
+    image(bgImg, 0, 0, width, height);
+  } else {
+    background(240);
+  }
+  
+  // 绘制蒙版图（曲线区域）
+  if (maskImg) {
+    push();
+    let maskedImg = maskImg.get();
+    maskedImg.mask(maskGraphics);
+    tint(255, 220);
+    image(maskedImg, 0, 0, width, height);
+    pop();
+  }
+  
+  // 绘制曲线轮廓
+  for (let c of curves) {
+    c.display();
+  }
+}
+
+function windowResized() {
+  resizeCanvas(window.innerWidth, window.innerHeight);
+  maskGraphics = createGraphics(width, height);
+}
+
+function mousePressed() {
+  if (curves.length < CURVE_CONFIG.generator.maxCurves) {
+    curves.push(new SmoothCurve());
+  }
+}
+</script>
+
+<!-- ========== ORIGINAL SITE SCRIPT ========== -->
 <script>
 (function () {
   'use strict';
