@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ZENG ZIYI · Portfolio</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: #F4F4F4; color: #000; overflow-x: hidden; }
+    
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      padding: 1.5rem 2.5rem;
+      display: flex; justify-content: space-between; align-items: center;
+      background: rgba(255,255,255,0.7);
+      backdrop-filter: blur(25px);
+    }
+    .nav-logo { font-weight: 900; font-size: 1.1rem; letter-spacing: -0.05em; }
+    .nav-links { display: flex; gap: 2.5rem; }
+    .nav-links a {
+      font-size: 0.85rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; text-decoration: none; color: #000;
+    }
+
+    .hero {
+      width: 100%; position: relative;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden; background: #000;
+      aspect-ratio: 16 / 9;
+    }
+    /* Frame2 底图 */
+    .hero-bg-bottom {
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
+    }
+    .hero-bg-bottom img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+    /* Canvas 容器 */
+    #top-layer-container {
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 1;
+    }
+    .hero-content { 
+      position: relative; z-index: 10; 
+      pointer-events: none; text-align: center;
+    }
+    .mega-title { 
+      font-size: clamp(4rem, 16vw, 14rem); 
+      font-weight: 900; line-height: 0.85; 
+      letter-spacing: -0.05em; text-transform: uppercase;
+      color: #fff; text-shadow: 0 2px 30px rgba(0,0,0,0.5);
+    }
+    .hero-sub {
+      margin-top: 2rem; font-size: 0.7rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.2em;
+      color: #fff; text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    }
+    .hero-bar { 
+      margin-top: 2.5rem; display: flex; 
+      align-items: center; justify-content: center; gap: 1.5rem; 
+    }
+    .hero-bar-line { width: 4rem; height: 0.25rem; background: #fff; }
+    .hero-bar-text { 
+      font-size: 0.7rem; font-weight: 900;
+      text-transform: uppercase; letter-spacing: 0.5em;
+      color: #fff; text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <div class="nav-logo">ZENG ZIYI</div>
+  <div class="nav-links">
+    <a href="#about">基本信息</a>
+    <a href="#internship">实习经历</a>
+    <a href="#works">作品集</a>
+    <a href="#contact">联系我</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg-bottom">
+    <img id="frame2-img" src="https://raw.githubusercontent.com/zzzy29209/ZengZiyi--Portfolio/main/images/Frame%202.png" alt="" />
+  </div>
+  <div id="top-layer-container"></div>
+  <div class="hero-content">
+    <h1 class="mega-title">PORTFOLIO</h1>
+    <p class="hero-sub">Content Creator · Film Director · AI Creator</p>
+    <div class="hero-bar">
+      <div class="hero-bar-line"></div>
+      <p class="hero-bar-text">ZENG ZIYI / 2026</p>
+    </div>
+  </div>
+</section>
+
+<script>
+let topImg;
+let curves = [];
+let frameCounter = 0;
+
+const CURVE_CONFIG = {
+  startYRange: [-100, -30],
+  growthSpeedRange: [3, 6],
+  xDriftOptions: [[-0.8, 0.8]],
+  maxLengthRange: [500, 900],
+  weightRange: [10, 20], // 0.4倍粗细
+  maxCurves: 10,
+  spawnInterval: 50
+};
+
+class EraseCurve {
+  constructor(startX, startY) {
+    this.points = [];
+    this.currentLength = 0;
+    this.startX = startX || random(width * 0.1, width * 0.9);
+    this.startY = startY || random(CURVE_CONFIG.startYRange[0], CURVE_CONFIG.startYRange[1]);
+    this.currentX = this.startX;
+    this.currentY = this.startY;
+    this.xDriftRange = random(CURVE_CONFIG.xDriftOptions);
+    this.growthSpeed = random(CURVE_CONFIG.growthSpeedRange[0], CURVE_CONFIG.growthSpeedRange[1]);
+    this.maxLength = random(CURVE_CONFIG.maxLengthRange[0], CURVE_CONFIG.maxLengthRange[1]);
+    this.weight = random(CURVE_CONFIG.weightRange[0], CURVE_CONFIG.weightRange[1]);
+    this.points.push({x: this.currentX, y: this.currentY});
+    this.isGrowing = true;
+    this.growTimer = 0;
+    this.noiseOffset = random(1000);
+  }
+  
+  update() {
+    if (!this.isGrowing) return false;
+    
+    this.growTimer++;
+    let stepInterval = 2;
+    
+    if (this.growTimer % stepInterval === 0) {
+      this.noiseOffset += 0.02;
+      let noiseVal = noise(this.noiseOffset);
+      let xOffset = map(noiseVal, 0, 1, this.xDriftRange[0], this.xDriftRange[1]);
+      let dy = this.growthSpeed;
+      let dx = xOffset;
+      this.currentX += dx;
+      this.currentY += dy;
+      this.currentLength += Math.sqrt(dx*dx + dy*dy);
+      
+      let last = this.points[this.points.length - 1];
+      if (dist(this.currentX, this.currentY, last.x, last.y) >= 3) {
+        this.points.push({x: this.currentX, y: this.currentY});
+      }
+    }
+    
+    if (this.currentLength >= this.maxLength || 
+        this.currentY >= height + 100 ||
+        this.currentX < -150 || 
+        this.currentX > width + 150) {
+      this.isGrowing = false;
+    }
+    return this.isGrowing;
+  }
+  
+  drawErase(pg) {
+    if (this.points.length < 2) return;
+    
+    pg.erase();
+    pg.noStroke();
+    pg.fill(255);
+    
+    for (let p of this.points) {
+      pg.ellipse(p.x, p.y, this.weight, this.weight);
+    }
+    
+    pg.noFill();
+    pg.stroke(255);
+    pg.strokeWeight(this.weight);
+    pg.strokeCap(ROUND);
+    pg.strokeJoin(ROUND);
+    
+    pg.beginShape();
+    pg.curveVertex(this.points[0].x, this.points[0].y);
+    for (let p of this.points) {
+      pg.curveVertex(p.x, p.y);
+    }
+    let last = this.points[this.points.length - 1];
+    pg.curveVertex(last.x, last.y);
+    pg.endShape();
+    
+    pg.noErase();
+  }
+}
+
+function preload() {
+  topImg = loadImage('https://raw.githubusercontent.com/zzzy29209/ZengZiyi--Portfolio/main/images/Frame%203.png');
+}
+
+function setup() {
+  let canvas = createCanvas(window.innerWidth, window.innerHeight);
+  canvas.parent('top-layer-container');
+  
+  setTimeout(() => {
+    curves.push(new EraseCurve());
+  }, 300);
+}
+
+function draw() {
+  clear();
+  
+  if (!topImg || topImg.width === 0) return;
+  
+  // Frame3 和 Frame2 尺寸完全一致 - 直接铺满 canvas
+  image(topImg, 0, 0, width, height);
+  
+  frameCounter++;
+  if (frameCounter % CURVE_CONFIG.spawnInterval === 0 && curves.length < CURVE_CONFIG.maxCurves) {
+    curves.push(new EraseCurve());
+  }
+  
+  for (let i = curves.length - 1; i >= 0; i--) {
+    let stillGrowing = curves[i].update();
+    curves[i].drawErase(this);
+    if (!stillGrowing) {
+      curves.splice(i, 1);
+    }
+  }
+}
+
+function windowResized() {
+  resizeCanvas(window.innerWidth, window.innerHeight);
+}
+
+function mousePressed() {
+  if (curves.length < CURVE_CONFIG.maxCurves) {
+    curves.push(new EraseCurve(mouseX, mouseY));
+  }
+}
+</script>
+</body>
+</html>
