@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>曲线生长动画</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #1a1a2e;
+            overflow: hidden;
+        }
+        
+        #canvas-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        /* 可选：添加文字覆盖层 */
+        .overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: white;
+            pointer-events: none;
+            z-index: 10;
+        }
+        
+        .overlay h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 30px rgba(100, 200, 255, 0.5);
+        }
+        
+        .overlay p {
+            font-size: 1.2rem;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div id="canvas-container"></div>
+    
+    <!-- 可选：首页文字内容 -->
+    <div class="overlay">
+        <h1>Welcome</h1>
+        <p>点击任意位置生成新曲线</p>
+    </div>
+
+    <script>
+        // ========== 配置参数 ==========
+        const CONFIG = {
+            canvas: {
+                width: window.innerWidth,   // 自适应屏幕宽度
+                height: window.innerHeight  // 自适应屏幕高度
+            },
+            images: {
+                backgroundPath: 'https://picsum.photos/1920/1080?random=1',  // 背景图
+                maskedPath: 'https://picsum.photos/1920/1080?random=2'       // 蒙版图
+            },
+            curve: {
+                startYRange: [-50, 0],
+                growthSpeedRange: [2, 5],
+                xDriftOptions: [[-0.5, 0.5]],
+                maxLengthRange: [600, 1000],
+                weightRange: [3, 4],
+                color: '#64C8FF'
+            },
+            generator: {
+                spawnInterval: 60,
+                maxCurves: 60
+            }
+        };
+
+        let curves = [];
+        let bgImg, maskImg;
+        let maskGraphics;
+        let imagesLoaded = false;
+        let frameCounter = 0;
+
+        function hexToRgb(hex) {
+            let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? {
+                r: parseInt(result[1], 16),
+                g: parseInt(result[2], 16),
+                b: parseInt(result[3], 16)
+            } : { r: 100, g: 200, b: 255 };
+        }
+
+        class SmoothCurve {
+            constructor() {
+                this.reset();
+            }
+            
+            reset() {
+                this.points = [];
+                this.currentLength = 0;
+                this.startX = random(width);
+                this.startY = random(CONFIG.curve.startYRange[0], CONFIG.curve.startYRange[1]);
+                this.currentX = this.startX;
+                this.currentY = this.startY;
+                let driftMode = random(CONFIG.curve.xDriftOptions);
+                this.xDriftRange = driftMode;
+                this.growthSpeed = random(CONFIG.curve.growthSpeedRange[0], CONFIG.curve.growthSpeedRange[1]);
+                this.maxLength = random(CONFIG.curve.maxLengthRange[0], CONFIG.curve.maxLengthRange[1]);
+                this.weight = random(CONFIG.curve.weightRange[0], CONFIG.curve.weightRange[1]);
+                this.points.push({x: this.currentX, y: this.currentY});
+                this.isGrowing = true;
+                this.growTimer = 0;
+                this.noiseOffset = random(1000);
+            }
+            
+            update() {
+                if (!this.isGrowing) return false;
+                this.growTimer++;
+                let stepInterval = Math.max(1, Math.floor(6 - this.growthSpeed));
+                if (this.growTimer % stepInterval === 0) {
+                    this.noiseOffset += 0.05;
+                    let noiseVal = noise(this.noiseOffset);
+                    let xOffset = map(noiseVal, 0, 1, this.xDriftRange[0], this.xDriftRange[1]);
+                    let dy = this.growthSpeed;
+                    let dx = xOffset;
+                    this.currentX += dx;
+                    this.currentY += dy;
+                    this.currentLength += Math.sqrt(dx * dx + dy * dy);
+                    let last = this.points[this.points.length - 1];
+                    if (dist(this.currentX, this.currentY, last.x, last.y) >= 4) {
+                        this.points.push({x: this.currentX, y: this.currentY});
+                    }
+                }
+                if (this.currentLength >= this.maxLength || 
+                    this.currentY >= height ||
+                    this.currentX < -50 || 
+                    this.currentX > width + 50) {
+                    this.isGrowing = false;
+                }
+                return this.isGrowing;
+            }
+            
+            drawToMask(pg) {
+                if (this.points.length < 4) return;
+                pg.noFill();
+                pg.stroke(255);
+                pg.strokeWeight(this.weight * 8);
+                pg.strokeCap(ROUND);
+                pg.strokeJoin(ROUND);
+                pg.beginShape();
+                pg.curveVertex(this.points[0].x, this.points[0].y);
+                for (let p of this.points) {
+                    pg.curveVertex(p.x, p.y);
+                }
+                let last = this.points[this.points.length - 1];
+                pg.curveVertex(last.x, last.y);
+                pg.endShape();
+            }
+            
+            display() {
+                if (this.points.length < 4) return;
+                let rgb = hexToRgb(CONFIG.curve.color);
+                noFill();
+                strokeWeight(this.weight);
+                strokeCap(ROUND);
+                strokeJoin(ROUND);
+                beginShape();
+                curveVertex(this.points[0].x, this.points[0].y);
+                for (let i = 0; i < this.points.length; i++) {
+                    let alpha = map(i, 0, this.points.length - 1, 60, 255);
+                    stroke(rgb.r, rgb.g, rgb.b, alpha);
+                    curveVertex(this.points[i].x, this.points[i].y);
+                }
+                let last = this.points[this.points.length - 1];
+                curveVertex(last.x, last.y);
+                endShape();
+                if (this.isGrowing) {
+                    for (let i = 3; i > 0; i--) {
+                        fill(rgb.r, rgb.g, rgb.b, 40);
+                        ellipse(last.x, last.y, i * 8, i * 8);
+                    }
+                    fill(255);
+                    ellipse(last.x, last.y, 5, 5);
+                }
+            }
+            
+            isFinished() {
+                return !this.isGrowing;
+            }
+        }
+
+        function preload() {
+            bgImg = loadImage(CONFIG.images.backgroundPath);
+            maskImg = loadImage(CONFIG.images.maskedPath);
+        }
+
+        function setup() {
+            let canvas = createCanvas(CONFIG.canvas.width, CONFIG.canvas.height);
+            canvas.parent('canvas-container');
+            maskGraphics = createGraphics(width, height);
+            curves.push(new SmoothCurve());
+            imagesLoaded = true;
+        }
+
+        function draw() {
+            if (!imagesLoaded) return;
+            maskGraphics.background(0);
+            frameCounter++;
+            if (frameCounter % CONFIG.generator.spawnInterval === 0) {
+                if (curves.length < CONFIG.generator.maxCurves) {
+                    curves.push(new SmoothCurve());
+                }
+            }
+            for (let c of curves) {
+                c.update();
+                c.drawToMask(maskGraphics);
+            }
+            for (let i = curves.length - 1; i >= 0; i--) {
+                if (curves[i].isFinished() && curves.length > CONFIG.generator.maxCurves / 2) {
+                    curves.splice(i, 1);
+                }
+            }
+            image(bgImg, 0, 0, width, height);
+            push();
+            let maskedImg = maskImg.get();
+            maskedImg.mask(maskGraphics);
+            image(maskedImg, 0, 0, width, height);
+            pop();
+            for (let c of curves) {
+                c.display();
+            }
+        }
+
+        function mousePressed() {
+            if (curves.length < CONFIG.generator.maxCurves) {
+                curves.push(new SmoothCurve());
+            }
+        }
+
+        function windowResized() {
+            resizeCanvas(window.innerWidth, window.innerHeight);
+            maskGraphics = createGraphics(width, height);
+        }
+    </script>
+</body>
+</html>
