@@ -436,7 +436,7 @@
   <div class="scroll-reveal" style="width:100%;display:flex;flex-direction:column;align-items:center">
     <h3>Work with me!</h3>
     <div class="contact-row">
-      <div class="contact-item"><p class="contact-label">Email</p><button class="contact-btn" data-copy="zzzy29209@163.com" data-toast="邮箱已复制到剪贴板">zzzy29209@163.com</button><p class="contact-hint">点击复制</p></div>
+      <div class="contact-item"><p class="contact-label">Email</p><button class="contact-btn" data-copy="zengziyi@example.com" data-toast="邮箱已复制到剪贴板">zengziyi@example.com</button><p class="contact-hint">点击复制</p></div>
       <div class="contact-item"><p class="contact-label">WeChat</p><button class="contact-btn" data-copy="Zzzy_nine" data-toast="微信号已复制到剪贴板">Zzzy_nine</button><p class="contact-hint">点击复制</p></div>
     </div>
   </div>
@@ -489,13 +489,7 @@ class SmoothCurve {
     for (let p of this.points) pg.curveVertex(p.x, p.y);
     let last = this.points[this.points.length - 1]; pg.curveVertex(last.x, last.y); pg.endShape();
   }
-  display() {
-    if (this.points.length < 4) return;
-    noFill(); strokeWeight(this.weight); strokeCap(ROUND); strokeJoin(ROUND);
-    beginShape(); curveVertex(this.points[0].x, this.points[0].y);
-    for (let i = 0; i < this.points.length; i++) { let alpha = map(i, 0, this.points.length - 1, 20, 60); stroke(0, 0, 0, alpha); curveVertex(this.points[i].x, this.points[i].y); }
-    let last = this.points[this.points.length - 1]; curveVertex(last.x, last.y); endShape();
-  }
+  // display() 方法已删除 —— 不再绘制黑色曲线笔触
   isFinished() { return !this.isGrowing; }
 }
 function preload() {
@@ -514,16 +508,31 @@ function draw() {
   if (frameCounter % CURVE_CONFIG.generator.spawnInterval === 0 && curves.length < CURVE_CONFIG.generator.maxCurves) curves.push(new SmoothCurve());
   for (let c of curves) { c.update(); c.drawToMask(maskGraphics); }
   for (let i = curves.length - 1; i >= 0; i--) if (curves[i].isFinished() && curves.length > CURVE_CONFIG.generator.maxCurves / 3) curves.splice(i, 1);
-  if (bgImg) image(bgImg, 0, 0, width, height); else background(240);
+
+  // 背景图等比 cover 居中裁切（修复变形）
+  if (bgImg) {
+    let r = Math.max(width / bgImg.width, height / bgImg.height);
+    let dw = bgImg.width * r, dh = bgImg.height * r;
+    let dx = (width - dw) / 2, dy = (height - dh) / 2;
+    image(bgImg, dx, dy, dw, dh);
+  } else {
+    background(240);
+  }
+
+  // 遮罩图等比 cover 居中裁切（与背景同比例）
   if (maskImg && maskImg.width > 0) {
     push();
     let maskedImg = createImage(maskImg.width, maskImg.height);
     maskedImg.copy(maskImg, 0, 0, maskImg.width, maskImg.height, 0, 0, maskImg.width, maskImg.height);
     maskedImg.mask(maskGraphics);
-    image(maskedImg, 0, 0, width, height);
+    let r2 = Math.max(width / maskImg.width, height / maskImg.height);
+    let dw2 = maskImg.width * r2, dh2 = maskImg.height * r2;
+    let dx2 = (width - dw2) / 2, dy2 = (height - dh2) / 2;
+    image(maskedImg, dx2, dy2, dw2, dh2);
     pop();
   }
-  for (let c of curves) c.display();
+
+  // 已删除黑色曲线绘制：for (let c of curves) c.display();
 }
 function windowResized() { resizeCanvas(window.innerWidth, window.innerHeight); maskGraphics = createGraphics(width, height); }
 function mousePressed() { if (curves.length < CURVE_CONFIG.generator.maxCurves) curves.push(new SmoothCurve()); }
