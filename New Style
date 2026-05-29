@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZENG ZIYI — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; scroll-behavior: smooth; }
+  :root {
+    --cream: #F4EFE2;
+    --ink: #1a1a1a;
+    --green: #5BA882;        /* 草绿 */
+    --green-d: #3F8866;
+    --pink: #F0B5BA;         /* 粉 */
+    --orange: #E89249;       /* 橙 */
+    --orange-d: #D67A36;
+    --yellow: #F0C84A;       /* 芥末黄 */
+    --red: #E55A4A;          /* 朱红 */
+    --red-d: #C84536;
+    --navy: #2A3958;
+    --navy-d: #1E2B45;
+    --purple: #9477B0;
+    --serif: 'Cormorant Garamond', serif;
+  }
+  html, body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: var(--serif);
+  }
+  section {
+    min-height: 100vh;
+    padding: 70px 0 40px;
+  }
+
+  /* ===== GLASS NAV ===== */
+  .glass-nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100; display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px clamp(40px, 6vw, 90px);
+    background: rgba(244,239,226,0.72);
+    border-bottom: 1px solid rgba(26,26,26,0.10);
+    backdrop-filter: blur(16px) saturate(1.3);
+    -webkit-backdrop-filter: blur(16px) saturate(1.3);
+    box-shadow: 0 2px 10px rgba(26,26,26,0.04);
+  }
+  .glass-nav .nav-item {
+    flex: 1;
+    text-align: center;
+    padding: 6px 6px;
+    font-weight: 400;
+    font-size: 18px;
+    letter-spacing: 1px;
+    color: var(--ink);
+    opacity: 0.55;
+    cursor: pointer;
+    transition: opacity 0.2s, font-weight 0.2s;
+    text-decoration: none;
+  }
+  .glass-nav .nav-item:hover { opacity: 0.85; }
+  .glass-nav .nav-item.active {
+    opacity: 1;
+    font-weight: 600;
+  }
+
+  /* ===== HERO SECTION ===== */
+  #hero {
+    overflow: hidden;
+    padding: 0;
+  }
+  .stage {
+    width: 100vw; height: 100vh;
+    position: relative;
+    display: flex; flex-direction: column;
+    padding: 70px 60px 0;
+  }
+  .top-word {
+    position: absolute;
+    top: 110px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-weight: 700;
+    font-size: clamp(80px, 12vw, 180px);
+    color: var(--ink);
+    letter-spacing: -1px;
+    line-height: 0.95;
+    text-align: center;
+    z-index: 5;
+  }
+  .top-word .by {
+    display: block;
+    font-weight: 400;
+    font-size: 16px;
+    letter-spacing: 4px;
+    color: var(--green-d);
+    margin-bottom: 8px;
+  }
+  .hint {
+    position: absolute;
+    bottom: 26px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-weight: 400;
+    font-size: 16px;
+    color: var(--green-d);
+    letter-spacing: 1px;
+    z-index: 5;
+    opacity: 0.85;
+  }
+  .shelf {
+    position: absolute;
+    bottom: 60px;
+    left: 0; right: 0;
+    height: 65vh;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 6px;
+    padding: 0 40px;
+  }
+  .shelf::after {
+    content: '';
+    position: absolute;
+    bottom: -2px; left: 5%; right: 5%;
+    height: 2px;
+    background: rgba(26,26,26,0.08);
+  }
+
+  /* Generic book */
+  .book {
+    position: relative;
+    border-radius: 3px 3px 1px 1px;
+    box-shadow:
+      inset 2px 0 0 rgba(255,255,255,0.18),
+      inset -2px 0 0 rgba(0,0,0,0.22),
+      inset 0 2px 0 rgba(255,255,255,0.10),
+      inset 0 -3px 0 rgba(0,0,0,0.20),
+      inset 0 0 0 0.5px rgba(0,0,0,0.35),
+      0 3px 5px rgba(40,28,15,0.18),
+      0 1px 0 rgba(0,0,0,0.25);
+    transition: transform 0.4s cubic-bezier(.4,.0,.2,1), box-shadow 0.4s;
+    cursor: pointer;
+    overflow: hidden;
+  }
+  .book::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image:
+      radial-gradient(circle at 18% 28%, rgba(255,255,255,0.10) 0.6px, transparent 1.2px),
+      radial-gradient(circle at 68% 62%, rgba(0,0,0,0.10) 0.6px, transparent 1.2px),
+      radial-gradient(circle at 42% 84%, rgba(255,255,255,0.08) 0.5px, transparent 1px),
+      radial-gradient(circle at 86% 16%, rgba(0,0,0,0.08) 0.5px, transparent 1px),
+      repeating-linear-gradient(0deg,
+        rgba(0,0,0,0.04) 0 1px, transparent 1px 3px),
+      repeating-linear-gradient(90deg,
+        rgba(255,255,255,0.03) 0 1px, transparent 1px 4px);
+    background-size: 3px 3px, 4px 4px, 5px 5px, 6px 6px, 100% 3px, 4px 100%;
+    pointer-events: none;
+    mix-blend-mode: overlay;
+    opacity: 0.85;
+  }
+  .book::after {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(to right,
+        rgba(0,0,0,0.18) 0%,
+        rgba(0,0,0,0) 8%,
+        rgba(255,255,255,0.06) 50%,
+        rgba(0,0,0,0) 92%,
+        rgba(0,0,0,0.22) 100%);
+    pointer-events: none;
+  }
+  .book:hover { transform: translateY(-14px) rotate(-1deg); z-index: 10;
+    box-shadow:
+      inset 2px 0 0 rgba(255,255,255,0.22),
+      inset -2px 0 0 rgba(0,0,0,0.28),
+      inset 0 2px 0 rgba(255,255,255,0.12),
+      inset 0 -3px 0 rgba(0,0,0,0.22),
+      inset 0 0 0 0.5px rgba(0,0,0,0.4),
+      0 14px 22px rgba(40,28,15,0.22),
+      0 2px 0 rgba(0,0,0,0.2);
+  }
+  .book .pages {
+    position: absolute;
+    top: -4px; left: 1px; right: 1px;
+    height: 5px;
+    background: linear-gradient(to bottom,
+      #efe5d0 0%, #d9cdb2 60%, #b8a888 100%);
+    border-radius: 2px 2px 0 0;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.4),
+      inset 0 -1px 0 rgba(0,0,0,0.15);
+  }
+  .book .pages::after {
+    content: '';
+    position: absolute; inset: 1px 0 0 0;
+    background: repeating-linear-gradient(90deg,
+      rgba(0,0,0,0.12) 0 1px,
+      transparent 1px 3px);
+    opacity: 0.5;
+  }
+  .tag {
+    position: absolute;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%) rotate(-90deg);
+    font-weight: 500;
+    font-size: 17px;
+    color: var(--ink);
+    white-space: nowrap;
+    letter-spacing: 0.6px;
+    text-shadow: 0 1px 0 rgba(255,255,255,0.15);
+    z-index: 2;
+  }
+  .tag.title {
+    font-weight: 600;
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+  .stripe {
+    position: absolute;
+    left: 6%; right: 6%;
+    height: 3px;
+    background: var(--ink);
+    opacity: 0.78;
+    z-index: 2;
+  }
+  .stripe.thin { height: 2px; }
+  .stripe.thick { height: 5px; }
+  .stripe.gold { background: #C9A24A; opacity: 1;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.25); }
+  .inset-rect {
+    position: absolute;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    border: 1.5px solid var(--ink);
+    width: 8px;
+    height: 60%;
+    z-index: 2;
+  }
+  .logo-dot {
+    position: absolute;
+    bottom: 14px; left: 50%;
+    transform: translateX(-50%);
+    width: 10px; height: 10px;
+    border: 1.2px solid var(--ink);
+    border-radius: 50%;
+    z-index: 2;
+    opacity: 0.7;
+  }
+  .logo-dot.square { border-radius: 0; width: 8px; height: 8px; }
+
+  /* Hero book */
+  .hero-book {
+    position: relative;
+    width: 280px;
+    height: 460px;
+    background: linear-gradient(135deg, #314268 0%, #2A3958 55%, #1E2B45 100%);
+    border-radius: 3px 6px 6px 3px;
+    box-shadow:
+      inset 4px 0 0 rgba(0,0,0,0.35),
+      inset 6px 0 0 rgba(255,255,255,0.05),
+      inset -2px 0 0 rgba(255,255,255,0.05),
+      inset 0 2px 0 rgba(255,255,255,0.08),
+      inset 0 -4px 0 rgba(0,0,0,0.30),
+      inset 0 0 0 0.5px rgba(0,0,0,0.45),
+      0 14px 26px rgba(20,15,8,0.32),
+      0 4px 0 rgba(0,0,0,0.22);
+    cursor: pointer;
+    overflow: hidden;
+    transition: transform 0.5s cubic-bezier(.4,0,.2,1), box-shadow 0.5s;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 28px 30px 36px;
+    z-index: 6;
+  }
+  .hero-book:hover {
+    transform: translateY(-18px) rotateZ(-0.5deg);
+    box-shadow:
+      inset 4px 0 0 rgba(0,0,0,0.4),
+      inset 6px 0 0 rgba(255,255,255,0.06),
+      inset -2px 0 0 rgba(255,255,255,0.06),
+      inset 0 2px 0 rgba(255,255,255,0.1),
+      inset 0 -4px 0 rgba(0,0,0,0.35),
+      inset 0 0 0 0.5px rgba(0,0,0,0.5),
+      0 28px 40px rgba(20,15,8,0.36),
+      0 6px 0 rgba(0,0,0,0.25);
+  }
+  .hero-book::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image:
+      radial-gradient(circle at 22% 30%, rgba(255,255,255,0.05) 0.6px, transparent 1.2px),
+      radial-gradient(circle at 72% 64%, rgba(0,0,0,0.10) 0.6px, transparent 1.2px),
+      radial-gradient(circle at 46% 84%, rgba(255,255,255,0.04) 0.5px, transparent 1px),
+      repeating-linear-gradient(0deg,
+        rgba(0,0,0,0.04) 0 1px, transparent 1px 3px),
+      repeating-linear-gradient(90deg,
+        rgba(255,255,255,0.03) 0 1px, transparent 1px 4px);
+    background-size: 3px 3px, 4px 4px, 5px 5px, 100% 3px, 4px 100%;
+    pointer-events: none;
+    mix-blend-mode: overlay;
+    opacity: 0.9;
+  }
+  .hero-book::after {
+    content: '';
+    position: absolute;
+    top: 16px; bottom: 16px; left: 16px;
+    width: 1px;
+    background: rgba(255,255,255,0.12);
+    box-shadow: 1px 0 0 rgba(0,0,0,0.25);
+    pointer-events: none;
+  }
+  .hero-book .top-mark {
+    font-weight: 500;
+    font-size: 13px;
+    letter-spacing: 6px;
+    color: rgba(245,238,222,0.75);
+    text-transform: uppercase;
+    text-align: center;
+    z-index: 2;
+  }
+  .hero-book .cover-title {
+    font-weight: 600;
+    font-size: 36px;
+    line-height: 1.05;
+    letter-spacing: 1px;
+    color: #F1E9D3;
+    text-align: center;
+    text-shadow: 0 1px 0 rgba(0,0,0,0.25);
+    z-index: 2;
+  }
+  .hero-book .cover-title .it {
+    font-weight: 400;
+    color: #E8C97A;
+    display: block;
+    font-size: 22px;
+    margin-top: 10px;
+    letter-spacing: 0.5px;
+  }
+  .hero-book .cover-foot {
+    font-weight: 400;
+    font-size: 14px;
+    letter-spacing: 4px;
+    color: rgba(245,238,222,0.6);
+    text-align: center;
+    z-index: 2;
+  }
+  .hero-book .corner-orn {
+    position: absolute;
+    top: 14px; right: 14px;
+    width: 18px; height: 18px;
+    border: 1px solid rgba(232,201,122,0.5);
+    border-radius: 50%;
+    z-index: 2;
+  }
+  .hero-book .corner-orn::after {
+    content: '';
+    position: absolute; inset: 4px;
+    border: 1px solid rgba(232,201,122,0.4);
+    border-radius: 50%;
+  }
+
+  /* ===== ABOUT SECTION ===== */
+  .about-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 60px;
+    align-items: center;
+    min-height: calc(100vh - 70px);
+  }
+  .books-col {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .book-item {
+    position: relative;
+    perspective: 1600px;
+    height: 100px;
+  }
+  .book-spine {
+    position: absolute;
+    top: 0; left: 0;
+    height: 100%;
+    width: 80px;
+    padding: 16px 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform-origin: left center;
+    transition: transform 0.55s cubic-bezier(.4,0,.2,1);
+    box-shadow:
+      inset 2px 0 0 rgba(255,255,255,0.12),
+      inset -2px 0 0 rgba(0,0,0,0.25),
+      inset 0 2px 0 rgba(255,255,255,0.06),
+      inset 0 -3px 0 rgba(0,0,0,0.18),
+      0 4px 6px rgba(40,28,15,0.15);
+    cursor: pointer;
+    z-index: 3;
+  }
+  .book-spine::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image:
+      radial-gradient(circle at 18% 28%, rgba(255,255,255,0.06) 0.6px, transparent 1.2px),
+      radial-gradient(circle at 72% 64%, rgba(0,0,0,0.08) 0.6px, transparent 1.2px);
+    background-size: 3px 3px, 4px 4px;
+    mix-blend-mode: overlay;
+    opacity: 0.8;
+  }
+  .book-spine .title {
+    transform: rotate(-90deg);
+    white-space: nowrap;
+    font-weight: 600;
+    font-size: 18px;
+    letter-spacing: 1px;
+    color: var(--ink);
+    text-shadow: 0 1px 0 rgba(255,255,255,0.15);
+    z-index: 2;
+  }
+  .book-spine .year {
+    position: absolute;
+    bottom: 10px; left: 50%;
+    transform: translateX(-50%);
+    font-size: 11px;
+    font-weight: 500;
+    color: rgba(26,26,26,0.7);
+    z-index: 2;
+  }
+  .book-content {
+    position: absolute;
+    top: 0; left: 78px;
+    height: 100%;
+    width: 0;
+    overflow: hidden;
+    background: #F8F5EC;
+    border-radius: 0 3px 3px 0;
+    padding: 0;
+    transform: rotateY(-90deg);
+    transform-origin: left center;
+    transition: transform 0.55s cubic-bezier(.4,0,.2,1), width 0.01s 0.55s, padding 0.01s 0.55s;
+    box-shadow:
+      inset 0 0 0 1px rgba(0,0,0,0.08),
+      0 4px 10px rgba(40,28,15,0.15);
+    z-index: 2;
+  }
+  .book-content .inner {
+    width: 360px;
+    padding: 20px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .book-content .title-big {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .book-content .major {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--green-d);
+  }
+  .book-content .desc {
+    font-size: 14px;
+    line-height: 1.5;
+    color: #444;
+    margin-top: 6px;
+  }
+  .book-content .tags {
+    display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap;
+  }
+  .book-content .tags span {
+    background: rgba(91, 168, 130, 0.15);
+    color: var(--green-d);
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .book-item:hover .book-spine {
+    transform: rotateY(-160deg);
+  }
+  .book-item:hover .book-content {
+    transform: rotateY(0deg);
+    width: auto;
+    padding: 0;
+    transition: transform 0.55s cubic-bezier(.4,0,.2,1), width 0.01s, padding 0.01s;
+  }
+  .book-item.zuel .book-spine { background: var(--green); }
+  .book-item.dongseo .book-spine { background: var(--yellow); }
+  .book-item.studiokay .book-spine { background: var(--orange); }
+
+  .photo-col {
+    position: relative;
+  }
+  .frame-handdrawn {
+    position: relative;
+    padding: 18px;
+    border: 1.5px solid var(--green-d);
+    border-radius: 22px;
+    height: 520px;
+    box-shadow:
+      0 10px 25px rgba(63, 136, 102, 0.15),
+      inset 0 0 0 1px rgba(255,255,255,0.5);
+  }
+  .frame-handdrawn::before,
+  .frame-handdrawn::after,
+  .frame-handdrawn .corner-tl,
+  .frame-handdrawn .corner-tr,
+  .frame-handdrawn .corner-bl,
+  .frame-handdrawn .corner-br {
+    content: '';
+    position: absolute;
+    width: 16px; height: 16px;
+    border: 1.5px solid var(--green-d);
+    border-radius: 50%;
+  }
+  .corner-tl { top: 12px; left: 12px; }
+  .corner-tr { top: 12px; right: 12px; }
+  .corner-bl { bottom: 12px; left: 12px; }
+  .corner-br { bottom: 12px; right: 12px; }
+
+  .frame-handdrawn .photo-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--green), var(--green-d));
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--cream);
+    font-size: 20px;
+    font-weight: 500;
+  }
+  .photo-col .caption {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .photo-col .caption-sub {
+    text-align: center;
+    margin-top: 4px;
+    font-size: 14px;
+    color: var(--green-d);
+  }
+
+  /* ===== EXPERIENCE / WORKS / CONTACT PLACEHOLDERS ===== */
+  .section-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+  .section-title {
+    font-size: 72px;
+    font-weight: 700;
+    margin-bottom: 40px;
+    letter-spacing: -2px;
+  }
+  .coming-soon {
+    font-size: 24px;
+    font-weight: 400;
+    color: var(--green-d);
+    opacity: 0.8;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 960px) {
+    .stage { padding: 20px 20px 0; }
+    .shelf { gap: 4px; padding: 0 14px; height: 55vh; }
+    .top-word { top: 4vh; font-size: 44px; }
+    .tag { font-size: 12px; }
+    .about-page {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+    .books-col { order: 2; }
+    .photo-col { order: 1; }
+    .book-content .inner { width: 280px; }
+    .section-title {
+      font-size: 48px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<nav class="glass-nav">
+  <a href="#hero" class="nav-item active">Home</a>
+  <a href="#about" class="nav-item">About</a>
+  <a href="#experience" class="nav-item">Experience</a>
+  <a href="#works" class="nav-item">Works</a>
+  <a href="#contact" class="nav-item">Contact</a>
+</nav>
+
+<!-- HERO SECTION -->
+<section id="hero">
+  <div class="stage">
+    <div class="top-word">
+      <span class="by">A Filmmaker's Bookshelf</span>
+      Portfolio
+    </div>
+
+    <div class="shelf">
+      <!-- 装饰书 1 — 绿 高 "AI CREATOR" -->
+      <div class="book" style="width:52px;height:440px;background:var(--green);">
+        <div class="pages"></div>
+        <div class="stripe gold" style="top:10%;"></div>
+        <div class="stripe thin" style="top:14%;"></div>
+        <div class="tag title" style="color:var(--ink);">AI Creator</div>
+        <div class="stripe gold" style="bottom:14%;"></div>
+        <div class="logo-dot"></div>
+      </div>
+
+      <!-- 装饰书 2 — 粉 中 "FILMMAKER" -->
+      <div class="book" style="width:48px;height:380px;background:var(--pink);">
+        <div class="pages"></div>
+        <div class="stripe thick" style="top:14%;"></div>
+        <div class="tag title">Filmmaker</div>
+        <div class="stripe thick" style="bottom:14%;"></div>
+        <div class="logo-dot"></div>
+      </div>
+
+      <!-- 装饰书 3 — 橙 中 "Content Creator" -->
+      <div class="book" style="width:54px;height:420px;background:var(--orange);">
+        <div class="pages"></div>
+        <div class="stripe gold" style="top:13%;"></div>
+        <div class="tag title">Content Creator</div>
+        <div class="stripe gold" style="bottom:13%;"></div>
+        <div class="logo-dot square"></div>
+      </div>
+
+      <!-- 装饰书 4 — 黄 中 "EDITOR" -->
+      <div class="book" style="width:44px;height:340px;background:var(--yellow);">
+        <div class="pages"></div>
+        <div class="stripe thick" style="top:16%;"></div>
+        <div class="tag title">Editor</div>
+        <div class="stripe thick" style="bottom:16%;"></div>
+      </div>
+
+      <!-- HERO BOOK -->
+      <div class="hero-book">
+        <div class="corner-orn"></div>
+        <div class="top-mark">ZENG ZIYI</div>
+        <div class="cover-title">
+          VISIBLE<br>WORKS
+          <span class="it">A Creative Portfolio</span>
+        </div>
+        <div class="cover-foot">2024 — 2026</div>
+      </div>
+
+      <!-- 间隔书 — 矮 镶嵌 -->
+      <div class="book" style="width:26px;height:140px;background:var(--green-d); align-self:flex-end;">
+        <div class="pages"></div>
+        <div class="inset-rect" style="border-color:var(--cream); width:6px;"></div>
+      </div>
+
+      <!-- 装饰书 5 — 粉 高 "VLOGGER" -->
+      <div class="book" style="width:50px;height:450px;background:var(--pink);">
+        <div class="pages"></div>
+        <div class="stripe gold" style="top:12%;"></div>
+        <div class="tag title">Vlogger</div>
+        <div class="stripe gold" style="bottom:12%;"></div>
+        <div class="logo-dot"></div>
+      </div>
+
+      <!-- 装饰书 6 — 深红 中 "Creative Producer" -->
+      <div class="book" style="width:42px;height:380px;background:var(--red-d);">
+        <div class="pages"></div>
+        <div class="stripe thin" style="top:12%;"></div>
+        <div class="stripe thin" style="top:15%;"></div>
+        <div class="tag title" style="color:var(--cream); font-size:13px;">Creative Producer</div>
+        <div class="stripe thin" style="bottom:12%;"></div>
+      </div>
+
+      <!-- 装饰书 7 — 深绿 高 "Data Ops" -->
+      <div class="book" style="width:48px;height:440px;background:var(--green-d);">
+        <div class="pages"></div>
+        <div class="stripe gold" style="top:13%;"></div>
+        <div class="tag title" style="color:var(--cream);">Data Ops</div>
+        <div class="stripe gold" style="bottom:13%;"></div>
+        <div class="logo-dot" style="border-color:var(--cream);"></div>
+      </div>
+
+      <!-- 装饰书 8 — 红 高 "Market Analyst" -->
+      <div class="book" style="width:54px;height:430px;background:var(--red);">
+        <div class="pages"></div>
+        <div class="stripe gold" style="top:11%;"></div>
+        <div class="stripe gold" style="top:14%;"></div>
+        <div class="tag title" style="color:var(--cream); font-size:13px;">Market Analyst</div>
+        <div class="stripe gold" style="bottom:11%;"></div>
+        <div class="logo-dot" style="border-color:var(--cream);"></div>
+      </div>
+
+      <!-- 装饰书 — 橙 细 -->
+      <div class="book" style="width:26px;height:300px;background:var(--orange-d);">
+        <div class="pages"></div>
+        <div class="stripe thin" style="top:38%;"></div>
+        <div class="tag" style="font-size:12px; color:var(--cream);">Frames</div>
+        <div class="stripe thin" style="bottom:38%;"></div>
+      </div>
+
+    </div>
+
+    <div class="hint">↓ Scroll to open the books ↓</div>
+  </div>
+</section>
+
+<!-- ABOUT SECTION -->
+<section id="about">
+  <div class="about-page">
+    <div class="books-col">
+      <!-- 1. 中南财经政法大学 -->
+      <div class="book-item zuel">
+        <div class="book-spine">
+          <div class="title">ZUEL</div>
+          <div class="year">2022-2026</div>
+        </div>
+        <div class="book-content">
+          <div class="inner">
+            <div class="title-big">中南财经政法大学</div>
+            <div class="major">广播电视编导 · Bachelor of Arts</div>
+            <div class="desc">主修影视导演、后期剪辑、视觉叙事、新媒体内容策划，专业排名前 5%，获校级奖学金、优秀学生干部、社会实践先进个人等荣誉。</div>
+            <div class="tags">
+              <span>导演</span>
+              <span>剪辑</span>
+              <span>叙事</span>
+              <span>新媒体</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Dongseo University -->
+      <div class="book-item dongseo">
+        <div class="book-spine">
+          <div class="title">Dongseo</div>
+          <div class="year">2024</div>
+        </div>
+        <div class="book-content">
+          <div class="inner">
+            <div class="title-big">东西大学 · 韩国釜山</div>
+            <div class="major">影像学 · 双学位交换</div>
+            <div class="desc">韩国东西大学影像学专业交换期间，学习电影灯光设计、影视特效制作，参与釜山国际电影节学生单元短片创作，完成《离岸流》等多部联合剧情短片。</div>
+            <div class="tags">
+              <span>灯光</span>
+              <span>特效</span>
+              <span>釜山</span>
+              <span>国际联合创作</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Studio Kay -->
+      <div class="book-item studiokay">
+        <div class="book-spine">
+          <div class="title">Studio Kay</div>
+          <div class="year">2024</div>
+        </div>
+        <div class="book-content">
+          <div class="inner">
+            <div class="title-big">Studio Kay · AI 影像 Workshop</div>
+            <div class="major">影像创作 · 夏季实训</div>
+            <div class="desc">Studio Kay AI 影像创作工坊实训，学习 AI 辅助影像全流程创作，完成个人实验短片《奇幻漂流》，探索 AI 生成与实拍素材的融合表达。</div>
+            <div class="tags">
+              <span>AI 影像</span>
+              <span>实验创作</span>
+              <span>视觉实验</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="photo-col">
+      <div class="frame-handdrawn">
+        <div class="corner-tl"></div>
+        <div class="corner-tr"></div>
+        <div class="corner-bl"></div>
+        <div class="corner-br"></div>
+        <div class="photo-placeholder">
+          个人照片占位
+        </div>
+      </div>
+      <div class="caption">ZENG ZIYI</div>
+      <div class="caption-sub">Filmmaker · AI Creator · Content Creator</div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE SECTION -->
+<section id="experience">
+  <div class="section-container">
+    <h2 class="section-title">Experience</h2>
+    <p class="coming-soon">Coming soon — under construction</p>
+  </div>
+</section>
+
+<!-- WORKS SECTION -->
+<section id="works">
+  <div class="section-container">
+    <h2 class="section-title">Works</h2>
+    <p class="coming-soon">Coming soon — under construction</p>
+  </div>
+</section>
+
+<!-- CONTACT SECTION -->
+<section id="contact">
+  <div class="section-container">
+    <h2 class="section-title">Contact</h2>
+    <p class="coming-soon">Coming soon — under construction</p>
+  </div>
+</section>
+
+<script>
+  // Navigation active state on scroll
+  const sections = document.querySelectorAll('section');
+  const navItems = document.querySelectorAll('.nav-item');
+
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(section => {
+      const sectionTop = section.offsetTop;
+      const sectionHeight = section.clientHeight;
+      if (pageYOffset >= (sectionTop - 100)) {
+        current = section.getAttribute('id');
+      }
+    });
+
+    navItems.forEach(item => {
+      item.classList.remove('active');
+      if (item.getAttribute('href').substring(1) === current) {
+        item.classList.add('active');
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
