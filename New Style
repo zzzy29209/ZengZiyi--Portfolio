@@ -277,7 +277,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    align-items: center;
+align-items: center;
     padding: 28px 30px 36px;
     z-index: 6;
   }
@@ -369,47 +369,62 @@
   }
 
   /* ===== ABOUT SECTION ===== */
-  .about-page {
-    max-width: 1200px;
+  #about {
+    position: relative;
+  }
+  .about-shelf-container {
+    max-width: 1300px;
     margin: 0 auto;
-    padding: 0 40px;
+    padding: 0 60px;
     display: grid;
-    grid-template-columns: 1.2fr 1fr;
-    gap: 60px;
-    align-items: center;
-    min-height: calc(100vh - 70px);
+    grid-template-columns: 2fr 1fr;
+    gap: 80px;
+    align-items: end;
+    min-height: calc(100vh - 140px);
   }
-  .books-col {
+  .about-shelf {
+    position: relative;
     display: flex;
-    flex-direction: column;
-    gap: 14px;
+    align-items: flex-end;
+    gap: 24px;
+    border-bottom: 2px solid rgba(26,26,26,0.08);
+    padding-bottom: 0;
+    min-height: 480px;
+    padding-left: 40px;
   }
-  .book-item {
+  .book-item-shelf {
     position: relative;
     perspective: 1600px;
-    height: 100px;
+    transform-style: preserve-3d;
+    cursor: pointer;
+    transition: transform 0.3s ease;
   }
-  .book-spine {
-    position: absolute;
-    top: 0; left: 0;
-    height: 100%;
-    width: 80px;
-    padding: 16px 8px;
+  .book-item-shelf:hover {
+    transform: translateY(-6px);
+  }
+  .book-item-shelf.active {
+    z-index: 50;
+  }
+  .book-spine-shelf {
+    position: relative;
+    border-radius: 3px 3px 1px 1px;
+    width: 88px;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
+    padding: 20px 0;
     transform-origin: left center;
-    transition: transform 0.55s cubic-bezier(.4,0,.2,1);
+    transition: transform 0.55s cubic-bezier(.6,.05,.2,1), opacity 0.4s;
     box-shadow:
       inset 2px 0 0 rgba(255,255,255,0.12),
       inset -2px 0 0 rgba(0,0,0,0.25),
       inset 0 2px 0 rgba(255,255,255,0.06),
       inset 0 -3px 0 rgba(0,0,0,0.18),
       0 4px 6px rgba(40,28,15,0.15);
-    cursor: pointer;
-    z-index: 3;
+    backface-visibility: hidden;
   }
-  .book-spine::before {
+  .book-spine-shelf::before {
     content: '';
     position: absolute; inset: 0;
     background-image:
@@ -419,124 +434,136 @@
     mix-blend-mode: overlay;
     opacity: 0.8;
   }
-  .book-spine .title {
+  .book-spine-shelf .pages-top {
+    position: absolute;
+    top: -4px; left: 1px; right: 1px;
+    height: 5px;
+    background: linear-gradient(to bottom,
+      #efe5d0 0%, #d9cdb2 60%, #b8a888 100%);
+    border-radius: 2px 2px 0 0;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.4),
+      inset 0 -1px 0 rgba(0,0,0,0.15);
+  }
+  .book-spine-shelf .pages-top::after {
+    content: '';
+    position: absolute; inset: 1px 0 0 0;
+    background: repeating-linear-gradient(90deg,
+      rgba(0,0,0,0.12) 0 1px,
+      transparent 1px 3px);
+    opacity: 0.5;
+  }
+  .book-spine-shelf .title {
     transform: rotate(-90deg);
     white-space: nowrap;
     font-weight: 600;
-    font-size: 18px;
+    font-size: 20px;
     letter-spacing: 1px;
     color: var(--ink);
     text-shadow: 0 1px 0 rgba(255,255,255,0.15);
     z-index: 2;
   }
-  .book-spine .year {
-    position: absolute;
-    bottom: 10px; left: 50%;
-    transform: translateX(-50%);
-    font-size: 11px;
+  .book-spine-shelf .year {
+    font-size: 12px;
     font-weight: 500;
     color: rgba(26,26,26,0.7);
     z-index: 2;
   }
-  .book-content {
+  .book-content-shelf {
     position: absolute;
-    top: 0; left: 78px;
+    top: 0;
+    left: 100%;
     height: 100%;
-    width: 0;
-    overflow: hidden;
+    width: 380px;
     background: #F8F5EC;
     border-radius: 0 3px 3px 0;
-    padding: 0;
-    transform: rotateY(-90deg);
+    padding: 24px 28px;
     transform-origin: left center;
-    transition: transform 0.55s cubic-bezier(.4,0,.2,1), width 0.01s 0.55s, padding 0.01s 0.55s;
+    transform: rotateY(-90deg);
+    opacity: 0;
+    transition: transform 0.55s cubic-bezier(.6,.05,.2,1), opacity 0.35s;
+    pointer-events: none;
     box-shadow:
       inset 0 0 0 1px rgba(0,0,0,0.08),
       0 4px 10px rgba(40,28,15,0.15);
-    z-index: 2;
+    z-index: 60;
   }
-  .book-content .inner {
-    width: 360px;
-    padding: 20px 24px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-  .book-content .title-big {
-    font-size: 24px;
+  .book-content-shelf .title-big {
+    font-size: 26px;
     font-weight: 600;
     color: var(--ink);
+    margin-bottom: 8px;
   }
-  .book-content .major {
-    font-size: 16px;
+  .book-content-shelf .major {
+    font-size: 17px;
     font-weight: 500;
     color: var(--green-d);
+    margin-bottom: 10px;
   }
-  .book-content .desc {
+  .book-content-shelf .desc {
     font-size: 14px;
-    line-height: 1.5;
+    line-height: 1.6;
     color: #444;
     margin-top: 6px;
+    margin-bottom: 12px;
   }
-  .book-content .tags {
-    display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap;
+  .book-content-shelf .tags {
+    display: flex; gap: 8px; flex-wrap: wrap;
   }
-  .book-content .tags span {
+  .book-content-shelf .tags span {
     background: rgba(91, 168, 130, 0.15);
     color: var(--green-d);
-    padding: 2px 8px;
+    padding: 3px 10px;
     border-radius: 12px;
     font-size: 12px;
     font-weight: 500;
   }
-  .book-item:hover .book-spine {
+  .book-item-shelf.active .book-spine-shelf {
     transform: rotateY(-160deg);
+    opacity: 0;
   }
-  .book-item:hover .book-content {
+  .book-item-shelf.active .book-content-shelf {
     transform: rotateY(0deg);
-    width: auto;
-    padding: 0;
-    transition: transform 0.55s cubic-bezier(.4,0,.2,1), width 0.01s, padding 0.01s;
+    opacity: 1;
+    pointer-events: auto;
   }
-  .book-item.zuel .book-spine { background: var(--green); }
-  .book-item.dongseo .book-spine { background: var(--yellow); }
-  .book-item.studiokay .book-spine { background: var(--orange); }
+  .book-item-shelf.zuel .book-spine-shelf { background: var(--green); height: 440px; }
+  .book-item-shelf.dongseo .book-spine-shelf { background: var(--yellow); height: 380px; }
+  .book-item-shelf.studiokay .book-spine-shelf { background: var(--orange); height: 410px; }
 
   .photo-col {
     position: relative;
+    align-self: center;
   }
-  .frame-handdrawn {
+  .frame-wavy {
     position: relative;
-    padding: 18px;
-    border: 1.5px solid var(--green-d);
-    border-radius: 22px;
-    height: 520px;
-    box-shadow:
-      0 10px 25px rgba(63, 136, 102, 0.15),
-      inset 0 0 0 1px rgba(255,255,255,0.5);
+    padding: 24px;
+    background: var(--cream);
+    border-radius: 12px;
   }
-  .frame-handdrawn::before,
-  .frame-handdrawn::after,
-  .frame-handdrawn .corner-tl,
-  .frame-handdrawn .corner-tr,
-  .frame-handdrawn .corner-bl,
-  .frame-handdrawn .corner-br {
-    content: '';
+  .frame-wavy svg {
     position: absolute;
-    width: 16px; height: 16px;
-    border: 1.5px solid var(--green-d);
-    border-radius: 50%;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    fill: none;
+    stroke: var(--green-d);
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
   }
-  .corner-tl { top: 12px; left: 12px; }
-  .corner-tr { top: 12px; right: 12px; }
-  .corner-bl { bottom: 12px; left: 12px; }
-  .corner-br { bottom: 12px; right: 12px; }
-
-  .frame-handdrawn .photo-placeholder {
+  .frame-inner {
+    border: 1.5px solid var(--green-d);
+    border-radius: 8px;
+    padding: 8px;
+    height: 480px;
+  }
+  .photo-placeholder {
     width: 100%;
     height: 100%;
     background: linear-gradient(135deg, var(--green), var(--green-d));
-    border-radius: 10px;
+    border-radius: 4px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -556,6 +583,18 @@
     margin-top: 4px;
     font-size: 14px;
     color: var(--green-d);
+  }
+
+  .about-hint {
+    position: absolute;
+    bottom: 26px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-weight: 400;
+    font-size: 16px;
+    color: var(--green-d);
+    letter-spacing: 1px;
+    opacity: 0.85;
   }
 
   /* ===== EXPERIENCE / WORKS / CONTACT PLACEHOLDERS ===== */
@@ -583,13 +622,14 @@
     .shelf { gap: 4px; padding: 0 14px; height: 55vh; }
     .top-word { top: 4vh; font-size: 44px; }
     .tag { font-size: 12px; }
-    .about-page {
+    .about-shelf-container {
       grid-template-columns: 1fr;
       gap: 40px;
+      padding: 0 20px;
     }
-    .books-col { order: 2; }
+    .about-shelf { order: 2; padding-left: 0; gap: 12px; }
     .photo-col { order: 1; }
-    .book-content .inner { width: 280px; }
+    .book-content-shelf { width: 280px; }
     .section-title {
       font-size: 48px;
     }
@@ -721,85 +761,106 @@
 
 <!-- ABOUT SECTION -->
 <section id="about">
-  <div class="about-page">
-    <div class="books-col">
+  <div class="about-shelf-container">
+    <div class="about-shelf">
       <!-- 1. 中南财经政法大学 -->
-      <div class="book-item zuel">
-        <div class="book-spine">
+      <div class="book-item-shelf zuel">
+        <div class="book-spine-shelf">
+          <div class="pages-top"></div>
           <div class="title">ZUEL</div>
           <div class="year">2022-2026</div>
         </div>
-        <div class="book-content">
-          <div class="inner">
-            <div class="title-big">中南财经政法大学</div>
-            <div class="major">广播电视编导 · Bachelor of Arts</div>
-            <div class="desc">主修影视导演、后期剪辑、视觉叙事、新媒体内容策划，专业排名前 5%，获校级奖学金、优秀学生干部、社会实践先进个人等荣誉。</div>
-            <div class="tags">
-              <span>导演</span>
-              <span>剪辑</span>
-              <span>叙事</span>
-              <span>新媒体</span>
-            </div>
+        <div class="book-content-shelf">
+          <div class="title-big">中南财经政法大学</div>
+          <div class="major">广播电视编导 · Bachelor of Arts</div>
+          <div class="desc">主修影视导演、后期剪辑、视觉叙事、新媒体内容策划，专业排名前 5%，获校级奖学金、优秀学生干部、社会实践先进个人等荣誉。</div>
+          <div class="tags">
+            <span>导演</span>
+            <span>剪辑</span>
+            <span>叙事</span>
+            <span>新媒体</span>
           </div>
         </div>
       </div>
 
       <!-- 2. Dongseo University -->
-      <div class="book-item dongseo">
-        <div class="book-spine">
+      <div class="book-item-shelf dongseo">
+        <div class="book-spine-shelf">
+          <div class="pages-top"></div>
           <div class="title">Dongseo</div>
           <div class="year">2024</div>
         </div>
-        <div class="book-content">
-          <div class="inner">
-            <div class="title-big">东西大学 · 韩国釜山</div>
-            <div class="major">影像学 · 双学位交换</div>
-            <div class="desc">韩国东西大学影像学专业交换期间，学习电影灯光设计、影视特效制作，参与釜山国际电影节学生单元短片创作，完成《离岸流》等多部联合剧情短片。</div>
-            <div class="tags">
-              <span>灯光</span>
-              <span>特效</span>
-              <span>釜山</span>
-              <span>国际联合创作</span>
-            </div>
+        <div class="book-content-shelf">
+          <div class="title-big">东西大学 · 韩国釜山</div>
+          <div class="major">影像学 · 双学位交换</div>
+          <div class="desc">韩国东西大学影像学专业交换期间，学习电影灯光设计、影视特效制作，参与釜山国际电影节学生单元短片创作，完成《离岸流》等多部联合剧情短片。</div>
+          <div class="tags">
+            <span>灯光</span>
+            <span>特效</span>
+            <span>釜山</span>
+            <span>国际联合创作</span>
           </div>
         </div>
       </div>
 
       <!-- 3. Studio Kay -->
-      <div class="book-item studiokay">
-        <div class="book-spine">
+      <div class="book-item-shelf studiokay">
+        <div class="book-spine-shelf">
+          <div class="pages-top"></div>
           <div class="title">Studio Kay</div>
           <div class="year">2024</div>
         </div>
-        <div class="book-content">
-          <div class="inner">
-            <div class="title-big">Studio Kay · AI 影像 Workshop</div>
-            <div class="major">影像创作 · 夏季实训</div>
-            <div class="desc">Studio Kay AI 影像创作工坊实训，学习 AI 辅助影像全流程创作，完成个人实验短片《奇幻漂流》，探索 AI 生成与实拍素材的融合表达。</div>
-            <div class="tags">
-              <span>AI 影像</span>
-              <span>实验创作</span>
-              <span>视觉实验</span>
-            </div>
+        <div class="book-content-shelf">
+          <div class="title-big">Studio Kay · AI 影像 Workshop</div>
+          <div class="major">影像创作 · 夏季实训</div>
+          <div class="desc">Studio Kay AI 影像创作工坊实训，学习 AI 辅助影像全流程创作，完成个人实验短片《奇幻漂流》，探索 AI 生成与实拍素材的融合表达。</div>
+          <div class="tags">
+            <span>AI 影像</span>
+            <span>实验创作</span>
+            <span>视觉实验</span>
           </div>
         </div>
       </div>
     </div>
 
     <div class="photo-col">
-      <div class="frame-handdrawn">
-        <div class="corner-tl"></div>
-        <div class="corner-tr"></div>
-        <div class="corner-bl"></div>
-        <div class="corner-br"></div>
-        <div class="photo-placeholder">
-          个人照片占位
+      <div class="frame-wavy">
+        <svg viewBox="0 0 500 600" preserveAspectRatio="none">
+          <path d="M 20 20
+            C 60 10, 100 25, 140 15
+            C 180 5, 220 18, 260 8
+            C 300 -2, 340 12, 380 5
+            C 420 -2, 460 15, 480 20
+            C 490 60, 475 100, 485 140
+            C 495 180, 482 220, 492 260
+            C 498 300, 488 340, 495 380
+            C 498 420, 485 460, 480 500
+            C 460 540, 420 585, 380 595
+            C 340 598, 300 582, 260 592
+            C 220 598, 180 585, 140 595
+            C 100 598, 60 582, 20 580
+            C 10 540, 25 500, 15 460
+            C 5 420, 18 380, 8 340
+            C -2 300, 12 260, 5 220
+            C -2 180, 15 140, 20 100
+            C 35 60, 15 20, 20 20 Z
+            M 40 40
+            L 460 40
+            L 460 560
+            L 40 560
+            Z" />
+        </svg>
+        <div class="frame-inner">
+          <div class="photo-placeholder">
+            个人照片占位
+          </div>
         </div>
       </div>
       <div class="caption">ZENG ZIYI</div>
       <div class="caption-sub">Filmmaker · AI Creator · Content Creator</div>
     </div>
   </div>
+  <div class="about-hint">→ Click on the books to open ←</div>
 </section>
 
 <!-- EXPERIENCE SECTION -->
@@ -845,6 +906,20 @@
       item.classList.remove('active');
       if (item.getAttribute('href').substring(1) === current) {
         item.classList.add('active');
+      }
+    });
+  });
+
+  // About page books click to open
+  const bookItems = document.querySelectorAll('.book-item-shelf');
+  bookItems.forEach(book => {
+    book.addEventListener('click', () => {
+      const isActive = book.classList.contains('active');
+      // Close all books
+      bookItems.forEach(b => b.classList.remove('active'));
+      // Toggle current book
+      if (!isActive) {
+        book.classList.add('active');
       }
     });
   });
