@@ -10,6 +10,7 @@
   <script>
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
     if (window.location.hash) history.replaceState(null, '', window.location.pathname);
+    document.documentElement.style.overflow = 'hidden';
     window.scrollTo(0, 0);
   </script>
   <style>
@@ -269,6 +270,15 @@
       .works-section { padding: 3rem 1.25rem; }
       .contact-section { padding: 3rem 1.25rem; }
     }
+
+    .lang-switch {
+      background: rgba(0,0,0,0.06); border: 1px solid rgba(0,0,0,0.1);
+      border-radius: 4px; padding: 0.3rem 0.6rem;
+      font-family: inherit; font-size: 0.7rem; font-weight: 900;
+      letter-spacing: 0.1em; cursor: pointer;
+      color: #000; transition: all 0.2s;
+    }
+    .lang-switch:hover { background: var(--color-primary); color: #fff; border-color: var(--color-primary); }
   </style>
 </head>
 <body>
@@ -276,11 +286,12 @@
 <nav>
   <div class="nav-logo">ZENG ZIYI</div>
   <div class="nav-links">
-    <a href="javascript:void(0)" data-section="about">关于我</a>
-    <a href="javascript:void(0)" data-section="internship">实习经历</a>
-    <a href="javascript:void(0)" data-section="works">作品集</a>
-    <a href="javascript:void(0)" data-section="contact">联系我</a>
+    <a href="javascript:void(0)" data-section="about" data-i18n="nav_about">关于我</a>
+    <a href="javascript:void(0)" data-section="internship" data-i18n="nav_intern">实习经历</a>
+    <a href="javascript:void(0)" data-section="works" data-i18n="nav_works">作品集</a>
+    <a href="javascript:void(0)" data-section="contact" data-i18n="nav_contact">联系我</a>
   </div>
+  <button class="lang-switch" id="langSwitch" aria-label="Switch Language">EN</button>
 </nav>
 <section class="hero">
   <div class="hero-content scroll-reveal">
@@ -297,10 +308,10 @@
   </div>
 </section>
 <section id="about" class="about-section">
-  <div class="about-left"><h2 class="scroll-reveal">关于我</h2></div>
+  <div class="about-left"><h2 class="scroll-reveal" data-i18n="about_title">关于我</h2></div>
   <div class="about-right">
     <div class="about-inner scroll-reveal">
-      <p class="section-label">Education Background</p>
+      <p class="section-label" data-i18n="edu_label">Education Background</p>
       <div class="edu-item">
         <p class="edu-date">2022.09 - 2026.06</p>
         <h3 class="edu-title">中南财经政法大学｜本科 电影学专业</h3>
@@ -321,7 +332,7 @@
 </section>
 <section id="internship" class="internship-section">
   <div class="internship-inner">
-    <div class="section-header"><h3>实习经历</h3><span>Internship Experience</span></div>
+    <div class="section-header"><h3 data-i18n="intern_title">实习经历</h3><span data-i18n="intern_subtitle">Internship Experience</span></div>
     <div class="timeline-wrap hide-scrollbar">
       <div class="timeline">
         <div class="timeline-line"></div>
@@ -338,7 +349,7 @@
     <div class="intern-row">
       <div class="intern-date">2026.03 - 2026.06</div>
       <div class="intern-card current">
-        <div class="intern-tag">当前职位</div>
+        <div class="intern-tag" data-i18n="current_pos">当前职位</div>
         <h4>北京字节跳动｜企业文化部｜影像设计</h4>
         <div class="metrics">
           <div class="metric-card">
@@ -400,13 +411,13 @@
 <section id="works" class="works-section">
   <div class="works-inner scroll-reveal">
     <p class="works-section-label">Portfolio</p>
-    <h2 class="works-section-title">作品集</h2>
-    <p class="works-section-desc">影像创作者 × AI探索者 × 内容策划人。以下作品涵盖影像叙事、品牌内容、AI创作与技术拓展四个维度。</p>
+    <h2 class="works-section-title" data-i18n="works_title">作品集</h2>
+    <p class="works-section-desc" data-i18n="works_desc">影像创作者 × AI探索者 × 内容策划人。以下作品涵盖影像叙事、品牌内容、AI创作与技术拓展四个维度。</p>
     <div class="works-tabs" role="tablist">
-      <button class="works-tab active" data-panel="narrative" role="tab" aria-selected="true">影像叙事</button>
-      <button class="works-tab" data-panel="brand" role="tab" aria-selected="false">品牌内容</button>
-      <button class="works-tab" data-panel="ai" role="tab" aria-selected="false">AI创作</button>
-      <button class="works-tab" data-panel="tech" role="tab" aria-selected="false">技术拓展</button>
+      <button class="works-tab active" data-panel="narrative" role="tab" aria-selected="true" data-i18n="tab_narrative">影像叙事</button>
+      <button class="works-tab" data-panel="brand" role="tab" aria-selected="false" data-i18n="tab_brand">品牌内容</button>
+      <button class="works-tab" data-panel="ai" role="tab" aria-selected="false" data-i18n="tab_ai">AI创作</button>
+      <button class="works-tab" data-panel="tech" role="tab" aria-selected="false" data-i18n="tab_tech">技术拓展</button>
     </div>
     <div id="panel-narrative" class="works-panel active" role="tabpanel">
       <div class="works-grid">
@@ -446,8 +457,8 @@
 </section>
 <section class="bilibili-portal">
   <div class="scroll-reveal" style="text-align:center; max-width:700px; margin:0 auto;">
-    <p class="portal-hint">以上仅展示了我的部分作品</p>
-    <p class="portal-desc">更多作品请访问我的B站主页，同时我还有很多作品尚未公开展示，欢迎联系我了解更多</p>
+    <p class="portal-hint" data-i18n="portal_hint">以上仅展示了我的部分作品</p>
+    <p class="portal-desc" data-i18n="portal_desc">更多作品请访问我的B站主页，同时我还有很多作品尚未公开展示，欢迎联系我了解更多</p>
     <a class="portal-btn" href="https://b23.tv/vLkjCpz" target="_blank" rel="noopener noreferrer">
       <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" style="vertical-align:middle;margin-right:8px" aria-hidden="true"><path d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v7.36c-.036 1.51-.556 2.769-1.56 3.773s-2.262 1.524-3.773 1.56H5.333c-1.51-.036-2.769-.556-3.773-1.56S.036 18.858 0 17.347v-7.36c.036-1.511.556-2.765 1.56-3.76 1.004-.996 2.262-1.52 3.773-1.574h.774l-1.174-1.12a1.234 1.234 0 0 1-.373-.906c0-.356.124-.658.373-.907l.027-.027c.267-.249.573-.373.92-.373.347 0 .653.124.92.373L9.653 4.44c.071.071.134.142.187.213h4.267a.836.836 0 0 1 .16-.213l2.853-2.747c.267-.249.573-.373.92-.373.347 0 .662.151.929.4.267.249.391.551.391.907 0 .355-.124.657-.373.906zM5.333 7.24c-.746.018-1.373.276-1.88.773-.506.498-.769 1.13-.786 1.894v7.52c.017.764.28 1.395.786 1.893.507.498 1.134.756 1.88.773h13.334c.746-.017 1.373-.275 1.88-.773.506-.498.769-1.129.786-1.893v-7.52c-.017-.765-.28-1.396-.786-1.894-.507-.497-1.134-.755-1.88-.773zM8 11.107c.373 0 .684.124.933.373.25.249.383.569.4.96v1.173c-.017.391-.15.711-.4.96-.249.25-.56.374-.933.374s-.684-.125-.933-.374c-.25-.249-.383-.569-.4-.96V12.44c.017-.391.15-.711.4-.96.249-.25.56-.373.933-.373zm8 0c.373 0 .684.124.933.373.25.249.383.569.4.96v1.173c-.017.391-.15.711-.4.96-.249.25-.56.374-.933.374s-.684-.125-.933-.374c-.25-.249-.383-.569-.4-.96V12.44c.017-.391.15-.711.4-.96.249-.25.56-.373.933-.373z"/></svg>
       前往我的B站主页
@@ -458,8 +469,8 @@
   <div class="scroll-reveal" style="width:100%;display:flex;flex-direction:column;align-items:center">
     <h3>Work with me!</h3>
     <div class="contact-row">
-      <div class="contact-item"><p class="contact-label">Email</p><button class="contact-btn" data-copy="zzzy29209@163.com" data-toast="邮箱已复制到剪贴板">zzzy29209@163.com</button><p class="contact-hint">点击复制</p></div>
-      <div class="contact-item"><p class="contact-label">WeChat</p><button class="contact-btn" data-copy="Zzzy_nine" data-toast="微信号已复制到剪贴板">Zzzy_nine</button><p class="contact-hint">点击复制</p></div>
+      <div class="contact-item"><p class="contact-label">Email</p><button class="contact-btn" data-copy="zzzy29209@163.com" data-toast="邮箱已复制到剪贴板">zzzy29209@163.com</button><p class="contact-hint" data-i18n="click_copy">点击复制</p></div>
+      <div class="contact-item"><p class="contact-label">WeChat</p><button class="contact-btn" data-copy="Zzzy_nine" data-toast="微信号已复制到剪贴板">Zzzy_nine</button><p class="contact-hint" data-i18n="click_copy">点击复制</p></div>
     </div>
   </div>
   <footer>© 2026 ZIYI ZENG</footer>
@@ -469,10 +480,17 @@
 <script>
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 window.scrollTo(0, 0);
-document.addEventListener('DOMContentLoaded', function() { window.scrollTo(0, 0); });
+document.addEventListener('DOMContentLoaded', function() {
+  window.scrollTo(0, 0);
+  document.documentElement.style.overflow = '';
+});
 window.addEventListener('load', function() { window.scrollTo(0, 0); });
-setTimeout(function() { window.scrollTo(0, 0); }, 100);
-setTimeout(function() { window.scrollTo(0, 0); }, 300);
+window.addEventListener('pageshow', function(e) {
+  if (e.persisted) window.scrollTo(0, 0);
+});
+setTimeout(function() { window.scrollTo(0, 0); }, 50);
+setTimeout(function() { window.scrollTo(0, 0); }, 150);
+setTimeout(function() { window.scrollTo(0, 0); }, 500);
 (function () {
   'use strict';
   var modalsData = [
@@ -584,6 +602,48 @@ setTimeout(function() { window.scrollTo(0, 0); }, 300);
     var h3Observer = new IntersectionObserver(function (entries) { entries.forEach(function (e) { if (e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.3 });
     h3Observer.observe(contactH3);
   }
+
+  // ===== i18n Language Switch =====
+  var i18n = {
+    zh: {
+      nav_about: '关于我', nav_intern: '实习经历', nav_works: '作品集', nav_contact: '联系我',
+      about_title: '关于我', edu_label: 'Education Background',
+      intern_title: '实习经历', intern_subtitle: 'Internship Experience',
+      works_title: '作品集',
+      works_desc: '影像创作者 × AI探索者 × 内容策划人。以下作品涵盖影像叙事、品牌内容、AI创作与技术拓展四个维度。',
+      tab_narrative: '影像叙事', tab_brand: '品牌内容', tab_ai: 'AI创作', tab_tech: '技术拓展',
+      portal_hint: '以上仅展示了我的部分作品',
+      portal_desc: '更多作品请访问我的B站主页，同时我还有很多作品尚未公开展示，欢迎联系我了解更多',
+      current_pos: '当前职位',
+      click_copy: '点击复制'
+    },
+    en: {
+      nav_about: 'About', nav_intern: 'Experience', nav_works: 'Works', nav_contact: 'Contact',
+      about_title: 'ABOUT',  edu_label: 'Education Background',
+      intern_title: 'Experience', intern_subtitle: 'Internship Experience',
+      works_title: 'Portfolio',
+      works_desc: 'Filmmaker × AI Explorer × Content Strategist. Works spanning narrative filmmaking, brand content, AI creation, and technical exploration.',
+      tab_narrative: 'Narrative', tab_brand: 'Brand', tab_ai: 'AI Creation', tab_tech: 'Tech',
+      portal_hint: 'The above is only a selection of my work',
+      portal_desc: 'Visit my Bilibili page for more, or contact me directly — many works are not yet publicly listed.',
+      current_pos: 'CURRENT',
+      click_copy: 'Click to copy'
+    }
+  };
+  var currentLang = 'zh';
+  var langBtn = document.getElementById('langSwitch');
+  function applyLang(lang) {
+    currentLang = lang;
+    document.querySelectorAll('[data-i18n]').forEach(function(el) {
+      var key = el.getAttribute('data-i18n');
+      if (i18n[lang][key]) el.textContent = i18n[lang][key];
+    });
+    langBtn.textContent = lang === 'zh' ? 'EN' : '中';
+    document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+  }
+  langBtn.addEventListener('click', function() {
+    applyLang(currentLang === 'zh' ? 'en' : 'zh');
+  });
 })();
 </script>
 </body>
