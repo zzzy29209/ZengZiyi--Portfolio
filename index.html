@@ -7,6 +7,11 @@
   <link rel="preconnect" href="https://fonts.loli.net" />
   <link rel="preconnect" href="https://gstatic.loli.net" crossorigin />
   <link href="https://fonts.loli.net/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet" />
+  <script>
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    if (window.location.hash) history.replaceState(null, '', window.location.pathname);
+    window.scrollTo(0, 0);
+  </script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     .hide-scrollbar::-webkit-scrollbar { display: none; }
@@ -463,8 +468,11 @@
 <div id="toast" class="toast" role="status" aria-live="polite"></div>
 <script>
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
-window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+window.scrollTo(0, 0);
 document.addEventListener('DOMContentLoaded', function() { window.scrollTo(0, 0); });
+window.addEventListener('load', function() { window.scrollTo(0, 0); });
+setTimeout(function() { window.scrollTo(0, 0); }, 100);
+setTimeout(function() { window.scrollTo(0, 0); }, 300);
 (function () {
   'use strict';
   var modalsData = [
