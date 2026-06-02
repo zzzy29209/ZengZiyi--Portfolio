@@ -271,14 +271,6 @@
       .contact-section { padding: 3rem 1.25rem; }
     }
 
-    .lang-switch {
-      background: rgba(0,0,0,0.06); border: 1px solid rgba(0,0,0,0.1);
-      border-radius: 4px; padding: 0.3rem 0.6rem;
-      font-family: inherit; font-size: 0.7rem; font-weight: 900;
-      letter-spacing: 0.1em; cursor: pointer;
-      color: #000; transition: all 0.2s;
-    }
-    .lang-switch:hover { background: var(--color-primary); color: #fff; border-color: var(--color-primary); }
   </style>
 </head>
 <body>
@@ -290,8 +282,8 @@
     <a href="javascript:void(0)" data-section="internship" data-i18n="nav_intern">实习经历</a>
     <a href="javascript:void(0)" data-section="works" data-i18n="nav_works">作品集</a>
     <a href="javascript:void(0)" data-section="contact" data-i18n="nav_contact">联系我</a>
+    <a href="javascript:void(0)" id="langSwitch">EN</a>
   </div>
-  <button class="lang-switch" id="langSwitch" aria-label="Switch Language">EN</button>
 </nav>
 <section class="hero">
   <div class="hero-content scroll-reveal">
@@ -314,18 +306,18 @@
       <p class="section-label" data-i18n="edu_label">Education Background</p>
       <div class="edu-item">
         <p class="edu-date">2022.09 - 2026.06</p>
-        <h3 class="edu-title">中南财经政法大学｜本科 电影学专业</h3>
-        <div class="edu-details"><p>GPA：3.78 / 4</p><p>主修：电影制片管理，剧本写作，导演基础，视听语言设计，艺术概论，视觉设计</p></div>
+        <h3 class="edu-title" data-i18n="edu_1_title">中南财经政法大学｜本科 电影学专业</h3>
+        <div class="edu-details"><p data-i18n="edu_1_gpa">GPA：3.78 / 4</p><p data-i18n="edu_1_major">主修：电影制片管理，剧本写作，导演基础，视听语言设计，艺术概论，视觉设计</p></div>
       </div>
       <div class="edu-item">
         <p class="edu-date">2024.02 - 2024.12</p>
-        <h3 class="edu-title">韩国 DongSeo University｜本科双学位 Film &amp; VFX 专业</h3>
-        <div class="edu-details"><p>GPA：3.89 / 4</p><p>主修：电影制片管理，分镜头制作，电影剪辑，影视灯光摄影，进阶三维特效制作</p></div>
+        <h3 class="edu-title" data-i18n="edu_2_title">韩国 DongSeo University｜本科双学位 Film &amp; VFX 专业</h3>
+        <div class="edu-details"><p data-i18n="edu_2_gpa">GPA：3.89 / 4</p><p data-i18n="edu_2_major">主修：电影制片管理，分镜头制作，电影剪辑，影视灯光摄影，进阶三维特效制作</p></div>
       </div>
       <div class="edu-item">
         <p class="edu-date">2024.07 - 2024.08</p>
-        <h3 class="edu-title">韩国 Studio Kay｜培训经历 AI Workshop</h3>
-        <div class="edu-details"><p>主修：Midjourney、Runway、Luma、Suno、SkyReel、Sora、海螺、可灵、即梦</p></div>
+        <h3 class="edu-title" data-i18n="edu_3_title">韩国 Studio Kay｜培训经历 AI Workshop</h3>
+        <div class="edu-details"><p data-i18n="edu_3_major">主修：Midjourney、Runway、Luma、Suno、SkyReel、Sora、海螺、可灵、即梦</p></div>
       </div>
     </div>
   </div>
@@ -337,12 +329,12 @@
       <div class="timeline">
         <div class="timeline-line"></div>
         <div class="timeline-items">
-          <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-name">字节跳动</div><div class="timeline-date">2026.03-06</div></div>
-          <div class="timeline-item"><div class="timeline-dot sm"></div><div class="timeline-name">联投</div><div class="timeline-date">25.12-26.01</div></div>
-          <div class="timeline-item"><div class="timeline-dot sm"></div><div class="timeline-name">小米</div><div class="timeline-date">25.08-11</div></div>
-          <div class="timeline-item"><div class="timeline-dot sm"></div><div class="timeline-name">作业帮</div><div class="timeline-date">25.06-08</div></div>
-          <div class="timeline-item"><div class="timeline-dot sm"></div><div class="timeline-name">芒果</div><div class="timeline-date">24.12-25.03</div></div>
-          <div class="timeline-item" style="width:14%"><div class="timeline-dot sm"></div><div class="timeline-name">梵宿</div><div class="timeline-date">23.07-11</div></div>
+          <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-name" data-i18n="tl_byte">字节跳动</div><div class="timeline-date">2026.03-06</div></div>
+          <div class="timeline-item"><div class="timeline-dot sm"></div><div class="timeline-name" data-i18n="tl_liantou">联投</div><div class="timeline-date">25.12-26.01</div></div>
+          <div class="timeline-item"><div class="timeline-dot sm"></div><div class="timeline-name" data-i18n="tl_xiaomi">小米</div><div class="timeline-date">25.08-11</div></div>
+          <div class="timeline-item"><div class="timeline-dot sm"></div><div class="timeline-name" data-i18n="tl_zuoyebang">作业帮</div><div class="timeline-date">25.06-08</div></div>
+          <div class="timeline-item"><div class="timeline-dot sm"></div><div class="timeline-name" data-i18n="tl_mango">芒果</div><div class="timeline-date">24.12-25.03</div></div>
+          <div class="timeline-item" style="width:14%"><div class="timeline-dot sm"></div><div class="timeline-name" data-i18n="tl_fansu">梵宿</div><div class="timeline-date">23.07-11</div></div>
         </div>
       </div>
     </div>
@@ -350,60 +342,60 @@
       <div class="intern-date">2026.03 - 2026.06</div>
       <div class="intern-card current">
         <div class="intern-tag" data-i18n="current_pos">当前职位</div>
-        <h4>北京字节跳动｜企业文化部｜影像设计</h4>
+        <h4 data-i18n="intern_byte_title">北京字节跳动｜企业文化部｜影像设计</h4>
         <div class="metrics">
           <div class="metric-card">
-            <span class="metric-label">视频制作效率提升</span>
+            <span class="metric-label" data-i18n="metric_byte_1">视频制作效率提升</span>
             <span class="metric-value">16.67%</span>
           </div>
           <div class="metric-card">
-            <span class="metric-label">制作成本压缩</span>
+            <span class="metric-label" data-i18n="metric_byte_2">制作成本压缩</span>
             <span class="metric-value">97%</span>
           </div>
         </div>
         <div class="intern-body">
           <div>
-            <p><b>企业年度关键词创意</b><br/>参与2026年字节跳动年度企业关键词宣传策划，围绕"Scale New Height"主题与团队共贡献30个创意，类型覆盖实拍视频、AI视频、互动视频、平面海报与平面动画。最终，本人作为主创之一与制作人的「WHAT IF」系列视频成为主推项目，在字节跳动全球所有工区进行轮播。</p>
+            <p data-i18n-html="byte_body_1"><b>企业年度关键词创意</b><br/>参与2026年字节跳动年度企业关键词宣传策划，围绕"Scale New Height"主题与团队共贡献30个创意，类型覆盖实拍视频、AI视频、互动视频、平面海报与平面动画。最终，本人作为主创之一与制作人的「WHAT IF」系列视频成为主推项目，在字节跳动全球所有工区进行轮播。</p>
           </div>
           <div>
-<p><b>视频技术迭代</b><br/>负责"字节范"系列视频的设计与制作，重度参与制作流程的里程碑式改革。从0到1搭建AI视频工作流，在保证最终效果不变的前提下，将字节范系列视频的制作效率提升16.67%、制作成本压缩97%，彻底告别传统AE制作链路，完成技术迭代。</p>
+<p data-i18n-html="byte_body_2"><b>视频技术迭代</b><br/>负责"字节范"系列视频的设计与制作，重度参与制作流程的里程碑式改革。从0到1搭建AI视频工作流，在保证最终效果不变的前提下，将字节范系列视频的制作效率提升16.67%、制作成本压缩97%，彻底告别传统AE制作链路，完成技术迭代。</p>
           </div>
         </div>
       </div>
     </div>
     <div class="intern-row scroll-reveal">
       <div class="intern-date">2025.12 - 2026.01</div>
-      <div class="intern-card"><h4>湖北联投集团｜视频事业部｜短剧策划</h4>
-        <div class="metrics"><div class="metric-card"><span class="metric-label">短剧集数</span><span class="metric-value">31</span><span class="metric-unit">集</span></div><div class="metric-card"><span class="metric-label">分镜制作</span><span class="metric-value">800+</span><span class="metric-unit">条</span></div></div>
-        <div class="intern-body"><div><p><b>市场调研与选题</b><br/>利用百度数据、Vlinkaga指数、中国视听大数据等数据网站关注当下爆火短剧、影视剧，调研市场倾向。与湖南省芒果TV合作，策划姐弟恋主题中剧，独立收集市场数据并制作企划书，成功得到立项资格。</p><br/><p><b>剧本与分镜制作</b><br/>负责ToB定制短剧与ToC漫剧的剧本创意写作。作为主编剧，与湖北联投置业公司合作定制《银发音乐会》短剧，独立写作31集2万字故事剧本并制作800余条分镜。</p></div><div><p><b>剧组现场执行</b><br/>深度参与短剧拍摄，作为现场编剧与导演助理，帮助指导演员表演，结合分镜辅助导演执导拍摄，5天内结束全部31集内容拍摄。</p></div></div>
+      <div class="intern-card"><h4 data-i18n="intern_liantou_title">湖北联投集团｜视频事业部｜短剧策划</h4>
+        <div class="metrics"><div class="metric-card"><span class="metric-label" data-i18n="metric_lt_1">短剧集数</span><span class="metric-value">31</span><span class="metric-unit" data-i18n="metric_lt_1u">集</span></div><div class="metric-card"><span class="metric-label" data-i18n="metric_lt_2">分镜制作</span><span class="metric-value">800+</span><span class="metric-unit" data-i18n="metric_lt_2u">条</span></div></div>
+        <div class="intern-body"><div><p data-i18n-html="lt_body_1"><b>市场调研与选题</b><br/>利用百度数据、Vlinkaga指数、中国视听大数据等数据网站关注当下爆火短剧、影视剧，调研市场倾向。与湖南省芒果TV合作，策划姐弟恋主题中剧，独立收集市场数据并制作企划书，成功得到立项资格。</p><br/><p data-i18n-html="lt_body_2"><b>剧本与分镜制作</b><br/>负责ToB定制短剧与ToC漫剧的剧本创意写作。作为主编剧，与湖北联投置业公司合作定制《银发音乐会》短剧，独立写作31集2万字故事剧本并制作800余条分镜。</p></div><div><p data-i18n-html="lt_body_3"><b>剧组现场执行</b><br/>深度参与短剧拍摄，作为现场编剧与导演助理，帮助指导演员表演，结合分镜辅助导演执导拍摄，5天内结束全部31集内容拍摄。</p></div></div>
       </div>
     </div>
     <div class="intern-row scroll-reveal">
       <div class="intern-date">2025.08 - 2025.11</div>
-      <div class="intern-card"><h4>小米科技有限责任公司｜雇主品牌｜视频策划</h4>
-        <div class="metrics"><div class="metric-card"><span class="metric-label">微信公众号增粉</span><span class="metric-value">78,000</span></div><div class="metric-card"><span class="metric-label">抖音</span><span class="metric-value">+2,700</span></div><div class="metric-card"><span class="metric-label">小红书</span><span class="metric-value">+2,600</span></div><div class="metric-card"><span class="metric-label">微博</span><span class="metric-value">+4,900</span></div></div>
-        <div class="intern-body"><div><p><b>内容策划与执行</b><br/>主导抖音、小红书、微信公众号等平台的视频/图文内容策划，负责视频制作与文案创意。制作"顶尖学子座谈会"视频，开发"奇幻漂流"创意短视频，全程担任导演制作剧本、分镜，拍摄并独立剪辑。</p><br/><p><b>市场调研与选题</b><br/>使用PEST分析法对市场情况进行调研，拆解竞品账号的爆款内容，帮助抖音增粉2700人、小红书增粉2600人、微信公众号增粉78000人、微博增粉4900人（皆为净增量）。</p></div><div><p><b>内容运营与数据驱动</b><br/>实时关注各主要平台内容数据，建立数据表格，重点关注曝光、互动与粉丝增减等环比数据，建立数据周报与月报辅助创意产出。</p><br/><p><b>平面视觉编辑</b><br/>对小红书、微博、公众号等图文内容的海报进行设计与编辑，参与56所高校合作致谢活动并制作宣传图。</p></div></div>
+      <div class="intern-card"><h4 data-i18n="intern_xiaomi_title">小米科技有限责任公司｜雇主品牌｜视频策划</h4>
+        <div class="metrics"><div class="metric-card"><span class="metric-label" data-i18n="metric_xm_1">微信公众号增粉</span><span class="metric-value">78,000</span></div><div class="metric-card"><span class="metric-label" data-i18n="metric_xm_2">抖音</span><span class="metric-value">+2,700</span></div><div class="metric-card"><span class="metric-label" data-i18n="metric_xm_3">小红书</span><span class="metric-value">+2,600</span></div><div class="metric-card"><span class="metric-label" data-i18n="metric_xm_4">微博</span><span class="metric-value">+4,900</span></div></div>
+        <div class="intern-body"><div><p data-i18n-html="xm_body_1"><b>内容策划与执行</b><br/>主导抖音、小红书、微信公众号等平台的视频/图文内容策划，负责视频制作与文案创意。制作"顶尖学子座谈会"视频，开发"奇幻漂流"创意短视频，全程担任导演制作剧本、分镜，拍摄并独立剪辑。</p><br/><p data-i18n-html="xm_body_2"><b>市场调研与选题</b><br/>使用PEST分析法对市场情况进行调研，拆解竞品账号的爆款内容，帮助抖音增粉2700人、小红书增粉2600人、微信公众号增粉78000人、微博增粉4900人（皆为净增量）。</p></div><div><p data-i18n-html="xm_body_3"><b>内容运营与数据驱动</b><br/>实时关注各主要平台内容数据，建立数据表格，重点关注曝光、互动与粉丝增减等环比数据，建立数据周报与月报辅助创意产出。</p><br/><p data-i18n-html="xm_body_4"><b>平面视觉编辑</b><br/>对小红书、微博、公众号等图文内容的海报进行设计与编辑，参与56所高校合作致谢活动并制作宣传图。</p></div></div>
       </div>
     </div>
     <div class="intern-row scroll-reveal">
       <div class="intern-date">2025.06 - 2025.08</div>
-      <div class="intern-card"><h4>作业帮（北京）教育科技有限公司｜用户产品部｜海外视频设计</h4>
-        <div class="metrics"><div class="metric-card"><span class="metric-label">单条最高曝光</span><span class="metric-value">70万</span></div></div>
-        <div class="intern-body"><div><p><b>用户增长运营</b><br/>分析App受众群体并结合账号用户画像，精准定位核心用户。通过视频传播手段，帮助App增加曝光量与用户使用量，最高单条曝光70万。</p></div><div><p><b>数据驱动迭代</b><br/>结合用户反馈数据与平台最新审核数据，针对不同投放平台的审核标准与推流机制，定制不同推广方案，输出数据日报并每日进行工作总结。</p><br/><p><b>多语种触达</b><br/>主要负责英美日韩德法土耳其与中国台湾的多语种内容本地化，结合不同地区的文化背景、语言习性，对视频内容进行二次编辑与翻译。</p></div></div>
+      <div class="intern-card"><h4 data-i18n="intern_zuoyebang_title">作业帮（北京）教育科技有限公司｜用户产品部｜海外视频设计</h4>
+        <div class="metrics"><div class="metric-card"><span class="metric-label" data-i18n="metric_zyb_1">单条最高曝光</span><span class="metric-value">70万</span></div></div>
+        <div class="intern-body"><div><p data-i18n-html="zyb_body_1"><b>用户增长运营</b><br/>分析App受众群体并结合账号用户画像，精准定位核心用户。通过视频传播手段，帮助App增加曝光量与用户使用量，最高单条曝光70万。</p></div><div><p data-i18n-html="zyb_body_2"><b>数据驱动迭代</b><br/>结合用户反馈数据与平台最新审核数据，针对不同投放平台的审核标准与推流机制，定制不同推广方案，输出数据日报并每日进行工作总结。</p><br/><p data-i18n-html="zyb_body_3"><b>多语种触达</b><br/>主要负责英美日韩德法土耳其与中国台湾的多语种内容本地化，结合不同地区的文化背景、语言习性，对视频内容进行二次编辑与翻译。</p></div></div>
       </div>
     </div>
     <div class="intern-row scroll-reveal">
       <div class="intern-date">2024.12 - 2025.03</div>
-      <div class="intern-card"><h4>湖南芒果数智艺术科技有限公司｜产品技术部｜AI产品视频编导</h4>
-        <div class="metrics"><div class="metric-card"><span class="metric-label">元宵晚会全球直播</span><span class="metric-value">千万级</span><span class="metric-unit">触达</span></div><div class="metric-card"><span class="metric-value">全球实时直播</span></div></div>
-        <div class="intern-body"><div><p><b>AR创新项目策划</b><br/>与湖南省博物馆合作，邀请北京大学历史系教授指导，负责编写"AR大空间行走项目"所需的系列短剧剧本，与开发部对接落地方案。项目成品在湖南省博物馆科普互动区投入使用。</p><br/><p><b>AI视频制作与SOP归整</b><br/>结合热门历史向影视剧《清明上河图密码》推出AI短剧。作为短剧项目负责人，对多种AI模型进行测试，整理出详细AI短剧SOP，大幅提升工作效率。</p></div><div><p><b>大型活动协同</b><br/>湖南卫视2025年元宵晚会，与TV部合作设计歌舞节目《人间最值得》舞台背景，全程深度参与视频制作，登上全球实时直播并获得30s特写展示，触达观众千万级。</p></div></div>
+      <div class="intern-card"><h4 data-i18n="intern_mango_title">湖南芒果数智艺术科技有限公司｜产品技术部｜AI产品视频编导</h4>
+        <div class="metrics"><div class="metric-card"><span class="metric-label" data-i18n="metric_mg_1">元宵晚会全球直播</span><span class="metric-value">千万级</span><span class="metric-unit" data-i18n="metric_mg_1u">触达</span></div><div class="metric-card"><span class="metric-value" data-i18n="metric_mg_2">全球实时直播</span></div></div>
+        <div class="intern-body"><div><p data-i18n-html="mg_body_1"><b>AR创新项目策划</b><br/>与湖南省博物馆合作，邀请北京大学历史系教授指导，负责编写"AR大空间行走项目"所需的系列短剧剧本，与开发部对接落地方案。项目成品在湖南省博物馆科普互动区投入使用。</p><br/><p data-i18n-html="mg_body_2"><b>AI视频制作与SOP归整</b><br/>结合热门历史向影视剧《清明上河图密码》推出AI短剧。作为短剧项目负责人，对多种AI模型进行测试，整理出详细AI短剧SOP，大幅提升工作效率。</p></div><div><p data-i18n-html="mg_body_3"><b>大型活动协同</b><br/>湖南卫视2025年元宵晚会，与TV部合作设计歌舞节目《人间最值得》舞台背景，全程深度参与视频制作，登上全球实时直播并获得30s特写展示，触达观众千万级。</p></div></div>
       </div>
     </div>
     <div class="intern-row scroll-reveal">
       <div class="intern-date">2023.07 - 2023.11</div>
-      <div class="intern-card"><h4>湖北梵宿文旅集团｜广告部｜短视频编导</h4>
-        <div class="metrics"><div class="metric-card"><span class="metric-label">单场直播在线</span><span class="metric-value">9,600+</span></div><div class="metric-card"><span class="metric-label">单场成交</span><span class="metric-value">¥31.6万</span></div></div>
-        <div class="intern-body"><div><p><b>直播运营</b><br/>实时监控直播后台数据，管理后台商品链接与评论区、福袋等互动环节。单场直播最高累计在线9600+，7小时成交31.6万。每场直播后输出复盘报告。</p><br/><p><b>多场景拍摄</b><br/>多次出差，参与景区、酒店、宴会中心、餐厅等甲方的广告片场景布置与拍摄工作，提前设计运镜与脚本。</p></div><div><p><b>短视频广告剪辑</b><br/>对多场景拍摄的素材进行整理，编写视频文案并剪辑，扩大广告曝光量。</p></div></div>
+      <div class="intern-card"><h4 data-i18n="intern_fansu_title">湖北梵宿文旅集团｜广告部｜短视频编导</h4>
+        <div class="metrics"><div class="metric-card"><span class="metric-label" data-i18n="metric_fs_1">单场直播在线</span><span class="metric-value">9,600+</span></div><div class="metric-card"><span class="metric-label" data-i18n="metric_fs_2">单场成交</span><span class="metric-value">¥31.6万</span></div></div>
+        <div class="intern-body"><div><p data-i18n-html="fs_body_1"><b>直播运营</b><br/>实时监控直播后台数据，管理后台商品链接与评论区、福袋等互动环节。单场直播最高累计在线9600+，7小时成交31.6万。每场直播后输出复盘报告。</p><br/><p data-i18n-html="fs_body_2"><b>多场景拍摄</b><br/>多次出差，参与景区、酒店、宴会中心、餐厅等甲方的广告片场景布置与拍摄工作，提前设计运镜与脚本。</p></div><div><p data-i18n-html="fs_body_3"><b>短视频广告剪辑</b><br/>对多场景拍摄的素材进行整理，编写视频文案并剪辑，扩大广告曝光量。</p></div></div>
       </div>
     </div>
   </div>
@@ -461,7 +453,7 @@
     <p class="portal-desc" data-i18n="portal_desc">更多作品请访问我的B站主页，同时我还有很多作品尚未公开展示，欢迎联系我了解更多</p>
     <a class="portal-btn" href="https://b23.tv/vLkjCpz" target="_blank" rel="noopener noreferrer">
       <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" style="vertical-align:middle;margin-right:8px" aria-hidden="true"><path d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v7.36c-.036 1.51-.556 2.769-1.56 3.773s-2.262 1.524-3.773 1.56H5.333c-1.51-.036-2.769-.556-3.773-1.56S.036 18.858 0 17.347v-7.36c.036-1.511.556-2.765 1.56-3.76 1.004-.996 2.262-1.52 3.773-1.574h.774l-1.174-1.12a1.234 1.234 0 0 1-.373-.906c0-.356.124-.658.373-.907l.027-.027c.267-.249.573-.373.92-.373.347 0 .653.124.92.373L9.653 4.44c.071.071.134.142.187.213h4.267a.836.836 0 0 1 .16-.213l2.853-2.747c.267-.249.573-.373.92-.373.347 0 .662.151.929.4.267.249.391.551.391.907 0 .355-.124.657-.373.906zM5.333 7.24c-.746.018-1.373.276-1.88.773-.506.498-.769 1.13-.786 1.894v7.52c.017.764.28 1.395.786 1.893.507.498 1.134.756 1.88.773h13.334c.746-.017 1.373-.275 1.88-.773.506-.498.769-1.129.786-1.893v-7.52c-.017-.765-.28-1.396-.786-1.894-.507-.497-1.134-.755-1.88-.773zM8 11.107c.373 0 .684.124.933.373.25.249.383.569.4.96v1.173c-.017.391-.15.711-.4.96-.249.25-.56.374-.933.374s-.684-.125-.933-.374c-.25-.249-.383-.569-.4-.96V12.44c.017-.391.15-.711.4-.96.249-.25.56-.373.933-.373zm8 0c.373 0 .684.124.933.373.25.249.383.569.4.96v1.173c-.017.391-.15.711-.4.96-.249.25-.56.374-.933.374s-.684-.125-.933-.374c-.25-.249-.383-.569-.4-.96V12.44c.017-.391.15-.711.4-.96.249-.25.56-.373.933-.373z"/></svg>
-      前往我的B站主页
+      <span data-i18n="portal_btn">前往我的B站主页</span>
     </a>
   </div>
 </section>
@@ -572,7 +564,7 @@ setTimeout(function() { window.scrollTo(0, 0); }, 500);
   document.querySelectorAll('.contact-btn[data-copy]').forEach(function (btn) {
     btn.addEventListener('click', function () { var text = this.dataset.copy, msg = this.dataset.toast || '已复制到剪贴板'; navigator.clipboard.writeText(text).then(function () { showToast(msg); }); });
   });
-  var sections = ['about', 'internship', 'works', 'contact'], navLinks = document.querySelectorAll('.nav-links a');
+  var sections = ['about', 'internship', 'works', 'contact'], navLinks = document.querySelectorAll('.nav-links a[data-section]');
   navLinks.forEach(function (link) {
     link.addEventListener('click', function (e) {
       e.preventDefault();
@@ -608,35 +600,127 @@ setTimeout(function() { window.scrollTo(0, 0); }, 500);
     zh: {
       nav_about: '关于我', nav_intern: '实习经历', nav_works: '作品集', nav_contact: '联系我',
       about_title: '关于我', edu_label: 'Education Background',
+      edu_1_title: '中南财经政法大学｜本科 电影学专业',
+      edu_1_gpa: 'GPA：3.78 / 4',
+      edu_1_major: '主修：电影制片管理，剧本写作，导演基础，视听语言设计，艺术概论，视觉设计',
+      edu_2_title: '韩国 DongSeo University｜本科双学位 Film & VFX 专业',
+      edu_2_gpa: 'GPA：3.89 / 4',
+      edu_2_major: '主修：电影制片管理，分镜头制作，电影剪辑，影视灯光摄影，进阶三维特效制作',
+      edu_3_title: '韩国 Studio Kay｜培训经历 AI Workshop',
+      edu_3_major: '主修：Midjourney、Runway、Luma、Suno、SkyReel、Sora、海螺、可灵、即梦',
       intern_title: '实习经历', intern_subtitle: 'Internship Experience',
+      intern_byte_title: '北京字节跳动｜企业文化部｜影像设计',
+      intern_liantou_title: '湖北联投集团｜视频事业部｜短剧策划',
+      intern_xiaomi_title: '小米科技有限责任公司｜雇主品牌｜视频策划',
+      intern_zuoyebang_title: '作业帮（北京）教育科技有限公司｜用户产品部｜海外视频设计',
+      intern_mango_title: '湖南芒果数智艺术科技有限公司｜产品技术部｜AI产品视频编导',
+      intern_fansu_title: '湖北梵宿文旅集团｜广告部｜短视频编导',
+      tl_byte: '字节跳动', tl_liantou: '联投', tl_xiaomi: '小米',
+      tl_zuoyebang: '作业帮', tl_mango: '芒果', tl_fansu: '梵宿',
       works_title: '作品集',
       works_desc: '影像创作者 × AI探索者 × 内容策划人。以下作品涵盖影像叙事、品牌内容、AI创作与技术拓展四个维度。',
       tab_narrative: '影像叙事', tab_brand: '品牌内容', tab_ai: 'AI创作', tab_tech: '技术拓展',
       portal_hint: '以上仅展示了我的部分作品',
       portal_desc: '更多作品请访问我的B站主页，同时我还有很多作品尚未公开展示，欢迎联系我了解更多',
+      portal_btn: '前往我的B站主页',
+      metric_byte_1: '视频制作效率提升', metric_byte_2: '制作成本压缩',
+      metric_lt_1: '短剧集数', metric_lt_1u: '集', metric_lt_2: '分镜制作', metric_lt_2u: '条',
+      metric_xm_1: '微信公众号增粉', metric_xm_2: '抖音', metric_xm_3: '小红书', metric_xm_4: '微博',
+      metric_zyb_1: '单条最高曝光',
+      metric_mg_1: '元宵晚会全球直播', metric_mg_1u: '触达', metric_mg_2: '全球实时直播',
+      metric_fs_1: '单场直播在线', metric_fs_2: '单场成交',
       current_pos: '当前职位',
       click_copy: '点击复制'
     },
     en: {
       nav_about: 'About', nav_intern: 'Experience', nav_works: 'Works', nav_contact: 'Contact',
-      about_title: 'ABOUT',  edu_label: 'Education Background',
+      about_title: 'ABOUT', edu_label: 'Education Background',
+      edu_1_title: 'Zhongnan Univ. of Economics and Law | B.A. Film Studies',
+      edu_1_gpa: 'GPA: 3.78 / 4',
+      edu_1_major: 'Major: Film Production Management, Screenwriting, Directing, Audio-Visual Language Design, Art Theory, Visual Design',
+      edu_2_title: 'DongSeo University, South Korea | Dual Degree, Film & VFX',
+      edu_2_gpa: 'GPA: 3.89 / 4',
+      edu_2_major: 'Major: Film Production Management, Storyboarding, Film Editing, Cinematography & Lighting, Advanced 3D VFX',
+      edu_3_title: 'Studio Kay, South Korea | AI Workshop Training',
+      edu_3_major: 'Tools: Midjourney, Runway, Luma, Suno, SkyReel, Sora, Hailuo, Kling, Jimeng',
       intern_title: 'Experience', intern_subtitle: 'Internship Experience',
+      intern_byte_title: 'ByteDance, Beijing | Corporate Culture Dept. | Video Design',
+      intern_liantou_title: 'Hubei Liantou Group | Video Division | Short Drama Planning',
+      intern_xiaomi_title: 'Xiaomi Inc. | Employer Branding | Video Strategy',
+      intern_zuoyebang_title: 'Zuoyebang (Beijing) EdTech | User Product Dept. | Overseas Video Design',
+      intern_mango_title: 'Mango DigiArts (Hunan) | Product & Tech Dept. | AI Video Director',
+      intern_fansu_title: 'Hubei Fansu Cultural Tourism Group | Advertising Dept. | Short Video Director',
+      tl_byte: 'ByteDance', tl_liantou: 'Liantou', tl_xiaomi: 'Xiaomi',
+      tl_zuoyebang: 'Zuoyebang', tl_mango: 'Mango', tl_fansu: 'Fansu',
       works_title: 'Portfolio',
       works_desc: 'Filmmaker × AI Explorer × Content Strategist. Works spanning narrative filmmaking, brand content, AI creation, and technical exploration.',
       tab_narrative: 'Narrative', tab_brand: 'Brand', tab_ai: 'AI Creation', tab_tech: 'Tech',
       portal_hint: 'The above is only a selection of my work',
       portal_desc: 'Visit my Bilibili page for more, or contact me directly — many works are not yet publicly listed.',
+      portal_btn: 'Visit My Bilibili',
+      metric_byte_1: 'Production Efficiency Boost', metric_byte_2: 'Cost Reduction',
+      metric_lt_1: 'Episodes', metric_lt_1u: 'eps', metric_lt_2: 'Storyboards', metric_lt_2u: 'shots',
+      metric_xm_1: 'WeChat Followers', metric_xm_2: 'Douyin', metric_xm_3: 'Xiaohongshu', metric_xm_4: 'Weibo',
+      metric_zyb_1: 'Top Single Video Views',
+      metric_mg_1: 'Lantern Festival Global Live', metric_mg_1u: 'reach', metric_mg_2: 'Global Live Broadcast',
+      metric_fs_1: 'Peak Live Viewers', metric_fs_2: 'Single Session Sales',
       current_pos: 'CURRENT',
       click_copy: 'Click to copy'
     }
   };
   var currentLang = 'zh';
   var langBtn = document.getElementById('langSwitch');
+  var i18nHtml = {
+    zh: {
+      byte_body_1: '<b>企业年度关键词创意</b><br/>参与2026年字节跳动年度企业关键词宣传策划，围绕"Scale New Height"主题与团队共贡献30个创意，类型覆盖实拍视频、AI视频、互动视频、平面海报与平面动画。最终，本人作为主创之一与制作人的「WHAT IF」系列视频成为主推项目，在字节跳动全球所有工区进行轮播。',
+      byte_body_2: '<b>视频技术迭代</b><br/>负责"字节范"系列视频的设计与制作，重度参与制作流程的里程碑式改革。从0到1搭建AI视频工作流，在保证最终效果不变的前提下，将字节范系列视频的制作效率提升16.67%、制作成本压缩97%，彻底告别传统AE制作链路，完成技术迭代。',
+      lt_body_1: '<b>市场调研与选题</b><br/>利用百度数据、Vlinkaga指数、中国视听大数据等数据网站关注当下爆火短剧、影视剧，调研市场倾向。与湖南省芒果TV合作，策划姐弟恋主题中剧，独立收集市场数据并制作企划书，成功得到立项资格。',
+      lt_body_2: '<b>剧本与分镜制作</b><br/>负责ToB定制短剧与ToC漫剧的剧本创意写作。作为主编剧，与湖北联投置业公司合作定制《银发音乐会》短剧，独立写作31集2万字故事剧本并制作800余条分镜。',
+      lt_body_3: '<b>剧组现场执行</b><br/>深度参与短剧拍摄，作为现场编剧与导演助理，帮助指导演员表演，结合分镜辅助导演执导拍摄，5天内结束全部31集内容拍摄。',
+      xm_body_1: '<b>内容策划与执行</b><br/>主导抖音、小红书、微信公众号等平台的视频/图文内容策划，负责视频制作与文案创意。制作"顶尖学子座谈会"视频，开发"奇幻漂流"创意短视频，全程担任导演制作剧本、分镜，拍摄并独立剪辑。',
+      xm_body_2: '<b>市场调研与选题</b><br/>使用PEST分析法对市场情况进行调研，拆解竞品账号的爆款内容，帮助抖音增粉2700人、小红书增粉2600人、微信公众号增粉78000人、微博增粉4900人（皆为净增量）。',
+      xm_body_3: '<b>内容运营与数据驱动</b><br/>实时关注各主要平台内容数据，建立数据表格，重点关注曝光、互动与粉丝增减等环比数据，建立数据周报与月报辅助创意产出。',
+      xm_body_4: '<b>平面视觉编辑</b><br/>对小红书、微博、公众号等图文内容的海报进行设计与编辑，参与56所高校合作致谢活动并制作宣传图。',
+      zyb_body_1: '<b>用户增长运营</b><br/>分析App受众群体并结合账号用户画像，精准定位核心用户。通过视频传播手段，帮助App增加曝光量与用户使用量，最高单条曝光70万。',
+      zyb_body_2: '<b>数据驱动迭代</b><br/>结合用户反馈数据与平台最新审核数据，针对不同投放平台的审核标准与推流机制，定制不同推广方案，输出数据日报并每日进行工作总结。',
+      zyb_body_3: '<b>多语种触达</b><br/>主要负责英美日韩德法土耳其与中国台湾的多语种内容本地化，结合不同地区的文化背景、语言习性，对视频内容进行二次编辑与翻译。',
+      mg_body_1: '<b>AR创新项目策划</b><br/>与湖南省博物馆合作，邀请北京大学历史系教授指导，负责编写"AR大空间行走项目"所需的系列短剧剧本，与开发部对接落地方案。项目成品在湖南省博物馆科普互动区投入使用。',
+      mg_body_2: '<b>AI视频制作与SOP归整</b><br/>结合热门历史向影视剧《清明上河图密码》推出AI短剧。作为短剧项目负责人，对多种AI模型进行测试，整理出详细AI短剧SOP，大幅提升工作效率。',
+      mg_body_3: '<b>大型活动协同</b><br/>湖南卫视2025年元宵晚会，与TV部合作设计歌舞节目《人间最值得》舞台背景，全程深度参与视频制作，登上全球实时直播并获得30s特写展示，触达观众千万级。',
+      fs_body_1: '<b>直播运营</b><br/>实时监控直播后台数据，管理后台商品链接与评论区、福袋等互动环节。单场直播最高累计在线9600+，7小时成交31.6万。每场直播后输出复盘报告。',
+      fs_body_2: '<b>多场景拍摄</b><br/>多次出差，参与景区、酒店、宴会中心、餐厅等甲方的广告片场景布置与拍摄工作，提前设计运镜与脚本。',
+      fs_body_3: '<b>短视频广告剪辑</b><br/>对多场景拍摄的素材进行整理，编写视频文案并剪辑，扩大广告曝光量。'
+    },
+    en: {
+      byte_body_1: '<b>Annual Corporate Keyword Campaign</b><br/>Participated in ByteDance\'s 2026 annual corporate keyword campaign planning. Contributed 30 creative concepts around the "Scale New Height" theme, covering live-action video, AI video, interactive video, posters, and motion graphics. The "WHAT IF" video series, which I co-created and produced, became the flagship project and was broadcast across all ByteDance offices worldwide.',
+      byte_body_2: '<b>Video Production Tech Iteration</b><br/>Led the design and production of the "ByteStyle" video series, driving a milestone reform in the production pipeline. Built an AI video workflow from scratch, boosting production efficiency by 16.67% and reducing costs by 97% while maintaining output quality — fully replacing the traditional After Effects pipeline.',
+      lt_body_1: '<b>Market Research & Topic Selection</b><br/>Monitored trending short dramas and TV series using Baidu Data, Vlinkage Index, and China Audio-Visual Big Data. Collaborated with Mango TV to plan a romance-themed mid-length drama; independently collected market data and produced the project proposal, successfully securing project approval.',
+      lt_body_2: '<b>Scriptwriting & Storyboarding</b><br/>Responsible for creative writing of ToB custom short dramas and ToC comic dramas. As lead screenwriter, collaborated with Hubei Liantou Real Estate to produce the custom short drama "Silver Hair Concert" — independently wrote 31 episodes (20,000+ words) and created 800+ storyboard shots.',
+      lt_body_3: '<b>On-Set Execution</b><br/>Deeply involved in short drama filming as on-set screenwriter and assistant director. Guided actors\' performances and assisted the director using storyboards. Completed all 31 episodes within 5 shooting days.',
+      xm_body_1: '<b>Content Planning & Execution</b><br/>Led video/graphic content planning for Douyin, Xiaohongshu, and WeChat Official Account. Produced the "Top Scholars Forum" video and developed the "Fantasy Voyage" creative short — serving as director for scripting, storyboarding, filming, and editing.',
+      xm_body_2: '<b>Market Research & Topic Selection</b><br/>Conducted market research using PEST analysis, deconstructed viral content from competitor accounts. Grew Douyin by 2,700 followers, Xiaohongshu by 2,600, WeChat Official Account by 78,000, and Weibo by 4,900 (all net gains).',
+      xm_body_3: '<b>Content Operations & Data-Driven</b><br/>Monitored content metrics across major platforms in real time. Built data dashboards tracking impressions, engagement, and follower growth. Delivered weekly and monthly reports to support creative output.',
+      xm_body_4: '<b>Visual Design & Editing</b><br/>Designed and edited posters for Xiaohongshu, Weibo, and WeChat content. Participated in a 56-university collaboration campaign and produced promotional materials.',
+      zyb_body_1: '<b>User Growth Operations</b><br/>Analyzed app audience profiles to precisely target core users. Leveraged video distribution to boost app exposure and usage, achieving a peak of 700K views on a single video.',
+      zyb_body_2: '<b>Data-Driven Iteration</b><br/>Combined user feedback data with platform review policies. Customized promotion strategies for different platforms\' review standards and traffic allocation mechanisms. Delivered daily data reports and work summaries.',
+      zyb_body_3: '<b>Multi-Language Reach</b><br/>Responsible for multi-language content localization across US, UK, Japan, Korea, Germany, France, Turkey, and Taiwan. Adapted video content through secondary editing and translation based on regional cultural contexts and language habits.',
+      mg_body_1: '<b>AR Innovation Project</b><br/>Collaborated with Hunan Provincial Museum, guided by Peking University history professors. Wrote scripts for the "AR Large-Space Walking" experience and coordinated implementation with the development team. The finished product is now deployed in the museum\'s interactive science education zone.',
+      mg_body_2: '<b>AI Video Production & SOP Development</b><br/>Produced an AI short drama series tied to the trending historical IP "Along the River During Qingming." As project lead, tested multiple AI models and compiled a detailed AI short drama SOP, significantly improving workflow efficiency.',
+      mg_body_3: '<b>Large-Scale Event Collaboration</b><br/>For Hunan TV\'s 2025 Lantern Festival Gala, co-designed the stage background for the song-and-dance number "The Best of Life." Deeply involved in video production throughout. Featured in a 30-second close-up during the global live broadcast, reaching tens of millions of viewers.',
+      fs_body_1: '<b>Livestream Operations</b><br/>Monitored real-time backend data, managed product links, comment sections, and interactive features like lucky bags. Achieved peak concurrent viewers of 9,600+ with ¥316K in sales during a single 7-hour session. Delivered post-stream review reports.',
+      fs_body_2: '<b>Multi-Location Filming</b><br/>Traveled for on-site shoots at scenic areas, hotels, banquet centers, and restaurants. Pre-designed camera movements and scripts for client advertising content.',
+      fs_body_3: '<b>Short Video Ad Editing</b><br/>Organized footage from multi-location shoots, wrote video copy, and edited final deliverables to maximize advertising reach.'
+    }
+  };
   function applyLang(lang) {
     currentLang = lang;
     document.querySelectorAll('[data-i18n]').forEach(function(el) {
       var key = el.getAttribute('data-i18n');
       if (i18n[lang][key]) el.textContent = i18n[lang][key];
+    });
+    document.querySelectorAll('[data-i18n-html]').forEach(function(el) {
+      var key = el.getAttribute('data-i18n-html');
+      if (i18nHtml[lang][key]) el.innerHTML = i18nHtml[lang][key];
     });
     langBtn.textContent = lang === 'zh' ? 'EN' : '中';
     document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
